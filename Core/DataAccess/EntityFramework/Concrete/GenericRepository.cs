@@ -1,5 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework.Abstract;
 using Core.Entities.Concrete;
+using Core.Helpers;
 using Core.Utilities.Results;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
@@ -11,11 +12,13 @@ namespace Core.DataAccess.EntityFramework
     {
         protected readonly DbContext Context;
         protected readonly DbSet<TEntity> DbSet;
+        private readonly IHttpAccessorHelper _httpAccessorHelper;
 
-        public GenericRepository(DbContext context)
+        public GenericRepository(DbContext context, IHttpAccessorHelper httpAccessorHelper)
         {
             Context = context;
             DbSet = Context.Set<TEntity>();
+            _httpAccessorHelper = httpAccessorHelper;
         }
 
         public IQueryable<TEntity> GetAll()
