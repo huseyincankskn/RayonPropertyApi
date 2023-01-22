@@ -1,6 +1,5 @@
-﻿
-
-
+﻿using Autofac.Extensions.DependencyInjection;
+using Autofac;
 using Core.Extensions;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.Jwt;
@@ -17,7 +16,10 @@ using Microsoft.OData.ModelBuilder;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Reflection;
-using System.Text.RegularExpressions;
+using Business.DependencyResolvers.Autofac;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Core.Middleware;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -94,18 +96,62 @@ var assemblies = AppDomain.CurrentDomain.GetAssemblies().ToList();
 var assembly = Assembly.Load("Business");
 assemblies.Add(assembly);
 
+builder.Services.AddAutoMapper(assemblies.ToArray());
+builder.Services.AddHttpClient();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-// Automapper ile devamı gelecek :)
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new AutofacBusinessModule());
+
+    });
 
 
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.UseSwaggerUI();
+var defaultDateCulture = "tr-TR";
+var ci = new CultureInfo(defaultDateCulture);
+ci.NumberFormat.NumberDecimalSeparator = ",";
+ci.NumberFormat.CurrencyDecimalSeparator = ",";
 
+app.UseRequestLocalization(new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture(ci),
+    SupportedCultures = new List<CultureInfo>
+                {
+                    ci,
+                },
+    SupportedUICultures = new List<CultureInfo>
+                {
+                    ci,
+                }
+});
+
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseSwagger(x => x.SerializeAsV2 = true);
+
+app.UseMiddleware<JwtMiddleware>();
 app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseCors();
+
+app.UseStaticFiles();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseODataQueryRequest();
 
 app.Run();
