@@ -6,22 +6,22 @@ namespace Entities.Concrete
     {
         public string Title { get; set; } = string.Empty;
         public string ProjectNumber { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string ShortDescription { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty; 
         public short RoomCount { get; set; }
         public short SaloonCount { get; set; }
+        public short BedCount { get; set; }
         public decimal Price { get; set; }
-        public bool IsRent { get; set; }
-        public bool IsSell { get; set; }
+        public string Area { get; set; } = string.Empty; 
         public byte ProjectStatus { get; set; }
-        public byte ProjectTye { get; set; }
-        public string Address { get; set; } = string.Empty;
+        public byte ProjectTye { get; set; } 
+        public string ZipCode { get; set; } = string.Empty; 
         public short Floor { get; set; }
         public short Year { get; set; }
         public bool IsEmpty { get; set; }
         public short BathroomCount { get; set; }
-        public string PaymnetType { get; set; } = string.Empty;
+        //public string PaymnetType { get; set; } = string.Empty;
         public string SeeClose { get; set; } = string.Empty;
+        public byte Features { get; set; }
         public Guid CurrencyId { get; set; }
         public virtual Currency Currency { get; set; }
     }

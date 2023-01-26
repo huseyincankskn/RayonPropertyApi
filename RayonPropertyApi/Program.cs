@@ -20,6 +20,9 @@ using Business.DependencyResolvers.Autofac;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Core.Middleware;
+using Business.Abstract;
+using Business.Concrete;
+using Autofac.Core;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -99,6 +102,7 @@ assemblies.Add(assembly);
 builder.Services.AddAutoMapper(assemblies.ToArray());
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IProductService, ProductService>();
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
@@ -111,7 +115,10 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:4000").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
+});
 var app = builder.Build();
 
 app.UseSwaggerUI();
