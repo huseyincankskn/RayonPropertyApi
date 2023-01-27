@@ -2,6 +2,8 @@
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Drawing.Imaging;
+using System.Drawing;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -21,6 +23,13 @@ namespace RayonPropertyApi.Controllers
         public IActionResult AddProject(ProjectDto projectDto)
         {
             return Ok("Test is ok.");
+        }
+        [HttpPost("AddImage")]
+        [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
+        public IActionResult AddImage([FromForm] List<IFormFile> images)
+        {
+            var result = _productService.SaveImages(images);
+            return Ok(result);
         }
     }
 }
