@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Attributes;
+using Core.Entities.Dtos;
 using Entities.Dtos;
 using Entities.VMs.User;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +46,20 @@ namespace RayonPropertyApi.Controllers.User
         {
             var result = _authService.ForgotPassword(forgotModel);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [RayonPropertyAuthorize]
+        [HttpPost("UserAdd")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public ActionResult UserAdd(UserForRegisterDto userForRegisterDto)
+        {
+            var userExists = _authService.IsUserExists(new AuthUserDto() { UserEmail = userForRegisterDto.Email });
+            if (!userExists.Success)
+            {
+                return BadRequest("ErrorMail");
+            }
+            var result = _authService.Add(userForRegisterDto);
+            return StatusCode(result.StatusCode, result.StatusCode);
         }
     }
 }

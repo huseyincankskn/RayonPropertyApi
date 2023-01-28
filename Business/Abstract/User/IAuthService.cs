@@ -1,4 +1,5 @@
-﻿using Core.Utilities.Results;
+﻿using Core.Entities.Dtos;
+using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;
 using Entities.Concrete;
 using Entities.Dtos;
@@ -11,5 +12,7 @@ namespace Business.Abstract
         IDataResult<User> Login(UserForLoginDto userForLoginDto);
         IDataResult<AccessToken> CreateAccessToken(User user);
         IResult ForgotPassword(ForgotPasswordVm forgotModel);
+        IResult IsUserExists(AuthUserDto authUserDto);
+        IDataResult<User> Add(UserForRegisterDto userForRegisterDto);
     }
 }

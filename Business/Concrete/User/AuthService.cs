@@ -28,6 +28,22 @@ namespace Business.Concrete
             _emailManager = emailManager;
         }
 
+        public IDataResult<User> Add(UserForRegisterDto userForRegisterDto)
+        {
+            HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out var passwordHash, out var passwordSalt);
+            var user = new User
+            {
+                Email = userForRegisterDto.Email,
+                FirstName = userForRegisterDto.FirstName,
+                LastName = userForRegisterDto.LastName,
+                PsrHash = passwordHash,
+                PsrSalt = passwordSalt,
+                PhoneNumber = userForRegisterDto.PhoneNumber,
+            };
+            _userRepository.Add(user);
+            return new SuccessDataResult<User>(user, Messages.UserRegistered);
+        }
+
         public IDataResult<AccessToken> CreateAccessToken(User user)
         {
             var userDto = new UserDto()
@@ -55,6 +71,16 @@ namespace Business.Concrete
             forgotModel.PsrGuid = user.PsrGuid;
 
             _emailManager.SendForgotPasswordEmail(forgotModel);
+            return new SuccessResult();
+        }
+
+        public IResult IsUserExists(AuthUserDto authUserDto)
+        {
+            var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == authUserDto.UserEmail);
+            if (user != null)
+            {
+                return new ErrorResult(Messages.UserExist);
+            }
             return new SuccessResult();
         }
 
