@@ -1,11 +1,7 @@
 ﻿using DataAccess.Concrete.EntityFramework.Configuration;
+using DataAccess.Concrete.EntityFramework.Configuration.Extensions;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
@@ -13,7 +9,10 @@ namespace DataAccess.Concrete
     {
         public override void EntityConfigure(EntityTypeBuilder<User> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(x => x.Email).IsRequired().NVarChar(250);
+            builder.Property(x => x.FirstName).IsRequired().NVarChar(250);
+            builder.Property(x => x.LastName).IsRequired().NVarChar(250);
+            builder.Property(x => x.PhoneNumber).IsRequired().Phone();
         }
     }
 }
