@@ -122,5 +122,37 @@ namespace Core.DataAccess.EntityFramework
         {
             return DbSet.Where(x => !x.IsDeleted && x.IsActive).Any(filter);
         }
+
+        public IDataResult<TEntity> AddWithoutLogin(TEntity entity)
+        {
+            entity.AddDate = DateTime.Now;
+            entity.AddUserId = Guid.Empty;
+
+            var addedEntity = Context.Entry(entity);
+            addedEntity.State = EntityState.Added;
+            Context.SaveChanges();
+            return new SuccessDataResult<TEntity>(addedEntity.Entity);
+        }
+
+        public IDataResult<TEntity> DeleteWithoutLogin(TEntity entity)
+        {
+            entity.DeleteDate = DateTime.Now;
+            entity.DeleteUserId = Guid.Empty;
+            entity.IsDeleted = true;
+
+            var deletedEntity = Context.Entry(entity);
+            Context.SaveChanges();
+            return new SuccessDataResult<TEntity>(deletedEntity.Entity);
+        }
+
+        public IDataResult<TEntity> UpdateWithoutLogin(TEntity entity)
+        {
+            entity.UpdateDate = DateTime.Now;
+
+            var updatedEntity = Context.Entry(entity);
+            updatedEntity.State = EntityState.Modified;
+            Context.SaveChanges();
+            return new SuccessDataResult<TEntity>(updatedEntity.Entity);
+        }
     }
 }

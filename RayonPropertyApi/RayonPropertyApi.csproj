@@ -33,6 +33,8 @@
 
   <ItemGroup>
     <Folder Include="Files\" />
+    <Folder Include="wwwroot\Content\" />
+    <Folder Include="wwwroot\MailTemplates\" />
   </ItemGroup>
 
 </Project>

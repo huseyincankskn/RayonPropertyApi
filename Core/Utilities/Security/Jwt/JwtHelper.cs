@@ -36,7 +36,7 @@ namespace Core.Utilities.Security.Jwt
                 Email = user.Email,
                 UserName = $"{user.FirstName} {user.LastName}",
                 UserId = user.Id,
-                MobilePhone = user.MobileNumber
+                MobilePhone = user.PhoneNumber
             };
 
             var refreshTokenExpiration = DateTime.Now.AddMinutes(_tokenOptions.RefeshTokenExpiration);
