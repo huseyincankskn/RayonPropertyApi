@@ -23,6 +23,7 @@ using Core.Middleware;
 using Business.Abstract;
 using Business.Concrete;
 using Autofac.Core;
+using Entities.VMs;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -34,6 +35,8 @@ IConfiguration Configuration = new ConfigurationBuilder()
 static IEdmModel GetEdmModel()
 {
     var odataBuilder = new ODataConventionModelBuilder();
+    odataBuilder.EnableLowerCamelCase();
+    odataBuilder.EntitySet<BlogVm>("Blog");
     return odataBuilder.GetEdmModel();
 }
 

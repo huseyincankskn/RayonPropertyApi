@@ -71,6 +71,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EntityUpdated);
         }
 
+        [ValidationAspect(typeof(BlogUpdateValidation))]
         public IResult Update(BlogUpdateDto dto)
         {
             var blog = _blogRepository.GetById(dto.Id);

@@ -17,6 +17,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AuthService>().As<IAuthService>();
             builder.RegisterType<ProductService>().As<IProductService>();
             builder.RegisterType<BlogService>().As<IBlogService>();
+            builder.RegisterType<SitePropertyService>().As<ISitePropertyService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<DistrictRepository>().As<IDistrictRepository>();

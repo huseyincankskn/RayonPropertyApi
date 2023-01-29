@@ -1,5 +1,6 @@
 ﻿using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace DataAccess.Concrete
 {
@@ -29,6 +30,8 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<User>().ToTable(nameof(User), "Auth");
 
             modelBuilder.Entity<Blog>().ToTable(nameof(Blog), "Blog");
+
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }

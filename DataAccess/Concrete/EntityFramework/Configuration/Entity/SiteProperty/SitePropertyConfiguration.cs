@@ -1,11 +1,7 @@
 ﻿using DataAccess.Concrete.EntityFramework.Configuration;
+using DataAccess.Concrete.EntityFramework.Configuration.Extensions;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Concrete
 {
@@ -13,7 +9,10 @@ namespace DataAccess.Concrete
     {
         public override void EntityConfigure(EntityTypeBuilder<SiteProperty> builder)
         {
-            throw new NotImplementedException();
+            builder.Property(x => x.Address).NVarChar(1000);
+            builder.Property(x => x.Email).NVarChar(100);
+            builder.Property(x => x.PhoneNumber).Phone();
+            builder.Property(x => x.Name).NVarChar(200);
         }
     }
 }

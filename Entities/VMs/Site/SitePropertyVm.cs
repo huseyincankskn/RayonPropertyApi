@@ -1,8 +1,6 @@
-﻿using Core.Entities.Concrete;
-
-namespace Entities.Concrete
+﻿namespace Entities.VMs
 {
-    public class SiteProperty : BaseEntity
+    public class SitePropertyVm
     {
         public string Name { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;
