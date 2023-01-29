@@ -29,5 +29,7 @@ namespace Core.DataAccess.EntityFramework.Abstract
         IDataResult<T> DeleteWithoutLogin(T entity);
 
         IDataResult<T> UpdateWithoutLogin(T entity);
+
+        T GetByIdWithPassive(Guid id);
     }
 }

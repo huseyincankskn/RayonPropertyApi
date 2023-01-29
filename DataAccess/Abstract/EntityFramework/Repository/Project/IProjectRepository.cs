@@ -3,7 +3,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Abstract
 {
-    internal interface IProjectRepository : IGenericRepository<Project>
+    public interface IProjectRepository : IGenericRepository<Project>
     {
     }
 }

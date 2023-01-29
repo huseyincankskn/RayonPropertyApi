@@ -8,5 +8,13 @@
         public const string AccessTokenCreated = "Access token başarıyla oluşturuldu";
         public const string UserRegistered = "Kullanıcı kaydedildi";
         public const string UserExist = "Bu email'e kayıtlı kullanıcı zaten mevcut.";
+
+
+        public const string EntityAdded = "Kayıt başarıyla eklendi";
+        public const string EntityUpdated = "Kayıt başarıyla güncellendi";
+        public const string EntityDeleted = "Kayıt başarıyla silindi";
+        public const string EntityAlreadyExist = "Bu kayıt zaten mevcut";
+        public const string EntityNotFound = "Kayıt bulunamadı";
+        public const string SameEntity = "Zaten olan bir kaydı tekrar ekleyemezsiniz";
     }
 }

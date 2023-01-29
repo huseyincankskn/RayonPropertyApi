@@ -32,8 +32,8 @@ namespace Core.DataAccess.EntityFramework
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
             return DbSet.Where(x => !x.IsDeleted && x.IsActive).FirstOrDefault(filter);
-        } 
-      
+        }
+
         public TEntity GetById(Guid id)
         {
             return DbSet.FirstOrDefault(x => x.Id == id && !x.IsDeleted && x.IsActive);
@@ -71,7 +71,7 @@ namespace Core.DataAccess.EntityFramework
             Context.SaveChanges();
             return new SuccessDataResult<TEntity>(deletedEntity.Entity);
         }
-       
+
         public IDataResult<TEntity> HardDelete(TEntity entity)
         {
             Context.Remove(entity);
@@ -153,6 +153,11 @@ namespace Core.DataAccess.EntityFramework
             updatedEntity.State = EntityState.Modified;
             Context.SaveChanges();
             return new SuccessDataResult<TEntity>(updatedEntity.Entity);
+        }
+
+        public TEntity GetByIdWithPassive(Guid id)
+        {
+            return DbSet.FirstOrDefault(x => x.Id == id && !x.IsDeleted);
         }
     }
 }

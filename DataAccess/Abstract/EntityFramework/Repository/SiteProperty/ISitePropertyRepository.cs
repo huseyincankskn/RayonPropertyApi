@@ -3,7 +3,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Abstract
 {
-    internal interface ISitePropertyRepository : IGenericRepository<SiteProperty>
+    public interface ISitePropertyRepository : IGenericRepository<SiteProperty>
     {
     }
 }

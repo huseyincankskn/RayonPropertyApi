@@ -13,6 +13,7 @@ namespace DataAccess.Concrete
         public DbSet<Project> Project { get; set; }
         public DbSet<SiteProperty> SiteProperty { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Blog> Blog { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<City>().ToTable(nameof(City), "Address");
@@ -26,6 +27,8 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<Currency>().ToTable(nameof(Currency), "Currency");
 
             modelBuilder.Entity<User>().ToTable(nameof(User), "Auth");
+
+            modelBuilder.Entity<Blog>().ToTable(nameof(Blog), "Blog");
         }
     }
 }

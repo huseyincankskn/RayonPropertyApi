@@ -1,8 +1,12 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
+using Business.Abstract;
+using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Helpers;
 using Core.Utilities.Interceptors;
+using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework.Repositories;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -10,7 +14,19 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-           
+            builder.RegisterType<AuthService>().As<IAuthService>();
+            builder.RegisterType<ProductService>().As<IProductService>();
+            builder.RegisterType<BlogService>().As<IBlogService>();
+
+            builder.RegisterType<CityRepository>().As<ICityRepository>();
+            builder.RegisterType<DistrictRepository>().As<IDistrictRepository>();
+            builder.RegisterType<TownRepository>().As<ITownRepository>();
+            builder.RegisterType<BlogRepository>().As<IBlogRepository>();
+            builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>();
+            builder.RegisterType<ProjectRepository>().As<IProjectRepository>();
+            builder.RegisterType<SitePropertyRepository>().As<ISitePropertyRepository>();
+            builder.RegisterType<UserRepository>().As<IUserRepository>();
+
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
 
             var assemblyBusiness = System.Reflection.Assembly.GetExecutingAssembly();

@@ -3,7 +3,7 @@ using Entities.Concrete;
 
 namespace DataAccess.Abstract
 {
-    internal interface ICurrencyRepository : IGenericConstantRepository<Currency>
+    public interface ICurrencyRepository : IGenericConstantRepository<Currency>
     {
     }
 }

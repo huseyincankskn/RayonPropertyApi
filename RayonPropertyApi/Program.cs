@@ -102,7 +102,7 @@ assemblies.Add(assembly);
 builder.Services.AddAutoMapper(assemblies.ToArray());
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-builder.Services.AddSingleton<IProductService, ProductService>();
+
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     .ConfigureContainer<ContainerBuilder>(builder =>
