@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayonPropertyContext))]
-    [Migration("20230129215743_firstMigration")]
-    partial class firstMigration
+    [Migration("20230130223302_firstlerinfirsti")]
+    partial class firstlerinfirsti
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
