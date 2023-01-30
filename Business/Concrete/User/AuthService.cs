@@ -79,9 +79,9 @@ namespace Business.Concrete
             var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == authUserDto.UserEmail);
             if (user != null)
             {
-                return new ErrorResult(Messages.UserExist);
+                return new SuccessResult(Messages.UserExist);
             }
-            return new SuccessResult();
+            return new ErrorResult();
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)

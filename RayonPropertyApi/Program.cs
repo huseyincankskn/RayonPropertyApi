@@ -24,6 +24,8 @@ using Business.Abstract;
 using Business.Concrete;
 using Autofac.Core;
 using Entities.VMs;
+using Communication.EmailManager.Abstract;
+using Communication.EmailManager.Concrete;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -105,6 +107,8 @@ assemblies.Add(assembly);
 builder.Services.AddAutoMapper(assemblies.ToArray());
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
+builder.Services.AddSingleton<IEmailManager,EmailManager>();
 
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
