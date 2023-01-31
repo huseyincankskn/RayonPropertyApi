@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extras.DynamicProxy;
 using Business.Abstract;
+using Business.Abstract.Project;
 using Business.Concrete;
 using Castle.DynamicProxy;
 using Core.Helpers;
@@ -15,7 +16,7 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<AuthService>().As<IAuthService>();
-            builder.RegisterType<ProductService>().As<IProductService>();
+            builder.RegisterType<ProjectService>().As<IProjectService>();
             builder.RegisterType<BlogService>().As<IBlogService>();
             builder.RegisterType<SitePropertyService>().As<ISitePropertyService>();
 

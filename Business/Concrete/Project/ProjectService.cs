@@ -1,5 +1,9 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Abstract.Project;
+using Core.Entities;
 using Core.Utilities.Results;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
@@ -13,10 +17,24 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class ProductService : IProductService
+    public class ProjectService : IProjectService
     {
+        private readonly IMapper _mapper;
+        private readonly IProjectRepository _projectRepository;
+
+        public ProjectService(IMapper mapper, IProjectRepository projectRepository)
+        {
+            _mapper = mapper;
+            _projectRepository = projectRepository;
+        }
+
         public IDataResult<ProjectDto> AddProject(ProjectDto project)
         {
+            var addEntity = _mapper.Map<Project>(project);
+            var lastNumber = _projectRepository.GetAll().OrderByDescending(x => x.AddDate)?.FirstOrDefault()?.ProjectNumber;
+            var projectNumber = string.IsNullOrEmpty(lastNumber) ? "0002148512" : (Convert.ToInt32(lastNumber) + 1).ToString();
+            addEntity.ProjectNumber = projectNumber;
+            _projectRepository.Add(addEntity);
             return new SuccessDataResult<ProjectDto>(project);
         }
         public IDataResult<bool> SaveImages(List<IFormFile> images)

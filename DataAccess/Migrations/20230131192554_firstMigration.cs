@@ -5,10 +5,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    /// <inheritdoc />
-    public partial class firstlerinfirsti : Migration
+    public partial class firstMigration : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
@@ -36,7 +34,7 @@ namespace DataAccess.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "newsequentialid()"),
                     Title = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Post = table.Column<string>(type: "nvarchar(5000)", nullable: false),
+                    Post = table.Column<string>(type: "nvarchar(4000)", nullable: false),
                     AddDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
@@ -177,8 +175,7 @@ namespace DataAccess.Migrations
                     BathroomCount = table.Column<short>(type: "smallint", nullable: false),
                     SeeClose = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Features = table.Column<byte>(type: "tinyint", nullable: false),
-                    CurrencyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CurrencyId1 = table.Column<short>(type: "smallint", nullable: false),
+                    CurrencyId = table.Column<short>(type: "smallint", nullable: false),
                     AddDate = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "getdate()"),
                     UpdateDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
@@ -192,8 +189,8 @@ namespace DataAccess.Migrations
                 {
                     table.PrimaryKey("PK_Project", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Project_Currency_CurrencyId1",
-                        column: x => x.CurrencyId1,
+                        name: "FK_Project_Currency_CurrencyId",
+                        column: x => x.CurrencyId,
                         principalSchema: "Currency",
                         principalTable: "Currency",
                         principalColumn: "Id",
@@ -229,10 +226,10 @@ namespace DataAccess.Migrations
                 column: "TownId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Project_CurrencyId1",
+                name: "IX_Project_CurrencyId",
                 schema: "Project",
                 table: "Project",
-                column: "CurrencyId1");
+                column: "CurrencyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Town_CityId",
@@ -241,7 +238,6 @@ namespace DataAccess.Migrations
                 column: "CityId");
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

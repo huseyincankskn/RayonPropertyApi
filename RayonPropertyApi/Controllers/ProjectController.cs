@@ -1,9 +1,9 @@
-﻿using Business.Abstract;
-using Entities.Dtos;
+﻿using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
 using System.Drawing;
+using Business.Abstract.Project;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -12,9 +12,9 @@ namespace RayonPropertyApi.Controllers
     [ApiExplorerSettings(IgnoreApi = false)]
     public class ProjectController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly IProjectService _productService;
 
-        public ProjectController(IProductService productService)
+        public ProjectController(IProjectService productService)
         {
             _productService = productService;
         }
@@ -22,6 +22,7 @@ namespace RayonPropertyApi.Controllers
         [HttpPost]
         public IActionResult AddProject(ProjectDto projectDto)
         {
+            var result = _productService.AddProject(projectDto);
             return Ok("Test is ok.");
         }
         [HttpPost("AddImage")]

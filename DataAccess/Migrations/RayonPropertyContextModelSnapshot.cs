@@ -161,10 +161,7 @@ namespace DataAccess.Migrations
                     b.Property<short>("BedCount")
                         .HasColumnType("smallint");
 
-                    b.Property<Guid>("CurrencyId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<short>("CurrencyId1")
+                    b.Property<short>("CurrencyId")
                         .HasColumnType("smallint");
 
                     b.Property<DateTime?>("DeleteDate")
@@ -238,7 +235,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CurrencyId1");
+                    b.HasIndex("CurrencyId");
 
                     b.ToTable("Project", "Project");
                 });
@@ -406,8 +403,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.Project", b =>
                 {
                     b.HasOne("Entities.Concrete.Currency", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId1")
+                        .WithMany("Projects")
+                        .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -423,6 +420,11 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.Currency", b =>
+                {
+                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,7 +22,7 @@ namespace Entities.Concrete
         //public string PaymnetType { get; set; } = string.Empty;
         public string SeeClose { get; set; } = string.Empty;
         public byte Features { get; set; }
-        public Guid CurrencyId { get; set; }
+        public short CurrencyId { get; set; }
         public virtual Currency Currency { get; set; }
     }
 }

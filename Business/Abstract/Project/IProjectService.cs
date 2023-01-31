@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Abstract
+namespace Business.Abstract.Project
 {
-    public interface IProductService
+    public interface IProjectService
     {
         IDataResult<ProjectDto> AddProject(ProjectDto project);
         IDataResult<bool> SaveImages(List<IFormFile> images);
