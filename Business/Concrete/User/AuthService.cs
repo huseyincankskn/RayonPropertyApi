@@ -89,12 +89,12 @@ namespace Business.Concrete
             var userToCheck = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == userForLoginDto.Email);
             if (userToCheck == null)
             {
-                throw new ValidationException(Messages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
 
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PsrHash, userToCheck.PsrSalt))
             {
-                throw new ValidationException(Messages.PasswordError);
+                return new ErrorDataResult<User>(Messages.PasswordError);
             }
 
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);

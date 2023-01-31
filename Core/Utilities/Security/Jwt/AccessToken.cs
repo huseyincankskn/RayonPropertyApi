@@ -13,8 +13,6 @@ namespace Core.Utilities.Security.Jwt
 
         public string UserName { get; set; }
         public Guid UserId { get; set; }
-        public Guid TenantId { get; set; }
-        public string TenantName { get; set; }
         public string MobilePhone { get; set; }
         public string SecurityKey { get; set; }
     }
