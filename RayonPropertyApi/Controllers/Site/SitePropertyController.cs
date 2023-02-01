@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace RayonPropertyApi.Controllers.Site
 {
+    [RayonPropertyAuthorize]
     [Route("api/[controller]")]
     [ApiController]
-    [RayonPropertyAuthorize]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class SitePropertyController : ControllerBase
     {

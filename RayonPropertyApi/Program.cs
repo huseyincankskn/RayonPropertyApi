@@ -152,20 +152,17 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
+app.UseMiddleware<ExceptionMiddleware>();
+app.UseHttpsRedirection();
+app.UseRouting();
+app.UseODataQueryRequest();
+app.UseCors();
+app.UseStaticFiles();
 app.UseSwagger(x => x.SerializeAsV2 = true);
 
+
 app.UseMiddleware<JwtMiddleware>();
-app.UseHttpsRedirection();
-
-app.UseRouting();
-app.UseCors();
-
-app.UseStaticFiles();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
-app.UseODataQueryRequest();
-
 app.Run();
