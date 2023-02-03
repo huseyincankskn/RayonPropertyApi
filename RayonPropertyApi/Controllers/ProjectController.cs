@@ -23,7 +23,7 @@ namespace RayonPropertyApi.Controllers
         public IActionResult AddProject(ProjectDto projectDto)
         {
             var result = _productService.AddProject(projectDto);
-            return Ok("Test is ok.");
+            return Ok(result);
         }
         [HttpPost("AddImage")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]

@@ -24,5 +24,6 @@ namespace Entities.Concrete
         public byte Features { get; set; }
         public short CurrencyId { get; set; }
         public virtual Currency Currency { get; set; }
+        public List<ProjectFiles> ProjectFiles { get; set; }
     }
 }

@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class City : BaseConstantEntity<short>
+    public class ProjectFiles : BaseEntity
     {
-        public string Name { get; set; } = string.Empty;
-        public string CityCode { get; set; }
+        public string FileName { get; set; }
+        public Guid ProjectId { get; set; }
+        public virtual Project Project { get; set; }
     }
 }
