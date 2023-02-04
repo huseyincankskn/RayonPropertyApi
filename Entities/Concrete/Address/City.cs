@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class City : BaseConstantEntity<short>
+    public class City : BaseConstantEntity<int>
     {
         public string Name { get; set; } = string.Empty;
         public string CityCode { get; set; }
