@@ -31,5 +31,7 @@ namespace Core.DataAccess.EntityFramework.Abstract
         IDataResult<T> UpdateWithoutLogin(T entity);
 
         T GetByIdWithPassive(Guid id);
+
+        IQueryable<T> GetAllForOdataWithPassive();
     }
 }

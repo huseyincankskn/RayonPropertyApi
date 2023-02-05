@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public IDataResult<IQueryable<BlogCategoryVm>> GetListQueryableOdata()
         {
-            var entityList = _blogCategoryRepository.GetAllForOdata();
+            var entityList = _blogCategoryRepository.GetAllForOdataWithPassive();
             var vmList = _mapper.ProjectTo<BlogCategoryVm>(entityList);
             return new SuccessDataResult<IQueryable<BlogCategoryVm>>(vmList);
         }
@@ -44,7 +44,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(BlogCategoryAddValidation))]
         public IDataResult<BlogCategory> Add(BlogCategoryAddDto dto)
         {
-            var sameEntity = _blogCategoryRepository.GetAllForOdata().Where(x => x.Name == dto.Name);
+            var sameEntity = _blogCategoryRepository.GetAllForOdata().FirstOrDefault(x => x.Name == dto.Name);
             if (sameEntity != null)
             {
                 return new ErrorDataResult<BlogCategory>(Messages.SameEntity);

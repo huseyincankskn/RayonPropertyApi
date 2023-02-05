@@ -5,15 +5,15 @@ using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
-
-namespace RayonPropertyApi.Controllers.Blog
+namespace RayonPropertyApi.Controllers.BlogCategory
 {
     [Route("api/[controller]")]
     [ApiController]
     [RayonPropertyAuthorize]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class BlogCategoryController : ControllerBase
+    public class BlogCategoryController : ODataController
     {
         private readonly IBlogCategoryService _blogCategoryService;
 
@@ -22,14 +22,9 @@ namespace RayonPropertyApi.Controllers.Blog
             _blogCategoryService = blogCategoryService;
         }
 
-
-
-        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
-        [ProducesResponseType(typeof(BlogVm), 200)]
-        [ProducesResponseType(typeof(object), 403)]
-        [ProducesResponseType(typeof(object), 401)]
-        [HttpGet]
-        public IActionResult GetList()
+        [EnableQuery]
+        [HttpGet("GetList")]
+        public IActionResult Get()
         {
             var result = _blogCategoryService.GetListQueryableOdata();
             if (result.Success)
@@ -39,7 +34,7 @@ namespace RayonPropertyApi.Controllers.Blog
             return BadRequest(result.Message);
         }
 
-        [ProducesResponseType(typeof(BlogVm), 200)]
+        [ProducesResponseType(typeof(BlogCategoryVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
         [HttpGet("GetById/{id}")]
@@ -58,7 +53,7 @@ namespace RayonPropertyApi.Controllers.Blog
             return BadRequest(result.Message);
         }
 
-        [HttpPost]
+        [HttpPost("CategoryAdd")]
         public IActionResult Post(BlogCategoryAddDto dto)
         {
             var result = _blogCategoryService.Add(dto);

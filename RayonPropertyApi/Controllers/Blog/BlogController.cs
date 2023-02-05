@@ -6,7 +6,7 @@ using Entities.VMs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 
-namespace RayonPropertyApi.Controllers.Blog
+namespace RayonPropertyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

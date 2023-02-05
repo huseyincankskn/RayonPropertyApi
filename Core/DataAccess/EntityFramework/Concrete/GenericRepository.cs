@@ -29,6 +29,12 @@ namespace Core.DataAccess.EntityFramework
         {
             return DbSet.AsQueryable().Where(x => !x.IsDeleted && x.IsActive).AsNoTracking();
         }
+
+        public virtual IQueryable<TEntity> GetAllForOdataWithPassive()
+        {
+            return DbSet.AsQueryable().Where(x => !x.IsDeleted).AsNoTracking();
+        }
+
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {
             return DbSet.Where(x => !x.IsDeleted && x.IsActive).FirstOrDefault(filter);
