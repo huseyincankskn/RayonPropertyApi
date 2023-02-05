@@ -5,6 +5,7 @@ using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -12,7 +13,7 @@ namespace RayonPropertyApi.Controllers
     [ApiController]
     [RayonPropertyAuthorize]
     [ApiExplorerSettings(IgnoreApi = true)]
-    public class BlogController : ControllerBase
+    public class BlogController : ODataController
     {
         private readonly IBlogService _blogService;
 
@@ -25,8 +26,8 @@ namespace RayonPropertyApi.Controllers
         [ProducesResponseType(typeof(BlogVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
-        [HttpGet]
-        public IActionResult GetList()
+        [HttpGet("GetList")]
+        public IActionResult Get()
         {
             var result = _blogService.GetListQueryableOdata();
             if (result.Success)
@@ -55,7 +56,7 @@ namespace RayonPropertyApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpPost]
+        [HttpPost("BlogAdd")]
         public IActionResult Post(BlogAddDto dto)
         {
             var result = _blogService.Add(dto);
