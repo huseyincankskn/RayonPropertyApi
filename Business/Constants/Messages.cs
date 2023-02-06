@@ -16,5 +16,7 @@
         public const string EntityAlreadyExist = "Bu kayıt zaten mevcut";
         public const string EntityNotFound = "Kayıt bulunamadı";
         public const string SameEntity = "Zaten olan bir kaydı tekrar ekleyemezsiniz";
+
+        public const string BlogCategoryNotFound = "Blog Kategorisi bulunamadı";
     }
 }

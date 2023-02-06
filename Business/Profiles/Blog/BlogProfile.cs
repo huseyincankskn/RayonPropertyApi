@@ -9,7 +9,9 @@ namespace Business.Profiles
     {
         public BlogProfile()
         {
-            CreateMap<Blog, BlogVm>();
+            CreateMap<Blog, BlogVm>()
+                .ForMember(dest => dest.BlogCategoryName,
+                act => act.MapFrom(src => src.BlogCategory != null ? src.BlogCategory.Name : null));
             CreateMap<BlogAddDto, Blog>();
             CreateMap<BlogUpdateDto, Blog>();
         }

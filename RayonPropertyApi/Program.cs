@@ -26,6 +26,7 @@ using Autofac.Core;
 using Entities.VMs;
 using Communication.EmailManager.Abstract;
 using Communication.EmailManager.Concrete;
+using Microsoft.AspNetCore.OData.NewtonsoftJson;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -39,6 +40,7 @@ static IEdmModel GetEdmModel()
     var odataBuilder = new ODataConventionModelBuilder();
     odataBuilder.EnableLowerCamelCase();
     odataBuilder.EntitySet<BlogVm>("Blog");
+    odataBuilder.EntitySet<BlogCategoryVm>("BlogCategory");
     return odataBuilder.GetEdmModel();
 }
 
@@ -69,7 +71,7 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
     options.SerializerSettings.ContractResolver = contractResolver;
     options.UseCamelCasing(true);
-}).AddOData(opt => opt.AddRouteComponents("api", GetEdmModel()).Select().Filter().OrderBy().Expand().SetMaxTop(null).Count());
+}).AddOData(opt => opt.AddRouteComponents("api", GetEdmModel()).EnableQueryFeatures().Count().Select().OrderBy());
 
 builder.Services.AddMvcCore(options =>
 {
@@ -108,7 +110,7 @@ builder.Services.AddAutoMapper(assemblies.ToArray());
 builder.Services.AddHttpClient();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
-builder.Services.AddSingleton<IEmailManager,EmailManager>();
+builder.Services.AddSingleton<IEmailManager, EmailManager>();
 
 
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
@@ -155,12 +157,9 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 app.UseRouting();
-app.UseODataQueryRequest();
 app.UseCors();
 app.UseStaticFiles();
 app.UseSwagger(x => x.SerializeAsV2 = true);
-
-
 app.UseMiddleware<JwtMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
