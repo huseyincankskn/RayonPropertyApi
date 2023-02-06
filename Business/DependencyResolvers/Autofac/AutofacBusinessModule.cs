@@ -17,10 +17,12 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<AuthService>().As<IAuthService>();
             builder.RegisterType<ProjectService>().As<IProjectService>();
+            builder.RegisterType<AddressService>().As<IAddressService>();
             builder.RegisterType<BlogService>().As<IBlogService>();
             builder.RegisterType<SitePropertyService>().As<ISitePropertyService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
+            builder.RegisterType<StreetRepository>().As<IStreetRepository>();
             builder.RegisterType<DistrictRepository>().As<IDistrictRepository>();
             builder.RegisterType<TownRepository>().As<ITownRepository>();
             builder.RegisterType<BlogRepository>().As<IBlogRepository>();

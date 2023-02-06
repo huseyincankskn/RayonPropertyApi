@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class District : BaseConstantEntity<int>
+    public class Street : BaseConstantEntity<int>
     {
         public string Name { get; set; } = string.Empty;
-        public int TownId { get; set; }
-        public virtual Town Town { get; set; }
-        public List<Street> Streets { get; set; }
+        public int? Pk { get; set; }
+        public int DistrictId { get; set; }
+        public virtual District District { get; set; }
     }
 }

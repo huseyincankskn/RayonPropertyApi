@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Imaging;
 using System.Drawing;
 using Business.Abstract.Project;
+using Entities.VMs;
+using Microsoft.AspNetCore.OData.Query;
+using System.Drawing.Printing;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -18,7 +21,20 @@ namespace RayonPropertyApi.Controllers
         {
             _productService = productService;
         }
-
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(BlogVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet]
+        public IActionResult GetList()
+        {
+            var result = _productService.GetListQueryableOdata();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
         [HttpPost]
         public IActionResult AddProject(ProjectDto projectDto)
         {

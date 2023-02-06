@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayonPropertyContext))]
-    [Migration("20230204134036_BlogCategoryAdd")]
-    partial class BlogCategoryAdd
+    [Migration("20230204183316_firstMigration")]
+    partial class firstMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -127,15 +127,11 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.City", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"), 1L, 1);
-
-                    b.Property<string>("CityCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -173,18 +169,18 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.District", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<short>("TownId")
-                        .HasColumnType("smallint");
+                    b.Property<int>("TownId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -408,14 +404,14 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.Town", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("smallint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<short>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<short>("CityId")
-                        .HasColumnType("smallint");
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -4,8 +4,10 @@ using Business.Abstract.Project;
 using Core.Entities;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework.Repositories;
 using Entities.Concrete;
 using Entities.Dtos;
+using Entities.VMs;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -29,6 +31,12 @@ namespace Business.Concrete
             _projectRepository = projectRepository;
             _httpContextAccessor = httpContextAccessor;
             _projectFilesRepository = projectFilesRepository;
+        }
+        public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
+        {
+            var entityList = _projectRepository.GetAllForOdata();
+            var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
+            return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }
 
         public IDataResult<ProjectDto> AddProject(ProjectDto project)

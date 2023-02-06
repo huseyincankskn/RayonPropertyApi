@@ -10,7 +10,8 @@ namespace Entities.Concrete
     public class Town : BaseConstantEntity<int>
     {
         public string Name { get; set; } = string.Empty;
-        public short CityId { get; set; }
+        public int CityId { get; set; }
         public virtual City City { get; set; }
+        public List<District> Districts { get; set; }
     }
 }

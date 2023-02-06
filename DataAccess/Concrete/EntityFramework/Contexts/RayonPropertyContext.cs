@@ -21,6 +21,7 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<City>().ToTable(nameof(City), "Address");
             modelBuilder.Entity<Town>().ToTable(nameof(Town), "Address");
             modelBuilder.Entity<District>().ToTable(nameof(District), "Address");
+            modelBuilder.Entity<Street>().ToTable(nameof(Street), "Address");
 
             modelBuilder.Entity<Project>().ToTable(nameof(Project), "Project");
 
