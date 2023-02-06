@@ -28,6 +28,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>();
             builder.RegisterType<SitePropertyRepository>().As<ISitePropertyRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
+            builder.RegisterType<BlogRepository>().As<IBlogRepository>();
 
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
 
