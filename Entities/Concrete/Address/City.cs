@@ -11,5 +11,6 @@ namespace Entities.Concrete
     {
         public string Name { get; set; } = string.Empty;
         public List<Town> Towns { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }

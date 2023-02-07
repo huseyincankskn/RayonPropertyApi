@@ -7,6 +7,7 @@ using Castle.DynamicProxy;
 using Core.Helpers;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
+using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework.Repositories;
 
 namespace Business.DependencyResolvers.Autofac
@@ -28,6 +29,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BlogRepository>().As<IBlogRepository>();
             builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>();
+            builder.RegisterType<ProjectFeaturesRepository>().As<IProjectFeaturesRepository>();
             builder.RegisterType<SitePropertyRepository>().As<ISitePropertyRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BlogRepository>().As<IBlogRepository>();

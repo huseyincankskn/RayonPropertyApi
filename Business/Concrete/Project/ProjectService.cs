@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Business.Abstract.Project;
+using Business.Constants;
 using Core.Entities;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework.Repositories;
 using Entities.Concrete;
+using Entities.Dto;
 using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Http;
@@ -25,12 +27,22 @@ namespace Business.Concrete
         private readonly IProjectRepository _projectRepository;
         private readonly IProjectFilesRepository _projectFilesRepository;
         private readonly IHttpContextAccessor _httpContextAccessor;
-        public ProjectService(IMapper mapper, IProjectRepository projectRepository, IHttpContextAccessor httpContextAccessor, IProjectFilesRepository projectFilesRepository)
+        private readonly IProjectFeaturesRepository _projectFeaturesRepository;
+        private readonly IFeatureRepository _featureRepository;
+        public ProjectService(
+            IMapper mapper, 
+            IProjectRepository projectRepository, 
+            IHttpContextAccessor httpContextAccessor, 
+            IProjectFilesRepository projectFilesRepository, 
+            IProjectFeaturesRepository projectFeaturesRepository,
+            IFeatureRepository featureRepository)
         {
             _mapper = mapper;
             _projectRepository = projectRepository;
             _httpContextAccessor = httpContextAccessor;
             _projectFilesRepository = projectFilesRepository;
+            _projectFeaturesRepository = projectFeaturesRepository;
+            _featureRepository = featureRepository;
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
@@ -38,7 +50,16 @@ namespace Business.Concrete
             var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }
-
+        public IDataResult<ProjectVm> GetById(Guid id)
+        {
+            var entity = _projectRepository.GetAllForOdata().FirstOrDefault(x => x.Id == id);
+            if (entity == null)
+            {
+                return new ErrorDataResult<ProjectVm>(Messages.EntityNotFound);
+            }
+            var vm = _mapper.Map<ProjectVm>(entity);
+            return new SuccessDataResult<ProjectVm>(vm);
+        }
         public IDataResult<ProjectDto> AddProject(ProjectDto project)
         {
             project.CurrencyId = 1;
@@ -48,6 +69,18 @@ namespace Business.Concrete
             addEntity.ProjectNumber = projectNumber;
             var response = _projectRepository.Add(addEntity);
             project.Id = response.Data.Id;
+            if (response.Success)
+            {
+                foreach (var item in project.CheckBoxField)
+                {
+                    Feature feature = new Feature()
+                    {
+                        ProjectId = project.Id,
+                        ProjectFeatureId = item
+                    };
+                    _featureRepository.Add(feature);
+                }
+            }
             return new SuccessDataResult<ProjectDto>(project);
         }
         public IDataResult<bool> SaveImages(List<IFormFile> images)
@@ -66,7 +99,7 @@ namespace Business.Concrete
                 if (formFile.Length > 0)
                 {
                     var guid = Guid.NewGuid();
-                    
+
                     // Dosyayı yükle
                     var image = Image.FromStream(formFile.OpenReadStream());
 
@@ -79,7 +112,7 @@ namespace Business.Concrete
                     // İşlenmiş fotoğrafı kaydet
                     var filePath = Path.Combine("Files", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
                     image.Save(filePath);
-                    
+
                     ProjectFiles projectFile = new ProjectFiles()
                     {
                         FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
@@ -90,6 +123,13 @@ namespace Business.Concrete
             }
             _projectFilesRepository.AddRange(fileList);
             return new SuccessDataResult<bool>(true);
+        }
+
+        public IDataResult<IQueryable<ProjectFeaturesVm>> GetProjectFeatureList()
+        {
+            var entityList = _projectFeaturesRepository.GetAllForOdata();
+            var vmList = _mapper.ProjectTo<ProjectFeaturesVm>(entityList);
+            return new SuccessDataResult<IQueryable<ProjectFeaturesVm>>(vmList);
         }
     }
 }

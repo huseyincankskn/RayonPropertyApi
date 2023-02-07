@@ -41,6 +41,7 @@ static IEdmModel GetEdmModel()
     odataBuilder.EnableLowerCamelCase();
     odataBuilder.EntitySet<BlogVm>("Blog");
     odataBuilder.EntitySet<BlogCategoryVm>("BlogCategory");
+    odataBuilder.EntitySet<ProjectVm>("Project");
     return odataBuilder.GetEdmModel();
 }
 

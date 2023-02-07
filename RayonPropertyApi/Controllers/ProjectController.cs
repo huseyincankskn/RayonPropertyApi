@@ -7,6 +7,7 @@ using Business.Abstract.Project;
 using Entities.VMs;
 using Microsoft.AspNetCore.OData.Query;
 using System.Drawing.Printing;
+using Core.Entities.Exceptions;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -22,13 +23,31 @@ namespace RayonPropertyApi.Controllers
             _productService = productService;
         }
         [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
-        [ProducesResponseType(typeof(BlogVm), 200)]
+        [ProducesResponseType(typeof(ProjectVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
-        [HttpGet]
-        public IActionResult GetList()
+        [HttpGet("GetList")]
+        public IActionResult Get()
         {
             var result = _productService.GetListQueryableOdata();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+        [ProducesResponseType(typeof(ProjectVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetById/{id}")]
+        public IActionResult GetById(Guid id)
+        {
+            var result = _productService.GetById(id);
+
+            if (result.Data == null)
+            {
+                throw new NotFoundException(id);
+            }
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -47,6 +66,21 @@ namespace RayonPropertyApi.Controllers
         {
             var result = _productService.SaveImages(images);
             return Ok(result);
+        }
+
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(ProjectFeaturesVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetProjectFeatures")]
+        public IActionResult GetProjectFeatures()
+        {
+            var result = _productService.GetProjectFeatureList();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

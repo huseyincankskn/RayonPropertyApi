@@ -13,5 +13,6 @@ namespace Entities.Concrete
         public int? Pk { get; set; }
         public int DistrictId { get; set; }
         public virtual District District { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }

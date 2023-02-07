@@ -17,20 +17,22 @@ namespace Entities.Dtos
         public short SaloonCount { get; set; }
         public short BedCount { get; set; }
         public decimal Price { get; set; }
-        public string MinArea { get; set; } = string.Empty;
-        public string MaxArea { get; set; } = string.Empty;
         public byte ProjectStatus { get; set; }
-        public byte ProjectTye { get; set; }
+        public byte ProjectType { get; set; }
         public string ZipCode { get; set; } = string.Empty;
         public short Floor { get; set; }
         public short Year { get; set; }
         public bool IsEmpty { get; set; }
         public short BathroomCount { get; set; }
         //public string PaymnetType { get; set; } = string.Empty;
-        public string MinSeeClose { get; set; } = string.Empty;
-        public string MaxSeeClose { get; set; } = string.Empty;
-        public byte Features { get; set; }
-        public List<byte> FeaturesList { get; set; }
+        public short GrossArea { get; set; }
+        public short NetArea { get; set; }
+        public short SeeClose { get; set; }
+        public List<short> CheckBoxField { get; set; }
         public short CurrencyId { get; set; }
+        public int CityId { get; set; }
+        public int TownId { get; set; }
+        public int DistrictId { get; set; }
+        public int StreetId { get; set; }
     }
 }

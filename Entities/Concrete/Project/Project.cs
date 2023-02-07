@@ -11,7 +11,9 @@ namespace Entities.Concrete
         public short SaloonCount { get; set; }
         public short BedCount { get; set; }
         public decimal Price { get; set; }
-        public string Area { get; set; } = string.Empty; 
+        public short GrossArea { get; set; }
+        public short NetArea { get; set; }
+        public short SeeClose { get; set; }
         public byte ProjectStatus { get; set; }
         public byte ProjectTye { get; set; } 
         public string ZipCode { get; set; } = string.Empty; 
@@ -20,10 +22,19 @@ namespace Entities.Concrete
         public bool IsEmpty { get; set; }
         public short BathroomCount { get; set; }
         //public string PaymnetType { get; set; } = string.Empty;
-        public string SeeClose { get; set; } = string.Empty;
-        public byte Features { get; set; }
+       
         public short CurrencyId { get; set; }
         public virtual Currency Currency { get; set; }
+        public int CityId { get; set; }
+        public virtual City City { get; set; }
+        public int TownId { get; set; }
+        public virtual Town Town { get; set; }
+        public int DistrictId { get; set; }
+        public virtual District District { get; set; }
+        public int StreetId { get; set; }
+        public virtual Street Street { get; set; }
         public List<ProjectFiles> ProjectFiles { get; set; }
+        public List<ProjectFeature> ProjectFeatures { get; set; }
+        public List<Feature> Features { get; set; }
     }
 }

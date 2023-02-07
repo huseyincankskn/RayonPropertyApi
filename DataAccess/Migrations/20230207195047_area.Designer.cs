@@ -4,6 +4,7 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayonPropertyContext))]
-    partial class RayonPropertyContextModelSnapshot : ModelSnapshot
+    [Migration("20230207195047_area")]
+    partial class area
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -260,9 +262,6 @@ namespace DataAccess.Migrations
                     b.Property<short>("BedCount")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
                     b.Property<short>("CurrencyId")
                         .HasColumnType("smallint");
 
@@ -275,9 +274,6 @@ namespace DataAccess.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("DistrictId")
-                        .HasColumnType("int");
 
                     b.Property<short>("Floor")
                         .HasColumnType("smallint");
@@ -323,15 +319,9 @@ namespace DataAccess.Migrations
                     b.Property<short>("SeeClose")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("StreetId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TownId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdateDate")
                         .HasColumnType("datetime2");
@@ -348,15 +338,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CityId");
-
                     b.HasIndex("CurrencyId");
-
-                    b.HasIndex("DistrictId");
-
-                    b.HasIndex("StreetId");
-
-                    b.HasIndex("TownId");
 
                     b.ToTable("Project", "Project");
                 });
@@ -661,45 +643,13 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.Project", b =>
                 {
-                    b.HasOne("Entities.Concrete.City", "City")
-                        .WithMany("Projects")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Entities.Concrete.Currency", "Currency")
                         .WithMany("Projects")
                         .HasForeignKey("CurrencyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Concrete.District", "District")
-                        .WithMany("Projects")
-                        .HasForeignKey("DistrictId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.Street", "Street")
-                        .WithMany("Projects")
-                        .HasForeignKey("StreetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.Town", "Town")
-                        .WithMany("Projects")
-                        .HasForeignKey("TownId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("City");
-
                     b.Navigation("Currency");
-
-                    b.Navigation("District");
-
-                    b.Navigation("Street");
-
-                    b.Navigation("Town");
                 });
 
             modelBuilder.Entity("Entities.Concrete.ProjectFiles", b =>
@@ -757,8 +707,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.City", b =>
                 {
-                    b.Navigation("Projects");
-
                     b.Navigation("Towns");
                 });
 
@@ -769,8 +717,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.District", b =>
                 {
-                    b.Navigation("Projects");
-
                     b.Navigation("Streets");
                 });
 
@@ -786,16 +732,9 @@ namespace DataAccess.Migrations
                     b.Navigation("Features");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Street", b =>
-                {
-                    b.Navigation("Projects");
-                });
-
             modelBuilder.Entity("Entities.Concrete.Town", b =>
                 {
                     b.Navigation("Districts");
-
-                    b.Navigation("Projects");
                 });
 #pragma warning restore 612, 618
         }

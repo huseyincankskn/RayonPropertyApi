@@ -13,5 +13,6 @@ namespace Entities.Concrete
         public int TownId { get; set; }
         public virtual Town Town { get; set; }
         public List<Street> Streets { get; set; }
+        public List<Project> Projects { get; set; }
     }
 }
