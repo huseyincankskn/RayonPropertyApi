@@ -1,13 +1,7 @@
 ﻿using Core.Utilities.Results;
-using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Abstract.Project
 {
@@ -17,6 +11,7 @@ namespace Business.Abstract.Project
         IDataResult<IQueryable<ProjectFeaturesVm>> GetProjectFeatureList();
         IDataResult<ProjectVm> GetById(Guid id);
         IDataResult<ProjectDto> AddProject(ProjectDto project);
+        Core.Utilities.Results.IResult Update(ProjectDto dto);
         IDataResult<bool> SaveImages(List<IFormFile> images);
     }
 }

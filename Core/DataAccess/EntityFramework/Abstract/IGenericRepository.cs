@@ -1,4 +1,5 @@
-﻿using Core.Entities.Concrete;
+﻿using Core.Entities;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 
 namespace Core.DataAccess.EntityFramework.Abstract
@@ -21,7 +22,7 @@ namespace Core.DataAccess.EntityFramework.Abstract
         IDataResult<List<T>> UpdateRange(List<T> entities);
 
         IDataResult<List<T>> DeleteRange(List<T> entities);
-
+        IDataResult<List<T>> HardDeleteRange(List<T> entities);
         IDataResult<T> HardDelete(T entity);
 
         IDataResult<T> AddWithoutLogin(T entity);

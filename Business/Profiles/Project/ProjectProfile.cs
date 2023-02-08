@@ -17,6 +17,7 @@ namespace Business.Profiles
             CreateMap<ProjectDto, Project>().ReverseMap();
             CreateMap<ProjectVm, Project>().ReverseMap();
             CreateMap<ProjectFeature, ProjectFeaturesVm>().ReverseMap();
+            CreateMap<FeatureVm, Feature>().ReverseMap();
         }
     }
 }

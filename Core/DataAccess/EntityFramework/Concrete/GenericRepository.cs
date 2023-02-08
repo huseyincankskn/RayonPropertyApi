@@ -123,6 +123,12 @@ namespace Core.DataAccess.EntityFramework
             Context.SaveChanges();
             return new SuccessDataResult<List<TEntity>>(entities);
         }
+        public IDataResult<List<TEntity>> HardDeleteRange(List<TEntity> entities)
+        {
+            DbSet.RemoveRange(entities);
+            Context.SaveChanges();
+            return new SuccessDataResult<List<TEntity>>(entities);
+        }
 
         public bool Exist(Expression<Func<TEntity, bool>> filter)
         {

@@ -1,23 +1,15 @@
 ﻿using AutoMapper;
-using Business.Abstract;
 using Business.Abstract.Project;
 using Business.Constants;
-using Core.Entities;
+using Core.Extensions;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework.Repositories;
 using Entities.Concrete;
-using Entities.Dto;
 using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -53,11 +45,13 @@ namespace Business.Concrete
         public IDataResult<ProjectVm> GetById(Guid id)
         {
             var entity = _projectRepository.GetAllForOdata().FirstOrDefault(x => x.Id == id);
+            var features = GetFeatureList(id);
             if (entity == null)
             {
                 return new ErrorDataResult<ProjectVm>(Messages.EntityNotFound);
             }
             var vm = _mapper.Map<ProjectVm>(entity);
+            vm.CheckBoxField = features.Data.Select(x => x.ProjectFeatureId).ToList();
             return new SuccessDataResult<ProjectVm>(vm);
         }
         public IDataResult<ProjectDto> AddProject(ProjectDto project)
@@ -82,6 +76,31 @@ namespace Business.Concrete
                 }
             }
             return new SuccessDataResult<ProjectDto>(project);
+        }
+        public Core.Utilities.Results.IResult Update(ProjectDto dto)
+        {
+            dto.CurrencyId = 1;
+            var project = _projectRepository.GetById(dto.Id);
+            dto.TrimAllProps();
+            project = _mapper.Map(dto, project);
+            var result = _projectRepository.Update(project);
+            if(result.Success)
+            {
+                var features = _featureRepository.GetAll().Where(x => x.ProjectId == dto.Id).ToList();
+                _featureRepository.HardDeleteRange(features);
+                List<Feature> featuresList = new List<Feature>();
+                foreach (var item in dto.CheckBoxField)
+                {
+                    Feature featuresFeature = new Feature()
+                    {
+                        ProjectFeatureId = item,
+                        ProjectId = dto.Id
+                    };
+                    featuresList.Add(featuresFeature);
+                }
+                _featureRepository.AddRange(featuresList);
+            }
+            return new SuccessResult(Messages.EntityUpdated);
         }
         public IDataResult<bool> SaveImages(List<IFormFile> images)
         {
@@ -130,6 +149,12 @@ namespace Business.Concrete
             var entityList = _projectFeaturesRepository.GetAllForOdata();
             var vmList = _mapper.ProjectTo<ProjectFeaturesVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectFeaturesVm>>(vmList);
+        }
+        private IDataResult<IQueryable<FeatureVm>> GetFeatureList(Guid id)
+        {
+            var entityList = _featureRepository.GetAllForOdata().Where(x=> x.ProjectId == id);
+            var vmList = _mapper.ProjectTo<FeatureVm>(entityList);
+            return new SuccessDataResult<IQueryable<FeatureVm>>(vmList);
         }
     }
 }

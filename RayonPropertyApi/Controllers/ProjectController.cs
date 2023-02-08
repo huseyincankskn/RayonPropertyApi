@@ -60,6 +60,12 @@ namespace RayonPropertyApi.Controllers
             var result = _productService.AddProject(projectDto);
             return Ok(result);
         }
+        [HttpPut]
+        public IActionResult Put(ProjectDto dto)
+        {
+            var result = _productService.Update(dto);
+            return StatusCode(result.StatusCode, result);
+        }
         [HttpPost("AddImage")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
         public IActionResult AddImage([FromForm] List<IFormFile> images)
