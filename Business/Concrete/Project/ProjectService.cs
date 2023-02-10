@@ -7,6 +7,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -21,13 +22,15 @@ namespace Business.Concrete
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProjectFeaturesRepository _projectFeaturesRepository;
         private readonly IFeatureRepository _featureRepository;
+        private readonly IWebHostEnvironment _webHostEnvironment;
         public ProjectService(
             IMapper mapper, 
             IProjectRepository projectRepository, 
             IHttpContextAccessor httpContextAccessor, 
             IProjectFilesRepository projectFilesRepository, 
             IProjectFeaturesRepository projectFeaturesRepository,
-            IFeatureRepository featureRepository)
+            IFeatureRepository featureRepository,
+            IWebHostEnvironment webHostEnvironment)
         {
             _mapper = mapper;
             _projectRepository = projectRepository;
@@ -35,6 +38,7 @@ namespace Business.Concrete
             _projectFilesRepository = projectFilesRepository;
             _projectFeaturesRepository = projectFeaturesRepository;
             _featureRepository = featureRepository;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
@@ -51,6 +55,8 @@ namespace Business.Concrete
                 return new ErrorDataResult<ProjectVm>(Messages.EntityNotFound);
             }
             var vm = _mapper.Map<ProjectVm>(entity);
+            var files = _projectFilesRepository.GetAllForOdata().Where(x => x.ProjectId == id).ToList();
+            vm.PhotoUrls = files.Select(x=> x.FileName).ToList();
             vm.CheckBoxField = features.Data.Select(x => x.ProjectFeatureId).ToList();
             return new SuccessDataResult<ProjectVm>(vm);
         }
@@ -129,7 +135,7 @@ namespace Business.Concrete
                     }
 
                     // İşlenmiş fotoğrafı kaydet
-                    var filePath = Path.Combine("Files", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
+                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath + "/Content/", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
                     image.Save(filePath);
 
                     ProjectFiles projectFile = new ProjectFiles()

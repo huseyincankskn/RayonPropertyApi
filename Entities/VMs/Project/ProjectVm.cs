@@ -32,6 +32,7 @@ namespace Entities.VMs
         public int CityId { get; set; }
         public int TownId { get; set; }
         public int DistrictId { get; set; }
+        public List<string> PhotoUrls { get; set; }
         public int StreetId { get; set; }
     }
 }
