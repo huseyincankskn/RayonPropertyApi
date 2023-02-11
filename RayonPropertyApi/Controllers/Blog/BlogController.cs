@@ -6,6 +6,7 @@ using Entities.VMs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Newtonsoft.Json;
 
 namespace RayonPropertyApi.Controllers
 {
@@ -57,9 +58,10 @@ namespace RayonPropertyApi.Controllers
         }
 
         [HttpPost("BlogAdd")]
-        public IActionResult Post(BlogAddDto dto)
+        public IActionResult Post([FromForm] IFormFile file, [FromForm] string jsonString)
         {
-            var result = _blogService.Add(dto);
+            BlogAddDto dto = JsonConvert.DeserializeObject<BlogAddDto>(jsonString);
+            var result = _blogService.Add(file, dto);
             return StatusCode(result.StatusCode, result);
         }
 

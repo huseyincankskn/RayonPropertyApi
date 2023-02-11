@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
+using Microsoft.AspNetCore.Http;
 
 namespace Business.Abstract
 {
@@ -11,10 +12,10 @@ namespace Business.Abstract
 
         IDataResult<BlogVm> GetById(Guid id);
 
-        IDataResult<Blog> Add(BlogAddDto dto);
+        IDataResult<Blog> Add(IFormFile file,BlogAddDto dto);
 
-        IResult Update(BlogUpdateDto dto);
+        Core.Utilities.Results.IResult Update(BlogUpdateDto dto);
 
-        IResult Delete(Guid id);
+        Core.Utilities.Results.IResult Delete(Guid id);
     }
 }

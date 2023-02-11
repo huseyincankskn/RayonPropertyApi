@@ -15,6 +15,10 @@ namespace DataAccess.Concrete
              .HasForeignKey(x => x.BlogCategoryId)
              .OnDelete(DeleteBehavior.Restrict);
 
+            builder.HasOne(x => x.BlogFile).
+                WithOne(ta => ta.Blog)
+                .HasForeignKey<Blog>(x => x.BlogFileId);
+
             builder.Property(x => x.Title).IsRequired().NVarChar(200);
             builder.Property(x => x.Post).IsRequired().NVarChar(4000);
         }

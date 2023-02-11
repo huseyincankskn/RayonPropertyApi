@@ -11,6 +11,7 @@ using DataAccess.Abstract.EntityFramework.Repository;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Math.EC.Rfc7748;
 
@@ -21,14 +22,17 @@ namespace Business.Concrete
         private readonly IBlogRepository _blogRepository;
         private readonly IMapper _mapper;
         private readonly IBlogCategoryRepository _blogCategoryRepository;
+        private readonly IBlogFileService _blogFileService;
 
         public BlogService(IBlogRepository blogRepository,
                            IMapper mapper,
-                           IBlogCategoryRepository blogCategoryRepository)
+                           IBlogCategoryRepository blogCategoryRepository,
+                           IBlogFileService blogFileService)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;
             _blogCategoryRepository = blogCategoryRepository;
+            _blogFileService = blogFileService;
         }
 
         public IDataResult<IQueryable<BlogVm>> GetListQueryableOdata()
@@ -51,7 +55,7 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(BlogAddValidation))]
-        public IDataResult<Blog> Add(BlogAddDto dto)
+        public IDataResult<Blog> Add(IFormFile file, BlogAddDto dto)
         {
             var blog = _blogRepository.GetAllForOdata().FirstOrDefault(x => x.Title == dto.Title);
             if (blog != null)
@@ -65,14 +69,16 @@ namespace Business.Concrete
                 return new ErrorDataResult<Blog>(Messages.BlogCategoryNotFound);
             }
 
-            dto.BlogCategoryId= blogCategory.Id;
+            dto.BlogCategoryId = blogCategory.Id;
             dto.TrimAllProps();
             var addEntity = _mapper.Map<Blog>(dto);
+            var blogFileAdd = _blogFileService.SaveImage(file);
+            addEntity.BlogFileId = blogFileAdd.Data.Id;
             _blogRepository.Add(addEntity);
             return new SuccessDataResult<Blog>(addEntity);
         }
 
-        public IResult Delete(Guid id)
+        public Core.Utilities.Results.IResult Delete(Guid id)
         {
             var entity = _blogRepository.GetByIdWithPassive(id);
             if (entity == null)
@@ -86,7 +92,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(BlogUpdateValidation))]
-        public IResult Update(BlogUpdateDto dto)
+        public Core.Utilities.Results.IResult Update(BlogUpdateDto dto)
         {
             var blog = _blogRepository.GetById(dto.Id);
             if (blog == null)
