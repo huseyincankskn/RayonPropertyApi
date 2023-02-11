@@ -22,6 +22,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<AddressService>().As<IAddressService>();
             builder.RegisterType<BlogService>().As<IBlogService>();
             builder.RegisterType<SitePropertyService>().As<ISitePropertyService>();
+            builder.RegisterType<BlogFileService>().As<IBlogFileService>();
+            builder.RegisterType<DashboardService>().As<IDashboardService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<StreetRepository>().As<IStreetRepository>();

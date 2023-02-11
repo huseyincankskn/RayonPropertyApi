@@ -8,11 +8,12 @@ using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Newtonsoft.Json;
 
-namespace RayonPropertyApi.Controllers
+
+namespace RayonPropertyApi.Controllers.Blog
 {
+    [RayonPropertyAuthorize]
     [Route("api/[controller]")]
     [ApiController]
-    [RayonPropertyAuthorize]
     [ApiExplorerSettings(IgnoreApi = true)]
     public class BlogController : ODataController
     {
