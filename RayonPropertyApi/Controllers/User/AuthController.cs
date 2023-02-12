@@ -48,7 +48,7 @@ namespace RayonPropertyApi.Controllers.User
             return StatusCode(result.StatusCode, result);
         }
 
-        [RayonPropertyAuthorize]
+        //[RayonPropertyAuthorize]
         [HttpPost("UserAdd")]
         [ApiExplorerSettings(IgnoreApi = true)]
         public ActionResult UserAdd(UserForRegisterDto userForRegisterDto)

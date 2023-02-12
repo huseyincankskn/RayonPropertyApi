@@ -112,10 +112,10 @@ namespace Business.Concrete
         {
             var productIderId = _httpContextAccessor.HttpContext.Request.Headers["productId"].ToString();
             // Watermark fotoğrafını yükle
-            var watermark = Image.FromFile("gslogo.png");
+            var watermark = Image.FromFile(_webHostEnvironment.WebRootPath + "/Logo/Rayon_Property_Logo_EN@4x.png");
             //Watermark transparancy ayarları
             var imageAttributes = new ImageAttributes();
-            var colorMatrix = new ColorMatrix { Matrix33 = 0.3f };
+            var colorMatrix = new ColorMatrix { Matrix33 = 0.8f };
             imageAttributes.SetColorMatrix(colorMatrix);
             List<ProjectFiles> fileList = new List<ProjectFiles>();
             // Her dosyayı işleyin
@@ -131,7 +131,7 @@ namespace Business.Concrete
                     // Watermark fotoğrafını ekle
                     using (var graphics = Graphics.FromImage(image))
                     {
-                        graphics.DrawImage(watermark, new Rectangle(0, 0, 130, 170), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
+                        graphics.DrawImage(watermark, new Rectangle(0, 0, 235, 135), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
                     }
 
                     // İşlenmiş fotoğrafı kaydet
@@ -149,7 +149,12 @@ namespace Business.Concrete
             _projectFilesRepository.AddRange(fileList);
             return new SuccessDataResult<bool>(true);
         }
-
+        public Core.Utilities.Results.IResult DeletePhoto (string fileName)
+        {
+            var file = _projectFilesRepository.GetAll().Where(x=> x.FileName== fileName).FirstOrDefault();
+            _projectFilesRepository.Delete(file);
+            return new SuccessResult(Messages.EntityDeleted);
+        }
         public IDataResult<IQueryable<ProjectFeaturesVm>> GetProjectFeatureList()
         {
             var entityList = _projectFeaturesRepository.GetAllForOdata();

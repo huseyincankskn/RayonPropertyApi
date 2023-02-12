@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.OData.Query;
 using System.Drawing.Printing;
 using Core.Entities.Exceptions;
 
-namespace RayonPropertyApi.Controllers
+namespace RayonPropertyApi.Controllers.Project
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -73,7 +73,12 @@ namespace RayonPropertyApi.Controllers
             var result = _productService.SaveImages(images);
             return Ok(result);
         }
-
+        [HttpGet("DeletePhoto")]
+        public IActionResult DeletePhoto(string fileName)
+        {
+            var result = _productService.DeletePhoto(fileName);
+            return Ok(result);
+        }
         [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
         [ProducesResponseType(typeof(ProjectFeaturesVm), 200)]
         [ProducesResponseType(typeof(object), 403)]

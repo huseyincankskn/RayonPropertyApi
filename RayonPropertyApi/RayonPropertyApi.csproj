@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Content\74e125783.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.13" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
@@ -37,11 +33,8 @@
 
   <ItemGroup>
     <Folder Include="Files\" />
+    <Folder Include="wwwroot\Content\" />
     <Folder Include="wwwroot\MailTemplates\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="wwwroot\Content\74e125783.jpg" />
   </ItemGroup>
 
 </Project>

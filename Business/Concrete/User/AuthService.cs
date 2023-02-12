@@ -81,7 +81,7 @@ namespace Business.Concrete
             {
                 return new SuccessResult(Messages.UserExist);
             }
-            return new ErrorResult();
+            return new SuccessResult();
         }
 
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
