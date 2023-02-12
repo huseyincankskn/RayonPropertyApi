@@ -9,6 +9,7 @@ using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
 
@@ -108,14 +109,14 @@ namespace Business.Concrete
             }
             return new SuccessResult(Messages.EntityUpdated);
         }
-        public IDataResult<bool> SaveImages(List<IFormFile> images)
+        public IDataResult<bool> SaveImages(List<IFormFile> images, string productId)
         {
-            var productIderId = _httpContextAccessor.HttpContext.Request.Headers["productId"].ToString();
+            var productIderId = JsonConvert.DeserializeObject<string>(productId);
             // Watermark fotoğrafını yükle
             var watermark = Image.FromFile(_webHostEnvironment.WebRootPath + "/Logo/Rayon_Property_Logo_EN@4x.png");
             //Watermark transparancy ayarları
             var imageAttributes = new ImageAttributes();
-            var colorMatrix = new ColorMatrix { Matrix33 = 0.8f };
+            var colorMatrix = new ColorMatrix { Matrix33 = 0.3f };
             imageAttributes.SetColorMatrix(colorMatrix);
             List<ProjectFiles> fileList = new List<ProjectFiles>();
             // Her dosyayı işleyin
@@ -131,7 +132,7 @@ namespace Business.Concrete
                     // Watermark fotoğrafını ekle
                     using (var graphics = Graphics.FromImage(image))
                     {
-                        graphics.DrawImage(watermark, new Rectangle(0, 0, 235, 135), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
+                        graphics.DrawImage(watermark, new Rectangle(0, 0, image.Width, image.Height), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
                     }
 
                     // İşlenmiş fotoğrafı kaydet

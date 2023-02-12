@@ -8,9 +8,11 @@ using Entities.VMs;
 using Microsoft.AspNetCore.OData.Query;
 using System.Drawing.Printing;
 using Core.Entities.Exceptions;
+using Business.Attributes;
 
 namespace RayonPropertyApi.Controllers.Project
 {
+    [RayonPropertyAuthorize]
     [Route("api/[controller]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -68,9 +70,9 @@ namespace RayonPropertyApi.Controllers.Project
         }
         [HttpPost("AddImage")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
-        public IActionResult AddImage([FromForm] List<IFormFile> images)
+        public IActionResult AddImage([FromForm] List<IFormFile> images, [FromForm] string productId)
         {
-            var result = _productService.SaveImages(images);
+            var result = _productService.SaveImages(images,productId);
             return Ok(result);
         }
         [HttpGet("DeletePhoto")]

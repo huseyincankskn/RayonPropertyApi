@@ -60,5 +60,11 @@ namespace Core.DataAccess
             Context.SaveChanges();
             return new SuccessDataResult<TEntity>(updatedEntity.Entity);
         }
+        public IDataResult<TEntity> HardDelete(TEntity entity)
+        {
+            Context.Remove(entity);
+            Context.SaveChanges();
+            return new SuccessDataResult<TEntity>(entity);
+        }
     }
 }

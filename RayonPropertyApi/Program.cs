@@ -27,6 +27,7 @@ using Entities.VMs;
 using Communication.EmailManager.Abstract;
 using Communication.EmailManager.Concrete;
 using Microsoft.AspNetCore.OData.NewtonsoftJson;
+using Entities.Concrete;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -42,6 +43,7 @@ static IEdmModel GetEdmModel()
     odataBuilder.EntitySet<BlogVm>("Blog");
     odataBuilder.EntitySet<BlogCategoryVm>("BlogCategory");
     odataBuilder.EntitySet<ProjectVm>("Project");
+    odataBuilder.EntitySet<ProjectFeaturesVm>("ProjectFeature");
     return odataBuilder.GetEdmModel();
 }
 

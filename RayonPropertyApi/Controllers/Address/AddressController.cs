@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.Attributes;
 using DataAccess.Abstract;
 using Entities.VMs;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +10,7 @@ using System.Drawing.Printing;
 
 namespace RayonPropertyApi.Controllers.Address
 {
-
+    [RayonPropertyAuthorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AddressController : ControllerBase

@@ -13,6 +13,6 @@ namespace Business.Abstract.Project
         IDataResult<ProjectDto> AddProject(ProjectDto project);
         Core.Utilities.Results.IResult Update(ProjectDto dto);
         Core.Utilities.Results.IResult DeletePhoto(string fileName);
-        IDataResult<bool> SaveImages(List<IFormFile> images);
+        IDataResult<bool> SaveImages(List<IFormFile> images,string productId);
     }
 }

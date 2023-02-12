@@ -33,6 +33,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CurrencyRepository>().As<ICurrencyRepository>();
             builder.RegisterType<ProjectRepository>().As<IProjectRepository>();
             builder.RegisterType<ProjectFeaturesRepository>().As<IProjectFeaturesRepository>();
+            builder.RegisterType<ProjectFeatureService>().As<IProjectFeatureService>();
             builder.RegisterType<SitePropertyRepository>().As<ISitePropertyRepository>();
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BlogCategoryRepository>().As<IBlogCategoryRepository>();

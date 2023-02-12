@@ -21,5 +21,6 @@ namespace Core.DataAccess.EntityFramework.Abstract
 
         public IQueryable<T> GetAllForOdata();
         IDataResult<T> Update(T entity);
+        IDataResult<T> HardDelete(T entity);
     }
 }
