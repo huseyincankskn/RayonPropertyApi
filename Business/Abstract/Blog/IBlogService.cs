@@ -14,7 +14,7 @@ namespace Business.Abstract
 
         IDataResult<Blog> Add(IFormFile file,BlogAddDto dto);
 
-        Core.Utilities.Results.IResult Update(BlogUpdateDto dto);
+        Core.Utilities.Results.IResult Update(IFormFile? file, BlogUpdateDto dto);
 
         Core.Utilities.Results.IResult Delete(Guid id);
     }

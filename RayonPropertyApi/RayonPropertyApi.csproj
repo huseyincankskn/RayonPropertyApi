@@ -35,6 +35,7 @@
     <Folder Include="Files\" />
     <Folder Include="wwwroot\Content\" />
     <Folder Include="wwwroot\MailTemplates\" />
+    <Folder Include="wwwroot\BlogFile\" />
   </ItemGroup>
 
 </Project>
