@@ -3,6 +3,7 @@
     public class DashboardVm
     {
         public int TotalProjectCount { get; set; }
+        public int TotalInactiveProjectCount { get; set; }
         public int RentProjectCount { get; set; }
         public int ActiveRentProjectCount { get; set; }
         public int InActiveRentProjectCount { get; set; }

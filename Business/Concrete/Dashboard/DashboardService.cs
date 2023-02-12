@@ -24,6 +24,7 @@ namespace Business.Concrete
         public IDataResult<DashboardVm> GetDashboardInfos()
         {
             var totalProjectCount = _projectRepository.GetAllForOdataWithPassive().Count();
+            var totalInactiveProjectCount = totalProjectCount - _projectRepository.GetAllForOdata().Count();
             var rentProjectCount = _projectRepository.GetAllForOdataWithPassive().Where(x => x.ProjectStatus == (byte)ProjectStatus.Rent).Count();
             var activerentProjectCount = _projectRepository.GetAllForOdata().Where(x => x.ProjectStatus == (byte)ProjectStatus.Rent).Count();
             var inActiveRentProjectCount = rentProjectCount - activerentProjectCount;
