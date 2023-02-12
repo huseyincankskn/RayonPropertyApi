@@ -9,5 +9,7 @@
         public bool IsActive { get; set; } = false;
         public Guid BlogCategoryId { get; set; } = Guid.Empty;
         public string BlogCategoryName { get; set; } = string.Empty;
+        public Guid BlogFileId { get; set; } = Guid.Empty;
+        public string BlogFileName { get; set; } = string.Empty;
     }
 }

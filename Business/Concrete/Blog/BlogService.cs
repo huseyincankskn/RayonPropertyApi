@@ -37,14 +37,19 @@ namespace Business.Concrete
 
         public IDataResult<IQueryable<BlogVm>> GetListQueryableOdata()
         {
-            var entityList = _blogRepository.GetAllForOdataWithPassive().Include(x => x.BlogCategory);
+            var entityList = _blogRepository.GetAllForOdataWithPassive()
+                                            .Include(x => x.BlogCategory)
+                                            .Include(x => x.BlogFile);
             var vmList = _mapper.ProjectTo<BlogVm>(entityList);
             return new SuccessDataResult<IQueryable<BlogVm>>(vmList);
         }
 
         public IDataResult<BlogVm> GetById(Guid id)
         {
-            var entity = _blogRepository.GetAllForOdataWithPassive().Include(x => x.BlogCategory).FirstOrDefault(x => x.Id == id);
+            var entity = _blogRepository.GetAllForOdataWithPassive()
+                                        .Include(x => x.BlogCategory)
+                                        .Include(x => x.BlogFile)
+                                        .FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return new ErrorDataResult<BlogVm>(Messages.EntityNotFound);
@@ -63,7 +68,8 @@ namespace Business.Concrete
                 return new ErrorDataResult<Blog>(Messages.EntityAlreadyExist);
             }
 
-            var blogCategory = _blogCategoryRepository.GetAllForOdata().FirstOrDefault(x => x.Id == dto.BlogCategoryId || x.Name == dto.BlogCategoryName);
+            var blogCategory = _blogCategoryRepository.GetAllForOdata()
+                                                      .FirstOrDefault(x => x.Id == dto.BlogCategoryId || x.Name == dto.BlogCategoryName);
             if (blogCategory == null)
             {
                 return new ErrorDataResult<Blog>(Messages.BlogCategoryNotFound);
@@ -71,9 +77,9 @@ namespace Business.Concrete
 
             dto.BlogCategoryId = blogCategory.Id;
             dto.TrimAllProps();
-            var addEntity = _mapper.Map<Blog>(dto);
             var blogFileAdd = _blogFileService.SaveImage(file);
-            addEntity.BlogFileId = blogFileAdd.Data.Id;
+            dto.BlogFileId = blogFileAdd.Data.Id;
+            var addEntity = _mapper.Map<Blog>(dto);
             _blogRepository.Add(addEntity);
             return new SuccessDataResult<Blog>(addEntity);
         }
@@ -92,7 +98,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(BlogUpdateValidation))]
-        public Core.Utilities.Results.IResult Update(BlogUpdateDto dto)
+        public Core.Utilities.Results.IResult Update(IFormFile? file, BlogUpdateDto dto)
         {
             var blog = _blogRepository.GetById(dto.Id);
             if (blog == null)
@@ -114,6 +120,11 @@ namespace Business.Concrete
 
             dto.BlogCategoryId = blogCategory.Id;
             dto.TrimAllProps();
+            if (file != null)
+            {
+                var blogFileAdd = _blogFileService.SaveImage(file);
+                dto.BlogFileId = blogFileAdd.Data.Id;
+            }
             blog = _mapper.Map(dto, blog);
             _blogRepository.Update(blog);
             return new SuccessResult(Messages.EntityUpdated);

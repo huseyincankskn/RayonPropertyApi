@@ -67,9 +67,10 @@ namespace RayonPropertyApi.Controllers.Blog
         }
 
         [HttpPut]
-        public IActionResult Put(BlogUpdateDto dto)
+        public IActionResult Put([FromForm] IFormFile? file, [FromForm] string jsonString)
         {
-            var result = _blogService.Update(dto);
+            BlogUpdateDto dto = JsonConvert.DeserializeObject<BlogUpdateDto>(jsonString);
+            var result = _blogService.Update(file, dto);
             return StatusCode(result.StatusCode, result);
         }
 
