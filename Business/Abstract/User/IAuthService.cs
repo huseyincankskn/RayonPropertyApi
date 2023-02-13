@@ -3,6 +3,7 @@ using Core.Utilities.Results;
 using Core.Utilities.Security.Jwt;
 using Entities.Concrete;
 using Entities.Dtos;
+using Entities.VMs;
 using Entities.VMs.User;
 
 namespace Business.Abstract
@@ -14,5 +15,7 @@ namespace Business.Abstract
         IResult ForgotPassword(ForgotPasswordVm forgotModel);
         IResult IsUserExists(AuthUserDto authUserDto);
         IDataResult<User> Add(UserForRegisterDto userForRegisterDto);
+        IDataResult<User> ResetPassword(CreatePasswordVm resetPassword);
+        IResult IsHavePsrGuid(Guid psrGuid);
     }
 }

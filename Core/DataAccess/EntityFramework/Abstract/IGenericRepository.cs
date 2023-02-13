@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Entities.Concrete;
 using Core.Utilities.Results;
+using System.Linq.Expressions;
 
 namespace Core.DataAccess.EntityFramework.Abstract
 {
@@ -34,5 +35,9 @@ namespace Core.DataAccess.EntityFramework.Abstract
         T GetByIdWithPassive(Guid id);
 
         IQueryable<T> GetAllForOdataWithPassive();
+
+        T GetWithoutLogin(Expression<Func<T, bool>> filter);
+
+        bool Exist(Expression<Func<T, bool>> filter);
     }
 }

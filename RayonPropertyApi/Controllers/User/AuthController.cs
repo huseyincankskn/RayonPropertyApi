@@ -2,6 +2,7 @@
 using Business.Attributes;
 using Core.Entities.Dtos;
 using Entities.Dtos;
+using Entities.VMs;
 using Entities.VMs.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -60,6 +61,24 @@ namespace RayonPropertyApi.Controllers.User
             }
             var result = _authService.Add(userForRegisterDto);
             return StatusCode(result.StatusCode, result.StatusCode);
+        }
+
+        [AllowAnonymous]
+        [HttpPost("ResetPassword")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public ActionResult ResetPassword(CreatePasswordVm resetPasswordModel)
+        {
+            var result = _authService.ResetPassword(resetPasswordModel);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [AllowAnonymous]
+        [HttpGet("IsHavePsrGuid")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public ActionResult IsHavePsrGuid(Guid PsrGuid)
+        {
+            var result = _authService.IsHavePsrGuid(PsrGuid);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

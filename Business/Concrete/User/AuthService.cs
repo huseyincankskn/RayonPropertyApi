@@ -10,6 +10,8 @@ using Core.Utilities.Security.Jwt;
 using Core.Entities.Dtos;
 using Communication.EmailManager.Abstract;
 using Entities.VMs.User;
+using Entities.VMs;
+using System.Text.RegularExpressions;
 
 namespace Business.Concrete
 {
@@ -74,6 +76,16 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IResult IsHavePsrGuid(Guid psrGuid)
+        {
+            var isPsrGuidExist = _userRepository.Exist(x => x.PsrGuid == psrGuid);
+            if (!isPsrGuidExist)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+            return new SuccessResult();
+        }
+
         public IResult IsUserExists(AuthUserDto authUserDto)
         {
             var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == authUserDto.UserEmail);
@@ -98,6 +110,29 @@ namespace Business.Concrete
             }
 
             return new SuccessDataResult<User>(userToCheck, Messages.SuccessfulLogin);
+        }
+
+        public IDataResult<User> ResetPassword(CreatePasswordVm resetPassword)
+        {
+            var user = _userRepository.GetWithoutLogin(x => x.PsrGuid == resetPassword.PsrGuid);
+
+            if (user == null)
+            {
+                throw new ValidationException(Messages.UserNotFound);
+            }
+            var passwordValid = Regex.Match(resetPassword.Password, @"((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,})");
+            if (!passwordValid.Success)
+            {
+                throw new ValidationException(Messages.PasswordFormatError);
+            }
+
+            HashingHelper.CreatePasswordHash(resetPassword.Password, out byte[] passwordHash, out byte[] passwordSalt);
+            user.PsrHash = passwordHash;
+            user.PsrSalt = passwordSalt;
+            user.UpdateUserId = user.Id;
+            user.PsrGuid = null;
+            _userRepository.UpdateWithoutLogin(user);
+            return new SuccessDataResult<User>(user);
         }
     }
 }

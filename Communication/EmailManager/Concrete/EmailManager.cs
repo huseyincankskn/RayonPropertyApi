@@ -28,19 +28,18 @@ namespace Communication.EmailManager.Concrete
                 {
                     Id = 0,
                     Name = "RayonProperty",
-                    Logo = "",
+                    Logo = "Rayon_Property_Logo_EN@4x.png",
                     FrontEndUrl  = "www.rayonproperty.com",
 
 
                     FromMail = "info@rayonproperty.com",
                     Host = "srvm11.trwww.com",
-                    Port = 465,
+                    Port = 587,
                     UseSsl = true,
                     UserName = "info@rayonproperty.com",
                     Password = "U!3h!Rrn"
                 }
             }
-
         };
 
         public void SendForgotPasswordEmail(ForgotPasswordVm mailModel)
@@ -49,7 +48,7 @@ namespace Communication.EmailManager.Concrete
 
             var pathToFile = _webHostEnvironment.WebRootPath + "/email-content.html";
             var builder = new BodyBuilder();
-            var logoUrl = "logo";
+            var logoUrl = AppSettings.BackEndUrl + "/Logo/" + dealerInfo.Logo;
             using (StreamReader sourceReader = File.OpenText(pathToFile))
             {
                 builder.HtmlBody = sourceReader.ReadToEnd();
