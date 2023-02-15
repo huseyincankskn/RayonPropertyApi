@@ -10,6 +10,7 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(x => x.Email).EmailAddress().MaximumLength(50).NotEmpty().WithMessage("Email maksimum 50 karakter olmalıdır");
             RuleFor(x => x.Address).MaximumLength(1000).NotEmpty().WithMessage("Adres maksimum 1000 karakter olmalıdır");
             RuleFor(x => x.PhoneNumber).Length(10).WithMessage("Telefon numarası 10 haneli olmalıdır");
+            RuleFor(x => x.AboutUsText).NotEmpty().MaximumLength(4000).WithMessage("Hakkımızda yazısı maksimum 4000 karakter olmalıdır");
         }
     }
 }
