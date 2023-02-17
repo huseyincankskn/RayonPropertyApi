@@ -129,7 +129,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:4000").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
+    options.AddDefaultPolicy(builder => builder.WithOrigins("http://localhost:4000", "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
 });
 var app = builder.Build();
 

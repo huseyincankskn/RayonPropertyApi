@@ -7,6 +7,7 @@ namespace RayonPropertyApi.Controllers.WebSite
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous]
     public class WebSiteContactController : ControllerBase
     {
         private readonly IEmailManager _emailManager;
@@ -16,13 +17,13 @@ namespace RayonPropertyApi.Controllers.WebSite
             _emailManager = emailManager;
         }
 
-        [AllowAnonymous]
+
         [HttpPost("SendContactRequest")]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult SendContactMail(ContactRequestVm contactRequestVm)
         {
             _emailManager.SendContactRequestMail(contactRequestVm);
-            return Ok();
+            return Ok(true);
         }
     }
 }

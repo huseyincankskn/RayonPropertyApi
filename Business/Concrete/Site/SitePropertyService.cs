@@ -24,7 +24,7 @@ namespace Business.Concrete
 
         public IDataResult<SitePropertyVm> GetSiteProperty()
         {
-            var entity = _sitePropertyRepository.GetAllForOdata().FirstOrDefault();
+            var entity = _sitePropertyRepository.GetAllForWithoutLogin().FirstOrDefault();
             if (entity == null)
             {
                 return new ErrorDataResult<SitePropertyVm>(Messages.EntityNotFound);
