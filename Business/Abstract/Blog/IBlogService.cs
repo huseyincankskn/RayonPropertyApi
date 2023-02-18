@@ -12,10 +12,14 @@ namespace Business.Abstract
 
         IDataResult<BlogVm> GetById(Guid id);
 
-        IDataResult<Blog> Add(IFormFile file,BlogAddDto dto);
+        IDataResult<Blog> Add(IFormFile file, BlogAddDto dto);
 
         Core.Utilities.Results.IResult Update(IFormFile? file, BlogUpdateDto dto);
 
         Core.Utilities.Results.IResult Delete(Guid id);
+
+        IDataResult<IQueryable<BlogVm>> GetListForWebSite();
+
+        IDataResult<BlogVm> GetByIdForWebSite(Guid id);
     }
 }

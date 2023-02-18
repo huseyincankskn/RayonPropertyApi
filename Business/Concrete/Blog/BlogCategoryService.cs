@@ -5,10 +5,15 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Extensions;
 using Core.Utilities.Results;
+using DataAccess.Abstract;
 using DataAccess.Abstract.EntityFramework.Repository;
+using DataAccess.Concrete.EntityFramework.Repositories;
 using Entities.Concrete;
 using Entities.Dtos;
+using Entities.Enums;
 using Entities.VMs;
+using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Business.Concrete
 {
@@ -16,11 +21,15 @@ namespace Business.Concrete
     {
         private readonly IBlogCategoryRepository _blogCategoryRepository;
         private readonly IMapper _mapper;
+        private readonly IBlogRepository _blogRepository;
 
-        public BlogCategoryService(IBlogCategoryRepository blogCategoryRepository, IMapper mapper)
+        public BlogCategoryService(IBlogCategoryRepository blogCategoryRepository,
+                                   IMapper mapper,
+                                   IBlogRepository blogRepository)
         {
             _blogCategoryRepository = blogCategoryRepository;
             _mapper = mapper;
+            _blogRepository = blogRepository;
         }
 
         public IDataResult<IQueryable<BlogCategoryVm>> GetListQueryableOdata()
@@ -88,6 +97,30 @@ namespace Business.Concrete
             blogCategory = _mapper.Map(dto, blogCategory);
             _blogCategoryRepository.Update(blogCategory);
             return new SuccessResult(Messages.EntityUpdated);
+        }
+
+        public IDataResult<List<BlogCategoryVm>> GetListForWebSite()
+        {
+            var query = _blogRepository.GetAllForWithoutLogin().Include(x => x.BlogCategory)
+              .GroupBy(p => new { p.BlogCategory.Name })
+              .Select(g => new BlogCategoryVm
+              {
+                  Name = g.Key.Name,
+                  Count = g.Count(),
+              }).ToList();
+
+            if (query.Any())
+            {
+                var totalVm = new BlogCategoryVm
+                {
+                    Count = query.Count,
+                    Name = "Tümü",
+                };
+
+                query.Add(totalVm);
+                query.Reverse();
+            }
+            return new SuccessDataResult<List<BlogCategoryVm>>(query);
         }
     }
 }

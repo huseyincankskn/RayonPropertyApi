@@ -41,5 +41,7 @@ namespace Core.DataAccess.EntityFramework.Abstract
         bool Exist(Expression<Func<T, bool>> filter);
 
         public IQueryable<T> GetAllForWithoutLogin();
+
+        T GetByIdWithoutLogin(Guid id);
     }
 }
