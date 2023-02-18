@@ -7,6 +7,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,11 @@ namespace Business.Concrete
             }
             var vm = _mapper.Map<ProjectFeaturesVm>(entity);
             return new SuccessDataResult<ProjectFeaturesVm>(vm);
+        }     
+        public IDataResult<IQueryable<string>> GetFeaturesWithProjectId(Guid id)
+        {
+            var entityList = _featureRepository.GetAllForOdata().Include(x => x.Project).Include(x => x.ProjectFeature).Where(x=> x.ProjectId == id).Select(x=> x.ProjectFeature.Name);
+            return new SuccessDataResult<IQueryable<string>>(entityList);
         }
         public IDataResult<ProjectFeatureDto> AddProject(ProjectFeatureDto project)
         {

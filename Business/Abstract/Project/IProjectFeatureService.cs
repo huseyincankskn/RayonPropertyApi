@@ -8,6 +8,7 @@ namespace Business.Abstract
     {
         IDataResult<IQueryable<ProjectFeaturesVm>> GetListQueryableOdata();
         IDataResult<ProjectFeaturesVm> GetById(short id);
+        IDataResult<IQueryable<string>> GetFeaturesWithProjectId(Guid id);
         IDataResult<ProjectFeatureDto> AddProject(ProjectFeatureDto project);
         Core.Utilities.Results.IResult Update(ProjectFeatureDto dto);
         IResult Delete(short id);

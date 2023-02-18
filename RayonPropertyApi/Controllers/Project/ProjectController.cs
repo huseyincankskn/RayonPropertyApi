@@ -12,7 +12,7 @@ using Business.Attributes;
 
 namespace RayonPropertyApi.Controllers.Project
 {
-    [RayonPropertyAuthorize]
+
     [Route("api/[controller]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = false)]
@@ -56,18 +56,21 @@ namespace RayonPropertyApi.Controllers.Project
             }
             return BadRequest(result.Message);
         }
+        [RayonPropertyAuthorize]
         [HttpPost]
         public IActionResult AddProject(ProjectDto projectDto)
         {
             var result = _productService.AddProject(projectDto);
             return Ok(result);
         }
+        [RayonPropertyAuthorize]
         [HttpPut]
         public IActionResult Put(ProjectDto dto)
         {
             var result = _productService.Update(dto);
             return StatusCode(result.StatusCode, result);
         }
+        [RayonPropertyAuthorize]
         [HttpPost("AddImage")]
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
         public IActionResult AddImage([FromForm] List<IFormFile> images, [FromForm] string productId)
@@ -75,6 +78,7 @@ namespace RayonPropertyApi.Controllers.Project
             var result = _productService.SaveImages(images,productId);
             return Ok(result);
         }
+        [RayonPropertyAuthorize]
         [HttpGet("DeletePhoto")]
         public IActionResult DeletePhoto(string fileName)
         {
@@ -85,6 +89,7 @@ namespace RayonPropertyApi.Controllers.Project
         [ProducesResponseType(typeof(ProjectFeaturesVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
+        //[RayonPropertyAuthorize]
         [HttpGet("GetProjectFeatures")]
         public IActionResult GetProjectFeatures()
         {

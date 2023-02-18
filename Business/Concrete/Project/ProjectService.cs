@@ -9,6 +9,7 @@ using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -43,13 +44,13 @@ namespace Business.Concrete
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
-            var entityList = _projectRepository.GetAllForOdata();
+            var entityList = _projectRepository.GetAllForOdata().Include(x=> x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).OrderByDescending(x=> x.AddDate);
             var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }
         public IDataResult<ProjectVm> GetById(Guid id)
         {
-            var entity = _projectRepository.GetAllForOdata().FirstOrDefault(x => x.Id == id);
+            var entity = _projectRepository.GetAllForOdata().Include(x => x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).FirstOrDefault(x => x.Id == id);
             var features = GetFeatureList(id);
             if (entity == null)
             {

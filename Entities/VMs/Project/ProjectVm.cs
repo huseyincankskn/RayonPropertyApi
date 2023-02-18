@@ -33,6 +33,13 @@ namespace Entities.VMs
         public int TownId { get; set; }
         public int DistrictId { get; set; }
         public List<string> PhotoUrls { get; set; }
+        public List<string> FeatureNames { get; set; }
         public int StreetId { get; set; }
+        public string CityName { get; set; }
+        public string DistrictName { get; set; }
+        public string StreetName { get; set; }
+        public string TownName { get; set; }
+        public string StatusValue { get; set; }
+        public string ProjectTypeValue { get; set; }
     }
 }

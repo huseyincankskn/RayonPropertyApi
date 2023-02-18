@@ -16,6 +16,10 @@ namespace Business.Profiles
         {
             CreateMap<ProjectFeatureDto, ProjectFeature>().ReverseMap();
             CreateMap<ProjectFeaturesVm, ProjectFeature>().ReverseMap();
+            CreateMap<FeatureVm, Feature>().ReverseMap()
+                 .ForMember(dest => dest.FeatureName,
+                        act => act.MapFrom(src => src.ProjectFeature.Name));
+            CreateMap<Feature, FeatureVm>().ReverseMap();
         }
     }
 }
