@@ -176,5 +176,15 @@ namespace Core.DataAccess.EntityFramework
         {
             return DbSet.Where(x => !x.IsDeleted && x.IsActive).FirstOrDefault(filter);
         }
+
+        public IQueryable<TEntity> GetAllForWithoutLogin()
+        {
+            return DbSet.AsQueryable().Where(x => !x.IsDeleted && x.IsActive);
+        }
+
+        public TEntity GetByIdWithoutLogin(Guid id)
+        {
+            return DbSet.FirstOrDefault(x => x.Id == id && !x.IsDeleted && x.IsActive);
+        }
     }
 }

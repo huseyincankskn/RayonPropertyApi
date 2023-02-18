@@ -6,6 +6,10 @@ using System.Net.Mail;
 using System.Net;
 using MimeKit;
 using Communication.EmailManager.Abstract;
+using Entities.VMs;
+using System.Globalization;
+using System.Text;
+using Helper.Helpers.HtmlTableHelper;
 
 namespace Communication.EmailManager.Concrete
 {
@@ -96,6 +100,74 @@ namespace Communication.EmailManager.Concrete
                 return dealerInfo;
             }
             return _sendMailInfos[0];
+        }
+
+        public void SendContactRequestMail(ContactRequestVm contactRequestVm)
+        {
+            var dealerInfo = GetDealerInfo(0);
+
+            var pathToFile = _webHostEnvironment.WebRootPath + "/contact-request-mail-template.html";
+            var builder = new BodyBuilder();
+            var logoUrl = AppSettings.BackEndUrl + "/Logo/" + dealerInfo.Logo;
+            using (StreamReader sourceReader = File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = sourceReader.ReadToEnd();
+            }
+
+            StringBuilder sb = new StringBuilder();
+            using (HtmlTableHelper.Table table = new HtmlTableHelper.Table(sb, id: "tablestyle"))
+            {
+                table.StartBody();
+
+                if (!string.IsNullOrEmpty(contactRequestVm.Name))
+                {
+
+                    using (var tr = table.AddRow(classAttributes: "row"))
+                    {
+                        tr.AddCell("İsim", "", "tablestyle");
+                        tr.AddCell(contactRequestVm.Name, "", "tablestyle");
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(contactRequestVm.PhoneNumber))
+                {
+                    using (var tr = table.AddRow(classAttributes: "row"))
+                    {
+                        tr.AddCell("Telefon", "", "tablestyle");
+                        tr.AddCell(contactRequestVm.PhoneNumber, "", "tablestyle");
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(contactRequestVm.Description))
+                {
+                    using (var tr = table.AddRow(classAttributes: "row"))
+                    {
+                        tr.AddCell("Mesaj", "", "tablestyle");
+                        tr.AddCell(contactRequestVm.Description, "", "tablestyle");
+                    }
+                }
+
+                using (var tr = table.AddRow(classAttributes: "row"))
+                {
+                    tr.AddCell("Email", "", "tablestyle");
+                    tr.AddCell(contactRequestVm.Email, "", "tablestyle");
+                }
+
+                table.EndBody();
+            }
+
+            var finishedTable = sb.ToString();
+
+
+            string htmlBody = builder.HtmlBody.Replace("{{TABLE}}", finishedTable).Replace("{{LOGO}}", logoUrl);
+
+            var mailMessage = new MailMessage(dealerInfo.FromMail, contactRequestVm.Email)
+            {
+                Subject = $"WebSite İletişim Talebi",
+                IsBodyHtml = true,
+                Body = htmlBody
+            };
+            EmailInformation(mailMessage, dealerInfo);
         }
     }
 }

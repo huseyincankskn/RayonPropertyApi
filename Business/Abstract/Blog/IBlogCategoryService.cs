@@ -16,5 +16,7 @@ namespace Business.Abstract
         IResult Update(BlogCategoryUpdateDto dto);
 
         IResult Delete(Guid id);
+
+        IDataResult<List<BlogCategoryVm>> GetListForWebSite();
     }
 }

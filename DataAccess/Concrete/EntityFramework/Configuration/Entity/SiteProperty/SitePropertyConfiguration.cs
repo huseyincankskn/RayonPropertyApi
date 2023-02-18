@@ -13,6 +13,7 @@ namespace DataAccess.Concrete
             builder.Property(x => x.Email).NVarChar(100);
             builder.Property(x => x.PhoneNumber).Phone();
             builder.Property(x => x.Name).NVarChar(200);
+            builder.Property(x => x.AboutUsText).NVarChar(4000);
         }
     }
 }

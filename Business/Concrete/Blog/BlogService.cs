@@ -13,7 +13,6 @@ using Entities.Dtos;
 using Entities.VMs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Math.EC.Rfc7748;
 
 namespace Business.Concrete
 {
@@ -128,6 +127,30 @@ namespace Business.Concrete
             blog = _mapper.Map(dto, blog);
             _blogRepository.Update(blog);
             return new SuccessResult(Messages.EntityUpdated);
+        }
+
+        public IDataResult<IQueryable<BlogVm>> GetListForWebSite()
+        {
+            var entityList = _blogRepository.GetAllForWithoutLogin()
+                                .Include(x => x.BlogCategory)
+                                .Include(x => x.BlogFile)
+                                .OrderByDescending(x => x.AddDate);
+            var vmList = _mapper.ProjectTo<BlogVm>(entityList);
+            return new SuccessDataResult<IQueryable<BlogVm>>(vmList);
+        }
+
+        public IDataResult<BlogVm> GetByIdForWebSite(Guid id)
+        {
+            var entity = _blogRepository.GetAllForWithoutLogin()
+                            .Include(x => x.BlogCategory)
+                            .Include(x => x.BlogFile)
+                            .FirstOrDefault(x => x.Id == id);
+            if (entity == null)
+            {
+                return new ErrorDataResult<BlogVm>(Messages.EntityNotFound);
+            }
+            var vm = _mapper.Map<BlogVm>(entity);
+            return new SuccessDataResult<BlogVm>(vm);
         }
     }
 }

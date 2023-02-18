@@ -6,5 +6,6 @@
         public string Name { get; set; } = string.Empty;
         public DateTime AddDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
+        public int Count { get; set; }
     }
 }
