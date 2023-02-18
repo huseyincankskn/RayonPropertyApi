@@ -5,13 +5,14 @@ using Entities.Dtos;
 using Entities.VMs;
 using Entities.VMs.User;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
-namespace RayonPropertyApi.Controllers.User
+namespace RayonPropertyApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
@@ -49,19 +50,6 @@ namespace RayonPropertyApi.Controllers.User
             return StatusCode(result.StatusCode, result);
         }
 
-        //[RayonPropertyAuthorize]
-        [HttpPost("UserAdd")]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public ActionResult UserAdd(UserForRegisterDto userForRegisterDto)
-        {
-            var userExists = _authService.IsUserExists(new AuthUserDto() { UserEmail = userForRegisterDto.Email });
-            if (!userExists.Success)
-            {
-                return BadRequest("ErrorMail");
-            }
-            var result = _authService.Add(userForRegisterDto);
-            return StatusCode(result.StatusCode, result.StatusCode);
-        }
 
         [AllowAnonymous]
         [HttpPost("ResetPassword")]

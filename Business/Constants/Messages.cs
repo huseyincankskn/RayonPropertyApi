@@ -9,7 +9,7 @@
         public const string UserRegistered = "Kullanıcı kaydedildi";
         public const string UserExist = "Bu email'e kayıtlı kullanıcı zaten mevcut.";
         public const string EmptyError = "Boş bırakılan alanları kontrol edin.";
-        public const string PasswordFormatError = "Şifreniz en az 6 karakter olmalı ve içerisinde en az bir küçük, bir büyük ve bir rakam içermelidir.";
+        public const string PasswordFormatError = "Şifreniz en az 8 karakter olmalı ve içerisinde en az bir küçük, bir büyük ve bir rakam içermelidir.";
 
         public const string EntityAdded = "Kayıt başarıyla eklendi";
         public const string EntityUpdated = "Kayıt başarıyla güncellendi";
