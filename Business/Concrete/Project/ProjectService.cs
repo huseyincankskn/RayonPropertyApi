@@ -7,6 +7,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
+using Helper.AppSetting;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -58,7 +59,7 @@ namespace Business.Concrete
             }
             var vm = _mapper.Map<ProjectVm>(entity);
             var files = _projectFilesRepository.GetAllForOdata().Where(x => x.ProjectId == id).ToList();
-            vm.PhotoUrls = files.Select(x=> x.FileName).ToList();
+            vm.PhotoUrls = files.Select(x => AppSettings.ImgUrl + x.FileName).ToList();
             vm.CheckBoxField = features.Data.Select(x => x.ProjectFeatureId).ToList();
             return new SuccessDataResult<ProjectVm>(vm);
         }
