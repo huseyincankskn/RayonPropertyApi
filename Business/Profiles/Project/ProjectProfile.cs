@@ -31,7 +31,7 @@ namespace Business.Profiles
                        .ForMember(dest => dest.ProjectTypeValue,
                         act => act.MapFrom(src => (ProjectType)src.ProjectTye))
                       .ForMember(dest => dest.PhotoUrls,
-                      opt => opt.MapFrom(src => src.ProjectFiles.Where(pf => pf.ProjectId == src.Id).Select(y => AppSettings.ImgUrl + y.FileName)));
+                      opt => opt.MapFrom(src => src.ProjectFiles.Where(pf => pf.ProjectId == src.Id && !pf.IsDeleted).Select(y => AppSettings.ImgUrl + y.FileName)));
             CreateMap<ProjectFeature, ProjectFeaturesVm>().ReverseMap();
             CreateMap<FeatureVm, Feature>().ReverseMap();
         }
