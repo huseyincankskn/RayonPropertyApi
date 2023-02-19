@@ -113,7 +113,7 @@ namespace Business.Concrete
             {
                 var totalVm = new BlogCategoryVm
                 {
-                    Count = query.Count,
+                    Count = query.Sum(x => x.Count),
                     Name = "Tümü",
                 };
 

@@ -12,6 +12,9 @@ using Communication.EmailManager.Abstract;
 using Entities.VMs.User;
 using Entities.VMs;
 using System.Text.RegularExpressions;
+using AutoMapper;
+using Core.Aspects.Autofac.Validation;
+using Business.ValidationRules.FluentValidation;
 
 namespace Business.Concrete
 {
@@ -20,18 +23,28 @@ namespace Business.Concrete
         private readonly IUserRepository _userRepository;
         private readonly IJwtHelper _tokenHelper;
         private readonly IEmailManager _emailManager;
+        private readonly IMapper _mapper;
 
         public AuthService(IUserRepository userRepository,
                            IJwtHelper tokenHelper,
-                           IEmailManager emailManager)
+                           IEmailManager emailManager,
+                           IMapper mapper)
         {
             _userRepository = userRepository;
             _tokenHelper = tokenHelper;
             _emailManager = emailManager;
+            _mapper = mapper;
         }
 
+
+        [ValidationAspect(typeof(UserAddValidation))]
         public IDataResult<User> Add(UserForRegisterDto userForRegisterDto)
         {
+            var passwordValid = Regex.Match(userForRegisterDto.Password, @"((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,})");
+            if (!passwordValid.Success)
+            {
+                throw new ValidationException(Messages.PasswordFormatError);
+            }
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out var passwordHash, out var passwordSalt);
             var user = new User
             {
@@ -74,6 +87,13 @@ namespace Business.Concrete
 
             _emailManager.SendForgotPasswordEmail(forgotModel);
             return new SuccessResult();
+        }
+
+        public IDataResult<IQueryable<UserVm>> GetAllData()
+        {
+            var users = _userRepository.GetAllForOdataWithPassive();
+            var vmList = _mapper.ProjectTo<UserVm>(users);
+            return new SuccessDataResult<IQueryable<UserVm>>(vmList);
         }
 
         public IResult IsHavePsrGuid(Guid psrGuid)
@@ -120,7 +140,7 @@ namespace Business.Concrete
             {
                 throw new ValidationException(Messages.UserNotFound);
             }
-            var passwordValid = Regex.Match(resetPassword.Password, @"((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,})");
+            var passwordValid = Regex.Match(resetPassword.Password, @"((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,})");
             if (!passwordValid.Success)
             {
                 throw new ValidationException(Messages.PasswordFormatError);

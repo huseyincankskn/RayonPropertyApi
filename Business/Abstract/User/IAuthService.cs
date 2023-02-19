@@ -17,5 +17,6 @@ namespace Business.Abstract
         IDataResult<User> Add(UserForRegisterDto userForRegisterDto);
         IDataResult<User> ResetPassword(CreatePasswordVm resetPassword);
         IResult IsHavePsrGuid(Guid psrGuid);
+        IDataResult<IQueryable<UserVm>> GetAllData();
     }
 }

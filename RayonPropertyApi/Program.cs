@@ -20,14 +20,9 @@ using Business.DependencyResolvers.Autofac;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
 using Core.Middleware;
-using Business.Abstract;
-using Business.Concrete;
-using Autofac.Core;
 using Entities.VMs;
 using Communication.EmailManager.Abstract;
 using Communication.EmailManager.Concrete;
-using Microsoft.AspNetCore.OData.NewtonsoftJson;
-using Entities.Concrete;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -44,6 +39,7 @@ static IEdmModel GetEdmModel()
     odataBuilder.EntitySet<BlogCategoryVm>("BlogCategory");
     odataBuilder.EntitySet<ProjectVm>("Project");
     odataBuilder.EntitySet<ProjectFeaturesVm>("ProjectFeature");
+    odataBuilder.EntitySet<UserVm>("User");
     return odataBuilder.GetEdmModel();
 }
 
