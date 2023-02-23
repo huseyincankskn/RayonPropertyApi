@@ -9,5 +9,6 @@ namespace Business.Abstract
         IDataResult<SitePropertyVm> GetSiteProperty();
 
         IResult Update(SitePropertyUpdateDto dto);
+        IDataResult<List<ProjectTotalVm>> GetProjectCount(List<int> idList);
     }
 }

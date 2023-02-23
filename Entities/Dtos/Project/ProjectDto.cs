@@ -16,7 +16,7 @@ namespace Entities.Dtos
         public short RoomCount { get; set; }
         public short SaloonCount { get; set; }
         public short BedCount { get; set; }
-        public decimal Price { get; set; }
+        public string Price { get; set; }
         public byte ProjectStatus { get; set; }
         public byte ProjectType { get; set; }
         public string ZipCode { get; set; } = string.Empty;

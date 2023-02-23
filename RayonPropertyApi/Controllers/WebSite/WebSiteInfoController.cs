@@ -73,5 +73,11 @@ namespace RayonPropertyApi.Controllers.WebSite
             }
             return BadRequest(result.Message);
         }
+        [HttpPost("GetProjectCount")]
+        public IActionResult GetProjectCount(List<int> idList)
+        {
+            var result = _sitePropertyService.GetProjectCount(idList);
+            return Ok(result.Data);
+        }
     }
 }
