@@ -45,10 +45,11 @@ namespace Business.Concrete
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
-            var entityList = _projectRepository.GetAllForOdata().Include(x=> x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).OrderByDescending(x=> x.AddDate);
+            var entityList = _projectRepository.GetAllForOdataWithPassive().Include(x=> x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).OrderByDescending(x=> x.AddDate);
             var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }
+
         public IDataResult<ProjectVm> GetById(Guid id)
         {
             var entity = _projectRepository.GetAllForOdata().Include(x => x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).FirstOrDefault(x => x.Id == id);
@@ -170,6 +171,18 @@ namespace Business.Concrete
             var entityList = _featureRepository.GetAllForOdata().Where(x=> x.ProjectId == id);
             var vmList = _mapper.ProjectTo<FeatureVm>(entityList);
             return new SuccessDataResult<IQueryable<FeatureVm>>(vmList);
+        }
+        public Core.Utilities.Results.IResult Delete(Guid id)
+        {
+            var entity = _projectRepository.GetByIdWithPassive(id);
+            if (entity == null)
+            {
+                return new ErrorResult(Messages.EntityNotFound);
+            }
+            var modelActive = !entity.IsActive;
+            entity.IsActive = modelActive;
+            _projectRepository.Update(entity);
+            return new SuccessResult(Messages.EntityUpdated);
         }
     }
 }

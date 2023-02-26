@@ -41,5 +41,6 @@ namespace Entities.VMs
         public string TownName { get; set; }
         public string StatusValue { get; set; }
         public string ProjectTypeValue { get; set; }
+        public bool IsActive { get; set; }
     }
 }
