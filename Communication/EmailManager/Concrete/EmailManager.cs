@@ -10,18 +10,20 @@ using Entities.VMs;
 using System.Globalization;
 using System.Text;
 using Helper.Helpers.HtmlTableHelper;
+using Entities.Concrete;
+using DataAccess.Abstract.EntityFramework.Repository;
 
 namespace Communication.EmailManager.Concrete
 {
     public class EmailManager : IEmailManager
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly IContactRequestRepository _contactRequestRepository;
 
-
-
-        public EmailManager(IWebHostEnvironment webHostEnvironment)
+        public EmailManager(IWebHostEnvironment webHostEnvironment, IContactRequestRepository contactRequestRepository)
         {
             _webHostEnvironment = webHostEnvironment;
+            _contactRequestRepository = contactRequestRepository;
         }
 
         private readonly Dictionary<int, SendMailInfo> _sendMailInfos = new()
@@ -168,6 +170,30 @@ namespace Communication.EmailManager.Concrete
                 Body = htmlBody
             };
             EmailInformation(mailMessage, dealerInfo);
+
+            var contactRequestEntity = new ContactRequest()
+            {
+                Name = StringControlWithLength(contactRequestVm.Name, 100),
+                Email = StringControlWithLength(contactRequestVm.Email, 100),
+                PhoneNumber = StringControlWithLength(contactRequestVm.PhoneNumber, 20),
+                Description = StringControlWithLength(contactRequestVm.Description, 500),
+                AddUserId = Guid.Empty
+            };
+
+            _contactRequestRepository.Add(contactRequestEntity);
+        }
+
+        public string StringControlWithLength(string? input, int maxLength)
+        {
+            if (string.IsNullOrEmpty(input))
+            {
+                return input;
+            }
+            else
+            {
+                var output = input.Length > maxLength ? input[..maxLength] : input;
+                return output;
+            }
         }
     }
 }

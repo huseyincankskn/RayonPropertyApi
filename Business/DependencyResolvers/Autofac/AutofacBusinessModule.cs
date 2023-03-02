@@ -38,6 +38,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserRepository>().As<IUserRepository>();
             builder.RegisterType<BlogCategoryRepository>().As<IBlogCategoryRepository>();
             builder.RegisterType<BlogFileRepository>().As<IBlogFileRepository>();
+            builder.RegisterType<ContactRequestRepository>().As<IContactRequestRepository>();
 
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
 
