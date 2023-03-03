@@ -12,7 +12,10 @@ namespace Business.Abstract
     {
         IDataResult<IQueryable<CityVm>> GetCityList();
         IDataResult<IQueryable<TownVm>> GetTownList(int cityId);
+        IDataResult<IQueryable<TownVm>> GetTownListFromName(string cityName);
         IDataResult<IQueryable<DistrictVm>> GetDistrictList(int townId);
+        IDataResult<IQueryable<DistrictVm>> GetDistrictListFromName(string townName, string cityName);
         IDataResult<IQueryable<StreetVm>> GetStreetList(int districtId);
+        IDataResult<IQueryable<StreetVm>> GetStreetListFromName(string districtName, string townName);
     }
 }

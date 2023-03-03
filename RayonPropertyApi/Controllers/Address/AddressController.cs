@@ -10,7 +10,6 @@ using System.Drawing.Printing;
 
 namespace RayonPropertyApi.Controllers.Address
 {
-    [RayonPropertyAuthorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AddressController : ControllerBase
@@ -51,6 +50,20 @@ namespace RayonPropertyApi.Controllers.Address
             }
             return BadRequest(result.Message);
         }
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(TownVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetTownListFromName")]
+        public IActionResult GetTownListFromName(string cityName)
+        {
+            var result = _addressService.GetTownListFromName(cityName);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
 
         [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
         [ProducesResponseType(typeof(DistrictVm), 200)]
@@ -60,6 +73,21 @@ namespace RayonPropertyApi.Controllers.Address
         public IActionResult GetDistrictList(int townId)
         {
             var result = _addressService.GetDistrictList(townId);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        } 
+        
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(DistrictVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetDistrictListFromName")]
+        public IActionResult GetDistrictListFromName(string townName, string cityName)
+        {
+            var result = _addressService.GetDistrictListFromName(townName,cityName);
             if (result.Success)
             {
                 return Ok(result.Data);
@@ -75,6 +103,21 @@ namespace RayonPropertyApi.Controllers.Address
         public IActionResult GetStreetList(int districtVm)
         {
             var result = _addressService.GetStreetList(districtVm);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        } 
+        
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(StreetVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetStreetListFromName")]
+        public IActionResult GetStreetListFromName(string districtName, string townName)
+        {
+            var result = _addressService.GetStreetListFromName(districtName,townName);
             if (result.Success)
             {
                 return Ok(result.Data);
