@@ -75,7 +75,7 @@ namespace RayonPropertyApi.Controllers.Project
         [RequestFormLimits(ValueLengthLimit = int.MaxValue, MultipartBodyLengthLimit = int.MaxValue)]
         public IActionResult AddImage([FromForm] List<IFormFile> images, [FromForm] string productId)
         {
-            var result = _productService.SaveImages(images,productId);
+            var result = _productService.SaveImages(images, productId);
             return Ok(result);
         }
         [RayonPropertyAuthorize]
@@ -99,6 +99,13 @@ namespace RayonPropertyApi.Controllers.Project
                 return Ok(result.Data);
             }
             return BadRequest(result.Message);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(Guid id)
+        {
+            var result = _productService.Delete(id);
+            return StatusCode(result.StatusCode, result);
         }
     }
 }

@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Concrete\EntityFramework\Configuration\Entity\ContactRequest\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
 

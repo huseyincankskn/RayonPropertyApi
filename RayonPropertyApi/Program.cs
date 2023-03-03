@@ -40,6 +40,7 @@ static IEdmModel GetEdmModel()
     odataBuilder.EntitySet<ProjectVm>("Project");
     odataBuilder.EntitySet<ProjectFeaturesVm>("ProjectFeature");
     odataBuilder.EntitySet<UserVm>("User");
+    odataBuilder.EntitySet<ContactRequestEntityVm>("ContactRequest");
     return odataBuilder.GetEdmModel();
 }
 
