@@ -18,6 +18,7 @@ namespace DataAccess.Concrete
         public DbSet<BlogCategory> BlogCategory { get; set; }
         public DbSet<BlogFile> BlogFile { get; set; }
         public DbSet<ContactRequest> ContactRequest { get; set; }
+        public DbSet<Comment> Comment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -38,6 +39,7 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<BlogCategory>().ToTable(nameof(BlogCategory), "Blog");
             modelBuilder.Entity<BlogFile>().ToTable(nameof(BlogFile), "Blog");
             modelBuilder.Entity<ContactRequest>().ToTable(nameof(ContactRequest), "Contact");
+            modelBuilder.Entity<Comment>().ToTable(nameof(Comment), "Comment");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
