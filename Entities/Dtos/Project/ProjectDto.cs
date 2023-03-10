@@ -29,6 +29,7 @@ namespace Entities.Dtos
         public short NetArea { get; set; }
         public short SeeClose { get; set; }
         public bool IsSold { get; set; }
+        public bool IsFavourite { get; set; }
         public List<short> CheckBoxField { get; set; }
         public short CurrencyId { get; set; }
         public int CityId { get; set; }

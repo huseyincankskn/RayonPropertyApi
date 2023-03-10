@@ -16,5 +16,6 @@ namespace Business.Abstract.Project
         IDataResult<bool> SaveImages(List<IFormFile> images,string productId);
         Core.Utilities.Results.IResult Delete(Guid id);
         Core.Utilities.Results.IResult SellOrNot(IsSoldDto dto);
+        Core.Utilities.Results.IResult IsFavourite(IsSoldDto dto);
     }
 }

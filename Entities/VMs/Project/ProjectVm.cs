@@ -33,6 +33,7 @@ namespace Entities.VMs
         public int TownId { get; set; }
         public int DistrictId { get; set; }
         public bool IsSold { get; set; }
+        public bool IsFavourite { get; set; }
         public List<string> PhotoUrls { get; set; }
         public List<string> FeatureNames { get; set; }
         public int StreetId { get; set; }

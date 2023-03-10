@@ -24,6 +24,7 @@ namespace Entities.Concrete
         public DateTime ProjectDate { get; set; }
         //public string PaymnetType { get; set; } = string.Empty;
         public bool IsSold { get; set; }
+        public bool IsFavourite { get; set; }
         public short CurrencyId { get; set; }
         public virtual Currency Currency { get; set; }
         public int CityId { get; set; }

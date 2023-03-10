@@ -73,6 +73,14 @@ namespace RayonPropertyApi.Controllers.Project
         }
 
         [RayonPropertyAuthorize]
+        [HttpPost("IsFavourite")]
+        public IActionResult IsFavourite(IsSoldDto dto)
+        {
+            var result = _productService.IsFavourite(dto);
+            return Ok(result);
+        }
+
+        [RayonPropertyAuthorize]
         [HttpPut]
         public IActionResult Put(ProjectDto dto)
         {

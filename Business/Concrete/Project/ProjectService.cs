@@ -197,5 +197,17 @@ namespace Business.Concrete
             _projectRepository.Update(entity);
             return new SuccessResult(Messages.EntityUpdated);
         }
+        public Core.Utilities.Results.IResult IsFavourite(IsSoldDto dto)
+        {
+            var entity = _projectRepository.GetByIdWithPassive(dto.Id);
+            if (entity == null)
+            {
+                return new ErrorResult(Messages.EntityNotFound);
+            }
+            var modelIsFavourite = !entity.IsFavourite;
+            entity.IsFavourite = modelIsFavourite;
+            _projectRepository.Update(entity);
+            return new SuccessResult(Messages.EntityUpdated);
+        }
     }
 }

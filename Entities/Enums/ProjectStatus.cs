@@ -12,6 +12,7 @@ namespace Entities.Enums
         Sell,
         SecondHand,
         Project,
-        New
+        New,
+        Sold
     }
 }
