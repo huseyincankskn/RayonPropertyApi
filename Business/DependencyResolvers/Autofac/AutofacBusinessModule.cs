@@ -24,6 +24,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<SitePropertyService>().As<ISitePropertyService>();
             builder.RegisterType<BlogFileService>().As<IBlogFileService>();
             builder.RegisterType<DashboardService>().As<IDashboardService>();
+            builder.RegisterType<CommentService>().As<ICommentService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<StreetRepository>().As<IStreetRepository>();
@@ -39,6 +40,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BlogCategoryRepository>().As<IBlogCategoryRepository>();
             builder.RegisterType<BlogFileRepository>().As<IBlogFileRepository>();
             builder.RegisterType<ContactRequestRepository>().As<IContactRequestRepository>();
+            builder.RegisterType<CommentRepository>().As<ICommentRepository>();
 
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
 
