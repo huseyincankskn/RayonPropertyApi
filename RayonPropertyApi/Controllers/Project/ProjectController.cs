@@ -63,6 +63,15 @@ namespace RayonPropertyApi.Controllers.Project
             var result = _productService.AddProject(projectDto);
             return Ok(result);
         }
+
+        [RayonPropertyAuthorize]
+        [HttpPost("SellOrNot")]
+        public IActionResult SellOrNot(IsSoldDto dto)
+        {
+            var result = _productService.SellOrNot(dto);
+            return Ok(result);
+        }
+
         [RayonPropertyAuthorize]
         [HttpPut]
         public IActionResult Put(ProjectDto dto)

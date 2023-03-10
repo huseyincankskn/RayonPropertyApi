@@ -9,6 +9,8 @@ namespace Entities.Enums
     public enum ProjectType
     {
         Villa,
-        Apartment
+        Apartment,
+        Dublex,
+        GardenDublex
     }
 }

@@ -32,6 +32,7 @@ namespace Entities.VMs
         public int CityId { get; set; }
         public int TownId { get; set; }
         public int DistrictId { get; set; }
+        public bool IsSold { get; set; }
         public List<string> PhotoUrls { get; set; }
         public List<string> FeatureNames { get; set; }
         public int StreetId { get; set; }
@@ -41,6 +42,7 @@ namespace Entities.VMs
         public string TownName { get; set; }
         public string StatusValue { get; set; }
         public string ProjectTypeValue { get; set; }
+        public DateTime ProjectDate { get; set; }
         public bool IsActive { get; set; }
     }
 }

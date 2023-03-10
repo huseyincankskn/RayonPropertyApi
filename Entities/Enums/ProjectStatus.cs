@@ -9,6 +9,9 @@ namespace Entities.Enums
     public enum ProjectStatus
     {
         Rent,
-        Sell
+        Sell,
+        SecondHand,
+        Project,
+        New
     }
 }

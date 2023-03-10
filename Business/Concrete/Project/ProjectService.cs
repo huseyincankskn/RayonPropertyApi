@@ -117,7 +117,7 @@ namespace Business.Concrete
         {
             var productIderId = JsonConvert.DeserializeObject<string>(productId);
             // Watermark fotoğrafını yükle
-            var watermark = Image.FromFile(_webHostEnvironment.WebRootPath + "/Logo/Rayon_Property_Logo_EN@4x.png");
+            var watermark = Image.FromFile(_webHostEnvironment.WebRootPath + "/Logo/Rayon_Logo.png");
             //Watermark transparancy ayarları
             var imageAttributes = new ImageAttributes();
             var colorMatrix = new ColorMatrix { Matrix33 = 0.3f };
@@ -181,6 +181,19 @@ namespace Business.Concrete
             }
             var modelActive = !entity.IsActive;
             entity.IsActive = modelActive;
+            _projectRepository.Update(entity);
+            return new SuccessResult(Messages.EntityUpdated);
+        }
+
+        public Core.Utilities.Results.IResult SellOrNot(IsSoldDto dto)
+        {
+            var entity = _projectRepository.GetByIdWithPassive(dto.Id);
+            if (entity == null)
+            {
+                return new ErrorResult(Messages.EntityNotFound);
+            }
+            var modelIsSold = !entity.IsSold;
+            entity.IsSold = modelIsSold;
             _projectRepository.Update(entity);
             return new SuccessResult(Messages.EntityUpdated);
         }

@@ -15,5 +15,6 @@ namespace Business.Abstract.Project
         Core.Utilities.Results.IResult DeletePhoto(string fileName);
         IDataResult<bool> SaveImages(List<IFormFile> images,string productId);
         Core.Utilities.Results.IResult Delete(Guid id);
+        Core.Utilities.Results.IResult SellOrNot(IsSoldDto dto);
     }
 }

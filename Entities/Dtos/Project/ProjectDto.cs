@@ -28,11 +28,13 @@ namespace Entities.Dtos
         public short GrossArea { get; set; }
         public short NetArea { get; set; }
         public short SeeClose { get; set; }
+        public bool IsSold { get; set; }
         public List<short> CheckBoxField { get; set; }
         public short CurrencyId { get; set; }
         public int CityId { get; set; }
         public int TownId { get; set; }
         public int DistrictId { get; set; }
         public int StreetId { get; set; }
+        public DateTime ProjectDate { get; set; }
     }
 }
