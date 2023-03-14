@@ -6,10 +6,9 @@ namespace Entities.Concrete
     {
         public string Title { get; set; } = string.Empty;
         public string ProjectNumber { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty; 
+        public string Description { get; set; } = string.Empty;
         //public short RoomCount { get; set; }
-        public short SaloonCount { get; set; }
-        public short BedCount { get; set; }
+        public string SaloonCount { get; set; }
         public decimal Price { get; set; }
         public short GrossArea { get; set; }
         public short NetArea { get; set; }
