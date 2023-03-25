@@ -59,7 +59,7 @@ namespace RayonPropertyApi.Controllers.Comment
             return BadRequest(result.Message);
         }
 
-        [HttpPost]
+        [HttpPost("CommentAdd")]
         public IActionResult Post(CommentAddDto dto)
         {
             var result = _commentService.Add(dto);
