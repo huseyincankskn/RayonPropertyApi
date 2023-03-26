@@ -19,6 +19,8 @@ namespace DataAccess.Concrete
         public DbSet<BlogFile> BlogFile { get; set; }
         public DbSet<ContactRequest> ContactRequest { get; set; }
         public DbSet<Comment> Comment { get; set; }
+        public DbSet<Role> Role { get; set; }
+        public DbSet<UserRole> UserRole { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +36,8 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<Currency>().ToTable(nameof(Currency), "Currency");
 
             modelBuilder.Entity<User>().ToTable(nameof(User), "Auth");
+            modelBuilder.Entity<Role>().ToTable(nameof(Role), "Auth");
+            modelBuilder.Entity<UserRole>().ToTable(nameof(UserRole), "Auth");
 
             modelBuilder.Entity<Blog>().ToTable(nameof(Blog), "Blog");
             modelBuilder.Entity<BlogCategory>().ToTable(nameof(BlogCategory), "Blog");

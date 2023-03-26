@@ -106,7 +106,7 @@ namespace RayonPropertyApi.Controllers.Project
         [ProducesResponseType(typeof(ProjectFeaturesVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
-        //[RayonPropertyAuthorize]
+        [RayonPropertyAuthorize]
         [HttpGet("GetProjectFeatures")]
         public IActionResult GetProjectFeatures()
         {

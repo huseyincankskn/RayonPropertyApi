@@ -11,5 +11,7 @@ namespace Entities.Concrete
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
+        public bool IsAdmin { get; set; } = false;
+        public List<UserRole>? UserRoles { get; set; }
     }
 }

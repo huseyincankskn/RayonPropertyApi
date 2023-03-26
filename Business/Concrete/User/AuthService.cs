@@ -96,6 +96,17 @@ namespace Business.Concrete
             return new SuccessDataResult<IQueryable<UserVm>>(vmList);
         }
 
+        public IDataResult<User> GetForAuthorization(Guid userId, string email)
+        {
+            var user = _userRepository.GetAllForWithoutLogin().FirstOrDefault(x => x.Id == userId && x.Email == email);
+            if (user != null)
+            {
+                return new SuccessDataResult<User>(user);
+            }
+
+            return new ErrorDataResult<User>(Messages.UserNotFound);
+        }
+
         public IResult IsHavePsrGuid(Guid psrGuid)
         {
             var isPsrGuidExist = _userRepository.Exist(x => x.PsrGuid == psrGuid);
@@ -154,5 +165,7 @@ namespace Business.Concrete
             _userRepository.UpdateWithoutLogin(user);
             return new SuccessDataResult<User>(user);
         }
+
+
     }
 }

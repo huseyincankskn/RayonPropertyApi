@@ -18,5 +18,6 @@ namespace Business.Abstract
         IDataResult<User> ResetPassword(CreatePasswordVm resetPassword);
         IResult IsHavePsrGuid(Guid psrGuid);
         IDataResult<IQueryable<UserVm>> GetAllData();
+        IDataResult<User> GetForAuthorization(Guid userId, string email);
     }
 }
