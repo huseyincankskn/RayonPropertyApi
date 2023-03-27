@@ -6,5 +6,7 @@
         public string ControllerName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public short Id { get; set; }
+        public Guid UserId { get; set; }
+        public bool IsActive { get; set; }
     }
 }

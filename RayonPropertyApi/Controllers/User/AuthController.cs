@@ -16,10 +16,13 @@ namespace RayonPropertyApi.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IRoleService _roleService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService,
+                              IRoleService roleService)
         {
             _authService = authService;
+            _roleService = roleService;
         }
 
         [AllowAnonymous]
@@ -66,6 +69,15 @@ namespace RayonPropertyApi.Controllers
         public ActionResult IsHavePsrGuid(Guid PsrGuid)
         {
             var result = _authService.IsHavePsrGuid(PsrGuid);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [RayonPropertyAuthorize]
+        [HttpPost("UpdateUserRole")]
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public ActionResult UpdateUserRole(UserRoleDto roleDto)
+        {
+            var result = _roleService.UpdateUserRoles(roleDto);
             return StatusCode(result.StatusCode, result);
         }
     }

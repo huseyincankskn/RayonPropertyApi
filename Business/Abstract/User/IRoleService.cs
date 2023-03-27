@@ -1,4 +1,5 @@
 ﻿using Core.Utilities.Results;
+using Entities.Dtos;
 using Entities.VMs;
 
 namespace Business.Abstract
@@ -12,5 +13,9 @@ namespace Business.Abstract
         RoleVm GetRoleByPath(string path, string method);
 
         IResult CheckUserRole(Guid userId, short roleId);
+
+        IResult UpdateUserRoles(UserRoleDto roleDto);
+
+        IDataResult<List<RoleVm>> RoleList(RoleVm role);
     }
 }

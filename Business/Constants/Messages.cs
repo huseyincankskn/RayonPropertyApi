@@ -19,6 +19,7 @@
         public const string SameEntity = "Zaten olan bir kaydı tekrar ekleyemezsiniz";
 
         public const string BlogCategoryNotFound = "Blog Kategorisi bulunamadı";
+        public const string RoleNotFound = "Role not found.";
 
     }
 }
