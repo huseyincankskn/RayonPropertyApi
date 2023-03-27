@@ -127,6 +127,16 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+        public IDataResult<UserVm> IsUserFullPageAuth(Guid userId)
+        {
+            var user = _userRepository.GetById(userId);
+            if (user != null)
+            {
+                return new SuccessDataResult<UserVm>(_mapper.Map<UserVm>(user));
+            }
+            return new ErrorDataResult<UserVm>(Messages.UserNotFound);
+        }
+
         public IDataResult<User> Login(UserForLoginDto userForLoginDto)
         {
             var userToCheck = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == userForLoginDto.Email);

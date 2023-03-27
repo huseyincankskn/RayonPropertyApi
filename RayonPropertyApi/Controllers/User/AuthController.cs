@@ -71,14 +71,5 @@ namespace RayonPropertyApi.Controllers
             var result = _authService.IsHavePsrGuid(PsrGuid);
             return StatusCode(result.StatusCode, result);
         }
-
-        [RayonPropertyAuthorize]
-        [HttpPost("UpdateUserRole")]
-        [ApiExplorerSettings(IgnoreApi = true)]
-        public ActionResult UpdateUserRole(UserRoleDto roleDto)
-        {
-            var result = _roleService.UpdateUserRoles(roleDto);
-            return StatusCode(result.StatusCode, result);
-        }
     }
 }

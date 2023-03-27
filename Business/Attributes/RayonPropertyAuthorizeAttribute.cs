@@ -61,15 +61,23 @@ namespace Business.Attributes
             {
                 return;
             }
+
             var requestRole = roleService.GetRoleByPath(requestPath, requestMethod);
             if (requestRole == null)
             {
                 context.Result = new StatusCodeResult(403);
                 return;
             }
+            else
+            {
+                if (user.Data.IsFullPageAuth)
+                {
+                    return;
+                }
+            }
 
             var checkUserRole = roleService.CheckUserRole(user.Data.Id, requestRole.Id);
-            if (checkUserRole == null)
+            if (!checkUserRole.Success)
             {
                 context.Result = new StatusCodeResult(403);
                 return;

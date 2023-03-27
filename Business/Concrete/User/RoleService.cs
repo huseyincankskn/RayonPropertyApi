@@ -86,6 +86,19 @@ namespace Business.Concrete
                 return new ErrorResult(Messages.UserNotFound);
             }
 
+            if (roleDto.IsAll)
+            {
+                user.IsFullPageAuth = true;
+                _userRepository.Update(user);
+                return new SuccessResult();
+            }
+            else if (!roleDto.IsAll && user.IsFullPageAuth)
+            {
+                user.IsFullPageAuth = false;
+                _userRepository.Update(user);
+                return new SuccessResult();
+            }
+
             var role = _roleRepository.GetById(roleDto.RoleId);
             if (role is null)
             {

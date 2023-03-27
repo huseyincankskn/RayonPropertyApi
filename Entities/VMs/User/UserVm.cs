@@ -9,5 +9,6 @@
         public bool IsActive { get; set; }
         public string Name { get; set; } = string.Empty;
         public DateTime AddDate { get; set; }
+        public bool IsFullPageAuth { get; set; } = false;
     }
 }

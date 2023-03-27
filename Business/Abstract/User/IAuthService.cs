@@ -19,5 +19,6 @@ namespace Business.Abstract
         IResult IsHavePsrGuid(Guid psrGuid);
         IDataResult<IQueryable<UserVm>> GetAllData();
         IDataResult<User> GetForAuthorization(Guid userId, string email);
+        IDataResult<UserVm> IsUserFullPageAuth(Guid userId);
     }
 }

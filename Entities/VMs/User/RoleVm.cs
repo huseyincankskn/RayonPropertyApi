@@ -8,5 +8,7 @@
         public short Id { get; set; }
         public Guid UserId { get; set; }
         public bool IsActive { get; set; }
+        public short ModuleId { get; set; }
+        public string? ModuleName { get; set; }
     }
 }

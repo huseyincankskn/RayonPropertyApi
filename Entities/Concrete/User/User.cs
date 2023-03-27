@@ -12,6 +12,7 @@ namespace Entities.Concrete
         public string LastName { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
         public bool IsAdmin { get; set; } = false;
+        public bool IsFullPageAuth { get; set; } = false;
         public List<UserRole>? UserRoles { get; set; }
     }
 }

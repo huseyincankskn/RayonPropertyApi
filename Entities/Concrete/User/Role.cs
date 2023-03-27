@@ -8,5 +8,7 @@ namespace Entities.Concrete
         public string ControllerName { get; set; } = string.Empty;
         public string Name { get; set; } = string.Empty;
         public virtual List<UserRole>? UserRoles { get; set; }
+        public short ModuleId { get; set; }
+        public string? ModuleName { get; set; }
     }
 }
