@@ -45,7 +45,13 @@ namespace Business.Concrete
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
-            var entityList = _projectRepository.GetAllForOdataWithPassive().Include(x=> x.Town).Include(x => x.City).Include(x => x.District).Include(x => x.Street).OrderByDescending(x=> x.AddDate);
+            var entityList = _projectRepository.GetAllForOdataWithPassive()
+                .Include(x=> x.Town)
+                .Include(x => x.City)
+                .Include(x => x.District)
+                .Include(x => x.Features)
+                .Include(x => x.Street)
+                .OrderByDescending(x=> x.AddDate);
             var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }

@@ -35,6 +35,7 @@ namespace Entities.VMs
         public bool IsFavourite { get; set; }
         public List<string> PhotoUrls { get; set; }
         public List<string> FeatureNames { get; set; }
+        public List<short> FeatureIds { get; set; }
         public int StreetId { get; set; }
         public string CityName { get; set; }
         public string DistrictName { get; set; }
