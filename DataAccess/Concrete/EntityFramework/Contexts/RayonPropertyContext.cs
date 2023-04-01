@@ -21,6 +21,7 @@ namespace DataAccess.Concrete
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Role> Role { get; set; }
         public DbSet<UserRole> UserRole { get; set; }
+        public DbSet<Translate> Translate { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -44,6 +45,7 @@ namespace DataAccess.Concrete
             modelBuilder.Entity<BlogFile>().ToTable(nameof(BlogFile), "Blog");
             modelBuilder.Entity<ContactRequest>().ToTable(nameof(ContactRequest), "Contact");
             modelBuilder.Entity<Comment>().ToTable(nameof(Comment), "Comment");
+            modelBuilder.Entity<Translate>().ToTable(nameof(Translate), "Translate");
 
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }

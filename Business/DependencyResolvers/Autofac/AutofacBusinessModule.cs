@@ -44,6 +44,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CommentRepository>().As<ICommentRepository>();
             builder.RegisterType<RoleRepository>().As<IRoleRepository>();
             builder.RegisterType<UserRoleRepository>().As<IUserRoleRepository>();
+            builder.RegisterType<TranslateRepository>().As<ITranslateRepository>();
 
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
 

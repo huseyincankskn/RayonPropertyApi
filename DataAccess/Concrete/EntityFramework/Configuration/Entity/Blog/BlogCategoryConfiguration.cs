@@ -9,6 +9,8 @@ namespace DataAccess.Concrete.EntityFramework.Configuration.Entity
         public override void EntityConfigure(EntityTypeBuilder<BlogCategory> builder)
         {
             builder.Property(x => x.Name).IsRequired().NVarChar(50);
+            builder.Property(x => x.NameDe).IsRequired().NVarChar(50);
+            builder.Property(x => x.NameRu).IsRequired().NVarChar(50);
         }
     }
 }

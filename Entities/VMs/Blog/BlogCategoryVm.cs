@@ -7,5 +7,7 @@
         public DateTime AddDate { get; set; } = DateTime.Now;
         public bool IsActive { get; set; } = true;
         public int Count { get; set; }
+        public string NameDe { get; set; } = string.Empty;
+        public string NameRu { get; set; } = string.Empty;
     }
 }

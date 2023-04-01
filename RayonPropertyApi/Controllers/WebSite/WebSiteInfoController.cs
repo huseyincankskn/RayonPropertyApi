@@ -1,9 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Concrete;
 using Core.Entities.Exceptions;
+using Entities.VMs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System.IO;
+
 
 namespace RayonPropertyApi.Controllers.WebSite
 {
@@ -78,6 +83,29 @@ namespace RayonPropertyApi.Controllers.WebSite
         {
             var result = _sitePropertyService.GetProjectCount(idList);
             return Ok(result.Data);
+        }
+
+        [HttpGet("GetTranslate")]
+        public IActionResult GetTranslate()
+        {
+            string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
+
+            // JSON dosyasını okuyun
+            string jsonVerileri = System.IO.File.ReadAllText(dosyaKonumu);
+
+            // JSON verilerini JObject olarak ayrıştırın
+            JObject veriObjesi = JObject.Parse(jsonVerileri);
+
+            // JSON verilerini güncelleyin
+            veriObjesi["anahtar"] = "değer";
+
+            // Güncellenmiş JSON verilerini dosyaya yazın
+            System.IO.File.WriteAllText(dosyaKonumu, veriObjesi.ToString());
+            var world = new TranslateExampleVm()
+            {
+                NAME = "DENEME"
+            };
+            return Ok(world);
         }
     }
 }
