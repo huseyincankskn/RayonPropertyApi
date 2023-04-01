@@ -20,14 +20,17 @@ namespace RayonPropertyApi.Controllers.WebSite
         private readonly ISitePropertyService _sitePropertyService;
         private readonly IBlogService _blogService;
         public readonly IBlogCategoryService _blogCategoryService;
+        private readonly ITranslateService _translateService;
 
         public WebSiteInfoController(ISitePropertyService sitePropertyService,
                                      IBlogService blogService,
-                                     IBlogCategoryService blogCategoryService)
+                                     IBlogCategoryService blogCategoryService,
+                                     ITranslateService translateService)
         {
             _sitePropertyService = sitePropertyService;
             _blogService = blogService;
             _blogCategoryService = blogCategoryService;
+            _translateService = translateService;
         }
 
         [HttpGet]
@@ -88,24 +91,30 @@ namespace RayonPropertyApi.Controllers.WebSite
         [HttpGet("GetTranslate")]
         public IActionResult GetTranslate()
         {
-            string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
-
-            // JSON dosyasını okuyun
-            string jsonVerileri = System.IO.File.ReadAllText(dosyaKonumu);
-
-            // JSON verilerini JObject olarak ayrıştırın
-            JObject veriObjesi = JObject.Parse(jsonVerileri);
-
-            // JSON verilerini güncelleyin
-            veriObjesi["anahtar"] = "değer";
-
-            // Güncellenmiş JSON verilerini dosyaya yazın
-            System.IO.File.WriteAllText(dosyaKonumu, veriObjesi.ToString());
-            var world = new TranslateExampleVm()
+            var result = _translateService.GetList();
+            if (result.Success)
             {
-                NAME = "DENEME"
-            };
-            return Ok(world);
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+            //string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
+
+            //// JSON dosyasını okuyun
+            //string jsonVerileri = System.IO.File.ReadAllText(dosyaKonumu);
+
+            //// JSON verilerini JObject olarak ayrıştırın
+            //JObject veriObjesi = JObject.Parse(jsonVerileri);
+
+            //// JSON verilerini güncelleyin
+            //veriObjesi["anahtar"] = "değer";
+
+            //// Güncellenmiş JSON verilerini dosyaya yazın
+            //System.IO.File.WriteAllText(dosyaKonumu, veriObjesi.ToString());
+            //var world = new TranslateExampleVm()
+            //{
+            //    NAME = "DENEME"
+            //};
+            //return Ok(world);
         }
     }
 }

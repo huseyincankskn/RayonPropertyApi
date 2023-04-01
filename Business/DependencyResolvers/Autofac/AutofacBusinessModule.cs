@@ -26,6 +26,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<DashboardService>().As<IDashboardService>();
             builder.RegisterType<CommentService>().As<ICommentService>();
             builder.RegisterType<RoleService>().As<IRoleService>();
+            builder.RegisterType<TranslateService>().As<ITranslateService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<StreetRepository>().As<IStreetRepository>();
