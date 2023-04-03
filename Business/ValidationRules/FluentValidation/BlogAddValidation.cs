@@ -7,10 +7,23 @@ namespace Business.ValidationRules.FluentValidation
     {
         public BlogAddValidation()
         {
-            RuleFor(x => x.Title).NotEmpty().WithMessage("Yazı başlığı boş bırakılamaz");
-            RuleFor(x => x.Title).MaximumLength(200).WithMessage("Yazı başlığı 200 karakterden fazla olamaz");
-            RuleFor(x => x.Post).NotEmpty().WithMessage("Yazı boş bırakılamaz");
-            RuleFor(x => x.Post).MaximumLength(4000).WithMessage("Yazı maksimum 4000 karakter olmalıdır");
+            RuleFor(x => x.Title).NotEmpty().WithMessage("Title is required.");
+            RuleFor(x => x.Title).MaximumLength(200).WithMessage("Title maximum length is 200 characters.");
+
+            RuleFor(x => x.TitleDe).NotEmpty().WithMessage("Title German is required.");
+            RuleFor(x => x.TitleDe).MaximumLength(200).WithMessage("Title Russian maximum length is 200 characters.");
+
+            RuleFor(x => x.TitleRu).NotEmpty().WithMessage("Title Russian is required");
+            RuleFor(x => x.TitleRu).MaximumLength(200).WithMessage("Title Russian maximum length is 200 characters.");
+
+            RuleFor(x => x.Post).NotEmpty().WithMessage("Post is required.");
+            RuleFor(x => x.Post).MaximumLength(4000).WithMessage("Post maximum length is 4000 characters.");
+
+            RuleFor(x => x.PostDe).NotEmpty().WithMessage("Post German is required.");
+            RuleFor(x => x.PostDe).MaximumLength(4000).WithMessage("Post German maximum length is 4000 characters.");
+
+            RuleFor(x => x.PostRu).NotEmpty().WithMessage("Post Russian is required.");
+            RuleFor(x => x.PostRu).MaximumLength(4000).WithMessage("Post Russian maximum length is 4000 characters.");
         }
     }
 }

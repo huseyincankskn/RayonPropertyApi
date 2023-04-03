@@ -20,7 +20,13 @@ namespace DataAccess.Concrete
                 .HasForeignKey<Blog>(x => x.BlogFileId);
 
             builder.Property(x => x.Title).IsRequired().NVarChar(200);
+            builder.Property(x => x.TitleDe).IsRequired().NVarChar(200);
+            builder.Property(x => x.TitleRu).IsRequired().NVarChar(200);
+
             builder.Property(x => x.Post).IsRequired().NVarChar(4000);
+            builder.Property(x => x.PostDe).IsRequired().NVarChar(4000);
+            builder.Property(x => x.PostRu).IsRequired().NVarChar(4000);
+
         }
     }
 }

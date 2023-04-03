@@ -13,7 +13,9 @@ namespace Business.Profiles
                 .ForMember(dest => dest.BlogCategoryName,
                 act => act.MapFrom(src => src.BlogCategory != null ? src.BlogCategory.Name : null))
                 .ForMember(dest => dest.BlogFileName,
-                act => act.MapFrom(src => src.BlogFile != null ? src.BlogFile.FileName : string.Empty));
+                act => act.MapFrom(src => src.BlogFile != null ? src.BlogFile.FileName : string.Empty))
+                .ForMember(dest => dest.IdString,
+                act => act.MapFrom(src => src.Id.ToString("N")));
             CreateMap<BlogAddDto, Blog>();
             CreateMap<BlogUpdateDto, Blog>();
         }

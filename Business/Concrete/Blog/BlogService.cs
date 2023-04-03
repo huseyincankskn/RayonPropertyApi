@@ -22,16 +22,19 @@ namespace Business.Concrete
         private readonly IMapper _mapper;
         private readonly IBlogCategoryRepository _blogCategoryRepository;
         private readonly IBlogFileService _blogFileService;
+        private readonly ITranslateRepository _translateRepository;
 
         public BlogService(IBlogRepository blogRepository,
                            IMapper mapper,
                            IBlogCategoryRepository blogCategoryRepository,
-                           IBlogFileService blogFileService)
+                           IBlogFileService blogFileService,
+                           ITranslateRepository translateRepository)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;
             _blogCategoryRepository = blogCategoryRepository;
             _blogFileService = blogFileService;
+            _translateRepository = translateRepository;
         }
 
         public IDataResult<IQueryable<BlogVm>> GetListQueryableOdata()
@@ -80,6 +83,27 @@ namespace Business.Concrete
             dto.BlogFileId = blogFileAdd.Data.Id;
             var addEntity = _mapper.Map<Blog>(dto);
             _blogRepository.Add(addEntity);
+
+            #region Translate
+            var addTranslateList = new List<Translate>()
+            {
+                new Translate()
+                {
+                    Key = addEntity.Title,
+                    KeyDe = addEntity.TitleDe,
+                    KeyRu = addEntity.TitleRu,
+                },
+                new Translate()
+                {
+                    Key = addEntity.Post,
+                    KeyDe = addEntity.PostDe,
+                    KeyRu = addEntity.PostRu,
+                }
+            };
+
+            _translateRepository.AddRange(addTranslateList);
+            #endregion
+
             return new SuccessDataResult<Blog>(addEntity);
         }
 
@@ -126,6 +150,65 @@ namespace Business.Concrete
             }
             blog = _mapper.Map(dto, blog);
             _blogRepository.Update(blog);
+
+            #region Translate
+            var addTranslateList = new List<Translate>();
+            var updateTranslateList = new List<Translate>();
+
+            var translateTitle = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Title);
+            if (translateTitle != null)
+            {
+                if (translateTitle?.KeyDe != blog.TitleDe || translateTitle?.KeyRu != blog.TitleRu)
+                {
+                    translateTitle.KeyDe = blog.TitleDe;
+                    translateTitle.KeyRu = blog.TitleRu;
+                    updateTranslateList.Add(translateTitle);
+                }
+            }
+            else
+            {
+                var TranslateEntity = new Translate()
+                {
+                    Key = blog.Title,
+                    KeyDe = blog.TitleDe,
+                    KeyRu = blog.TitleRu,
+                };
+                addTranslateList.Add(TranslateEntity);
+            }
+
+
+            var translatePost = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Post);
+            if (translatePost != null)
+            {
+                if (translatePost?.KeyDe != blog.PostDe || translatePost?.KeyRu != blog.PostRu)
+                {
+                    translatePost.KeyDe = blog.PostDe;
+                    translatePost.KeyRu = blog.PostRu;
+                    updateTranslateList.Add(translatePost);
+                }
+            }
+            else
+            {
+                var TranslateEntity = new Translate()
+                {
+                    Key = blog.Post,
+                    KeyDe = blog.PostDe,
+                    KeyRu = blog.PostRu,
+                };
+                addTranslateList.Add(TranslateEntity);
+            }
+
+            if (addTranslateList.Any())
+            {
+                _translateRepository.AddRange(addTranslateList);
+            }
+
+            if (updateTranslateList.Any())
+            {
+                _translateRepository.UpdateRange(updateTranslateList);
+            }
+
+            #endregion
             return new SuccessResult(Messages.EntityUpdated);
         }
 

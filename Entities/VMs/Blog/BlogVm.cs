@@ -11,5 +11,14 @@
         public string BlogCategoryName { get; set; } = string.Empty;
         public Guid BlogFileId { get; set; } = Guid.Empty;
         public string BlogFileName { get; set; } = string.Empty;
+
+
+        #region Translate
+        public string TitleDe { get; set; } = string.Empty;
+        public string TitleRu { get; set; } = string.Empty;
+        public string PostDe { get; set; } = string.Empty;
+        public string PostRu { get; set; } = string.Empty;
+        public string IdString { get; set; } = string.Empty;
+        #endregion
     }
 }
