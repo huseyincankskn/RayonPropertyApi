@@ -13,6 +13,8 @@ namespace DataAccess.Concrete.EntityFramework.Configuration.Entity
             builder.Property(x => x.Name).NVarChar(100);
             builder.Property(x => x.Country).NVarChar(100);
             builder.Property(x => x.CommentText).NVarChar(3000);
+            builder.Property(x => x.CommentTextDe).NVarChar(3000);
+            builder.Property(x => x.CommentTextRu).NVarChar(3000);
         }
     }
 }

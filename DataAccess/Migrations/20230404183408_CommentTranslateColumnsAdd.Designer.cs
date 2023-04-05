@@ -4,6 +4,7 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayonPropertyContext))]
-    partial class RayonPropertyContextModelSnapshot : ModelSnapshot
+    [Migration("20230404183408_CommentTranslateColumnsAdd")]
+    partial class CommentTranslateColumnsAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -668,14 +670,6 @@ namespace DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(4000)");
 
-                    b.Property<string>("AboutUsTextDe")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(4000)");
-
-                    b.Property<string>("AboutUsTextRu")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(4000)");
-
                     b.Property<DateTime>("AddDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
@@ -685,14 +679,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("AddressDe")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1000)");
-
-                    b.Property<string>("AddressRu")
                         .IsRequired()
                         .HasColumnType("nvarchar(1000)");
 

@@ -10,5 +10,7 @@ namespace Entities.Dtos
     {
         public short Id { get; set; }
         public string Name { get; set; }
+        public string NameDe { get; set; }
+        public string NameRu { get; set; }
     }
 }

@@ -83,7 +83,6 @@ namespace Business.Concrete
             return new SuccessResult(Messages.EntityUpdated);
         }
 
-
         public IResult Delete(Guid id)
         {
             var entity = _commentRepository.GetByIdWithPassive(id);
