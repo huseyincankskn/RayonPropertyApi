@@ -19,6 +19,8 @@
         public string PostDe { get; set; } = string.Empty;
         public string PostRu { get; set; } = string.Empty;
         public string IdString { get; set; } = string.Empty;
+        public string TitleTranslateKey { get; set; } = string.Empty;
+        public string PostTranslateKey { get; set; } = string.Empty;
         #endregion
     }
 }

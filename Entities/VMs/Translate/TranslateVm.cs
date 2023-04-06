@@ -6,5 +6,6 @@
         public string Key { get; set; } = string.Empty;
         public string KeyDe { get; set; } = string.Empty;
         public string KeyRu { get; set; } = string.Empty;
+        public string TranslateKey { get; set; } = string.Empty;
     }
 }

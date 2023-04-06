@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Business.Abstract;
 using Business.Abstract.Project;
 using Business.Constants;
 using Core.Extensions;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Abstract.EntityFramework.Repository;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
@@ -14,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Reflection.Metadata;
 
 namespace Business.Concrete
 {
@@ -26,14 +29,19 @@ namespace Business.Concrete
         private readonly IProjectFeaturesRepository _projectFeaturesRepository;
         private readonly IFeatureRepository _featureRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ITranslateService _translateService;
+        private readonly ITranslateRepository _translateRepository;
+
         public ProjectService(
-            IMapper mapper, 
-            IProjectRepository projectRepository, 
-            IHttpContextAccessor httpContextAccessor, 
-            IProjectFilesRepository projectFilesRepository, 
+            IMapper mapper,
+            IProjectRepository projectRepository,
+            IHttpContextAccessor httpContextAccessor,
+            IProjectFilesRepository projectFilesRepository,
             IProjectFeaturesRepository projectFeaturesRepository,
             IFeatureRepository featureRepository,
-            IWebHostEnvironment webHostEnvironment)
+            IWebHostEnvironment webHostEnvironment,
+            ITranslateService translateService,
+            ITranslateRepository translateRepository)
         {
             _mapper = mapper;
             _projectRepository = projectRepository;
@@ -42,16 +50,18 @@ namespace Business.Concrete
             _projectFeaturesRepository = projectFeaturesRepository;
             _featureRepository = featureRepository;
             _webHostEnvironment = webHostEnvironment;
+            _translateService = translateService;
+            _translateRepository = translateRepository;
         }
         public IDataResult<IQueryable<ProjectVm>> GetListQueryableOdata()
         {
             var entityList = _projectRepository.GetAllForOdataWithPassive()
-                .Include(x=> x.Town)
+                .Include(x => x.Town)
                 .Include(x => x.City)
                 .Include(x => x.District)
                 .Include(x => x.Features)
                 .Include(x => x.Street)
-                .OrderByDescending(x=> x.AddDate);
+                .OrderByDescending(x => x.AddDate);
             var vmList = _mapper.ProjectTo<ProjectVm>(entityList);
             return new SuccessDataResult<IQueryable<ProjectVm>>(vmList);
         }
@@ -78,6 +88,32 @@ namespace Business.Concrete
             var lastNumber = _projectRepository.GetAll().OrderByDescending(x => x.AddDate)?.FirstOrDefault()?.ProjectNumber;
             var projectNumber = string.IsNullOrEmpty(lastNumber) ? "0002148512" : (Convert.ToInt32(lastNumber) + 1).ToString();
             addEntity.ProjectNumber = projectNumber;
+
+            #region Translate
+            var addTranslateList = new List<Translate>()
+            {
+                new Translate()
+                {
+                    Key = addEntity.Title,
+                    KeyDe = addEntity.TitleDe,
+                    KeyRu = addEntity.TitleRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
+                },
+                new Translate()
+                {
+                    Key = addEntity.Description,
+                    KeyDe = addEntity.DescriptionDe,
+                    KeyRu = addEntity.DescriptionRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
+                }
+            };
+
+            _translateRepository.AddRange(addTranslateList);
+
+            addEntity.TitleTranslateKey = addTranslateList.First().TranslateKey;
+            addEntity.DescriptionTranslateKey = addTranslateList.Last().TranslateKey;
+            #endregion
+
             var response = _projectRepository.Add(addEntity);
             project.Id = response.Data.Id;
             if (response.Success)
@@ -100,8 +136,51 @@ namespace Business.Concrete
             var project = _projectRepository.GetById(dto.Id);
             dto.TrimAllProps();
             project = _mapper.Map(dto, project);
+
+            #region Translate
+            var addTranslateList = new List<Translate>();
+
+            var translateTitle = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == project.Title
+                                                                                           && x.KeyDe == project.TitleDe
+                                                                                           && x.KeyRu == project.TitleRu);
+            if (translateTitle == null)
+            {
+                var TranslateEntity = new Translate()
+                {
+                    Key = project.Title,
+                    KeyDe = project.TitleDe,
+                    KeyRu = project.TitleRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
+                };
+                addTranslateList.Add(TranslateEntity);
+                project.TitleTranslateKey = TranslateEntity.TranslateKey;
+            }
+
+            var translateDescription = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == project.Description
+                                                                                                 && x.KeyDe == project.DescriptionDe
+                                                                                                 && x.KeyRu == project.DescriptionRu);
+            if (translateDescription == null)
+            {
+                var TranslateEntity = new Translate()
+                {
+                    Key = project.Description,
+                    KeyDe = project.DescriptionDe,
+                    KeyRu = project.DescriptionRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
+                };
+                addTranslateList.Add(TranslateEntity);
+                project.DescriptionTranslateKey = TranslateEntity.TranslateKey;
+            }
+
+            if (addTranslateList.Any())
+            {
+                _translateRepository.AddRange(addTranslateList);
+            }
+
+            #endregion
+
             var result = _projectRepository.Update(project);
-            if(result.Success)
+            if (result.Success)
             {
                 var features = _featureRepository.GetAll().Where(x => x.ProjectId == dto.Id).ToList();
                 _featureRepository.HardDeleteRange(features);
@@ -160,9 +239,9 @@ namespace Business.Concrete
             _projectFilesRepository.AddRange(fileList);
             return new SuccessDataResult<bool>(true);
         }
-        public Core.Utilities.Results.IResult DeletePhoto (string fileName)
+        public Core.Utilities.Results.IResult DeletePhoto(string fileName)
         {
-            var file = _projectFilesRepository.GetAll().Where(x=> x.FileName== fileName).FirstOrDefault();
+            var file = _projectFilesRepository.GetAll().Where(x => x.FileName == fileName).FirstOrDefault();
             _projectFilesRepository.Delete(file);
             return new SuccessResult(Messages.EntityDeleted);
         }
@@ -174,7 +253,7 @@ namespace Business.Concrete
         }
         private IDataResult<IQueryable<FeatureVm>> GetFeatureList(Guid id)
         {
-            var entityList = _featureRepository.GetAllForOdata().Where(x=> x.ProjectId == id);
+            var entityList = _featureRepository.GetAllForOdata().Where(x => x.ProjectId == id);
             var vmList = _mapper.ProjectTo<FeatureVm>(entityList);
             return new SuccessDataResult<IQueryable<FeatureVm>>(vmList);
         }

@@ -13,9 +13,11 @@ namespace Entities.Concrete
 
         #region Translate
         public string TitleDe { get; set; } = string.Empty;
-        public string TitleRu { get; set;} = string.Empty;
+        public string TitleRu { get; set; } = string.Empty;
         public string PostDe { get; set; } = string.Empty;
-        public string PostRu { get; set;} = string.Empty;
+        public string PostRu { get; set; } = string.Empty;
+        public string TitleTranslateKey { get; set; } = string.Empty;
+        public string PostTranslateKey { get; set; } = string.Empty;
         #endregion
     }
 }

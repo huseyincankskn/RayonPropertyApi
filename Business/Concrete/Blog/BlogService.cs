@@ -23,18 +23,21 @@ namespace Business.Concrete
         private readonly IBlogCategoryRepository _blogCategoryRepository;
         private readonly IBlogFileService _blogFileService;
         private readonly ITranslateRepository _translateRepository;
+        private readonly ITranslateService _translateService;
 
         public BlogService(IBlogRepository blogRepository,
                            IMapper mapper,
                            IBlogCategoryRepository blogCategoryRepository,
                            IBlogFileService blogFileService,
-                           ITranslateRepository translateRepository)
+                           ITranslateRepository translateRepository,
+                           ITranslateService translateService)
         {
             _blogRepository = blogRepository;
             _mapper = mapper;
             _blogCategoryRepository = blogCategoryRepository;
             _blogFileService = blogFileService;
             _translateRepository = translateRepository;
+            _translateService = translateService;
         }
 
         public IDataResult<IQueryable<BlogVm>> GetListQueryableOdata()
@@ -82,7 +85,6 @@ namespace Business.Concrete
             var blogFileAdd = _blogFileService.SaveImage(file);
             dto.BlogFileId = blogFileAdd.Data.Id;
             var addEntity = _mapper.Map<Blog>(dto);
-            _blogRepository.Add(addEntity);
 
             #region Translate
             var addTranslateList = new List<Translate>()
@@ -92,17 +94,25 @@ namespace Business.Concrete
                     Key = addEntity.Title,
                     KeyDe = addEntity.TitleDe,
                     KeyRu = addEntity.TitleRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 },
                 new Translate()
                 {
                     Key = addEntity.Post,
                     KeyDe = addEntity.PostDe,
                     KeyRu = addEntity.PostRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 }
             };
 
             _translateRepository.AddRange(addTranslateList);
+
+            addEntity.TitleTranslateKey = addTranslateList.First().TranslateKey;
+            addEntity.PostTranslateKey = addTranslateList.Last().TranslateKey;
             #endregion
+
+            _blogRepository.Add(addEntity);
+
 
             return new SuccessDataResult<Blog>(addEntity);
         }
@@ -149,53 +159,40 @@ namespace Business.Concrete
                 dto.BlogFileId = blogFileAdd.Data.Id;
             }
             blog = _mapper.Map(dto, blog);
-            _blogRepository.Update(blog);
 
             #region Translate
             var addTranslateList = new List<Translate>();
-            var updateTranslateList = new List<Translate>();
 
-            var translateTitle = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Title);
-            if (translateTitle != null)
-            {
-                if (translateTitle?.KeyDe != blog.TitleDe || translateTitle?.KeyRu != blog.TitleRu)
-                {
-                    translateTitle.KeyDe = blog.TitleDe;
-                    translateTitle.KeyRu = blog.TitleRu;
-                    updateTranslateList.Add(translateTitle);
-                }
-            }
-            else
+            var translateTitle = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Title
+                                                                                            && x.KeyDe == blog.TitleDe
+                                                                                            && x.KeyRu == blog.TitleRu);
+            if (translateTitle == null)
             {
                 var TranslateEntity = new Translate()
                 {
                     Key = blog.Title,
                     KeyDe = blog.TitleDe,
                     KeyRu = blog.TitleRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 };
                 addTranslateList.Add(TranslateEntity);
+                blog.TitleTranslateKey = TranslateEntity.TranslateKey;
             }
 
-
-            var translatePost = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Post);
-            if (translatePost != null)
-            {
-                if (translatePost?.KeyDe != blog.PostDe || translatePost?.KeyRu != blog.PostRu)
-                {
-                    translatePost.KeyDe = blog.PostDe;
-                    translatePost.KeyRu = blog.PostRu;
-                    updateTranslateList.Add(translatePost);
-                }
-            }
-            else
+            var translatePost = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blog.Post
+                                                                                          && x.KeyDe == blog.PostDe
+                                                                                          && x.KeyRu == blog.PostRu);
+            if (translatePost == null)
             {
                 var TranslateEntity = new Translate()
                 {
                     Key = blog.Post,
                     KeyDe = blog.PostDe,
                     KeyRu = blog.PostRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 };
                 addTranslateList.Add(TranslateEntity);
+                blog.PostTranslateKey = TranslateEntity.TranslateKey;
             }
 
             if (addTranslateList.Any())
@@ -203,12 +200,9 @@ namespace Business.Concrete
                 _translateRepository.AddRange(addTranslateList);
             }
 
-            if (updateTranslateList.Any())
-            {
-                _translateRepository.UpdateRange(updateTranslateList);
-            }
-
             #endregion
+
+            _blogRepository.Update(blog);
             return new SuccessResult(Messages.EntityUpdated);
         }
 

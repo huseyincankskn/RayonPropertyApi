@@ -18,6 +18,8 @@ namespace DataAccess.Concrete
             builder.Property(x => x.AddressRu).NVarChar(1000);
             builder.Property(x => x.AboutUsTextDe).NVarChar(4000);
             builder.Property(x => x.AboutUsTextRu).NVarChar(4000);
+            builder.Property(x => x.AddressTranslateKey).NVarChar(20);
+            builder.Property(x => x.AboutUsTranslateKey).NVarChar(20);
         }
     }
 }

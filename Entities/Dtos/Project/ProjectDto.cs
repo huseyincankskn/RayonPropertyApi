@@ -36,5 +36,12 @@ namespace Entities.Dtos
         public int DistrictId { get; set; }
         public int StreetId { get; set; }
         public DateTime ProjectDate { get; set; }
+
+        #region Translate
+        public string TitleDe { get; set; } = string.Empty;
+        public string TitleRu { get; set; } = string.Empty;
+        public string DescriptionDe { get; set; } = string.Empty;
+        public string DescriptionRu { get; set; } = string.Empty;
+        #endregion
     }
 }

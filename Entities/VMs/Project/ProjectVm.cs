@@ -45,5 +45,14 @@ namespace Entities.VMs
         public string ProjectTypeValue { get; set; }
         public DateTime ProjectDate { get; set; }
         public bool IsActive { get; set; }
+
+        #region Translate
+        public string TitleDe { get; set; } = string.Empty;
+        public string TitleRu { get; set; } = string.Empty;
+        public string DescriptionDe { get; set; } = string.Empty;
+        public string DescriptionRu { get; set; } = string.Empty;
+        public string TitleTranslateKey { get; set; } = string.Empty;
+        public string DescriptionTranslateKey { get; set; } = string.Empty;
+        #endregion
     }
 }

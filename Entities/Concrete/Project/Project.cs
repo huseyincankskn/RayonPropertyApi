@@ -14,8 +14,8 @@ namespace Entities.Concrete
         public short NetArea { get; set; }
         public short SeeClose { get; set; }
         public byte ProjectStatus { get; set; }
-        public byte ProjectTye { get; set; } 
-        public string ZipCode { get; set; } = string.Empty; 
+        public byte ProjectTye { get; set; }
+        public string ZipCode { get; set; } = string.Empty;
         public short Floor { get; set; }
         public short Year { get; set; }
         //public bool IsEmpty { get; set; }
@@ -37,5 +37,15 @@ namespace Entities.Concrete
         public List<ProjectFiles> ProjectFiles { get; set; }
         public List<ProjectFeature> ProjectFeatures { get; set; }
         public List<Feature> Features { get; set; }
+
+
+        #region Translate
+        public string TitleDe { get; set; } = string.Empty;
+        public string TitleRu { get; set; } = string.Empty;
+        public string DescriptionDe { get; set; } = string.Empty;
+        public string DescriptionRu { get; set; } = string.Empty;
+        public string TitleTranslateKey { get; set; } = string.Empty;
+        public string DescriptionTranslateKey { get; set; } = string.Empty;
+        #endregion
     }
 }

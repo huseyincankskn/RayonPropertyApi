@@ -15,6 +15,7 @@ namespace DataAccess.Concrete.EntityFramework.Configuration.Entity
             builder.Property(x => x.CommentText).NVarChar(3000);
             builder.Property(x => x.CommentTextDe).NVarChar(3000);
             builder.Property(x => x.CommentTextRu).NVarChar(3000);
+            builder.Property(x => x.CommentTextTranslateKey).NVarChar(20);
         }
     }
 }

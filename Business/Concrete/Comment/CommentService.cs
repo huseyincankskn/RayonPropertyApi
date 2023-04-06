@@ -6,6 +6,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Extensions;
 using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework.Repository;
+using DataAccess.Concrete.EntityFramework.Repositories;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
@@ -16,12 +17,18 @@ namespace Business.Concrete
     {
         private readonly ICommentRepository _commentRepository;
         private readonly IMapper _mapper;
+        private readonly ITranslateRepository _translateRepository;
+        private readonly ITranslateService _translateService;
 
         public CommentService(ICommentRepository commentRepository,
-                              IMapper mapper)
+                              IMapper mapper,
+                              ITranslateRepository translateRepository,
+                              ITranslateService translateService)
         {
             _commentRepository = commentRepository;
             _mapper = mapper;
+            _translateRepository = translateRepository;
+            _translateService = translateService;
         }
 
         public IDataResult<IQueryable<CommentVm>> GetListQueryableOdata()
@@ -56,6 +63,15 @@ namespace Business.Concrete
             }
             dto.TrimAllProps();
             var addEntity = _mapper.Map<Comment>(dto);
+            var translate = new Translate()
+            {
+                Key = addEntity.CommentText,
+                KeyDe = addEntity.CommentTextDe,
+                KeyRu = addEntity.CommentTextRu,
+                TranslateKey = _translateService.GenerateUniqueTranslateKey()
+            };
+            addEntity.CommentTextTranslateKey = translate.TranslateKey;
+            _translateRepository.Add(translate);
             _commentRepository.Add(addEntity);
             return new SuccessDataResult<Comment>(addEntity);
         }
@@ -79,6 +95,25 @@ namespace Business.Concrete
             }
             dto.TrimAllProps();
             comment = _mapper.Map(dto, comment);
+
+
+            var translateEntity = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == comment.CommentText
+                                                                                 && x.KeyDe == comment.CommentTextDe
+                                                                                 && x.KeyRu == comment.CommentTextRu);
+            if (translateEntity == null)
+            {
+                var translate = new Translate()
+                {
+                    Key = comment.CommentText,
+                    KeyDe = comment.CommentTextDe,
+                    KeyRu = comment.CommentTextRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
+                };
+
+                _translateRepository.Add(translate);
+                comment.CommentTextTranslateKey = translate.TranslateKey;
+            }
+
             _commentRepository.Update(comment);
             return new SuccessResult(Messages.EntityUpdated);
         }

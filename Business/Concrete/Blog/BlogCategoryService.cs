@@ -13,8 +13,6 @@ using Entities.Dtos;
 using Entities.Enums;
 using Entities.VMs;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Business.Concrete
 {
@@ -24,16 +22,20 @@ namespace Business.Concrete
         private readonly IMapper _mapper;
         private readonly IBlogRepository _blogRepository;
         private readonly ITranslateRepository _translateRepository;
+        private readonly ITranslateService _translateService;
+
 
         public BlogCategoryService(IBlogCategoryRepository blogCategoryRepository,
                                    IMapper mapper,
                                    IBlogRepository blogRepository,
-                                   ITranslateRepository translateRepository)
+                                   ITranslateRepository translateRepository,
+                                   ITranslateService translateService)
         {
             _blogCategoryRepository = blogCategoryRepository;
             _mapper = mapper;
             _blogRepository = blogRepository;
             _translateRepository = translateRepository;
+            _translateService = translateService;
         }
 
         public IDataResult<IQueryable<BlogCategoryVm>> GetListQueryableOdata()
@@ -65,16 +67,16 @@ namespace Business.Concrete
 
             dto.TrimAllProps();
             var addEntity = _mapper.Map<BlogCategory>(dto);
-            _blogCategoryRepository.Add(addEntity);
-
             var translate = new Translate()
             {
                 Key = addEntity.Name,
                 KeyDe = addEntity.NameDe,
                 KeyRu = addEntity.NameRu,
+                TranslateKey = _translateService.GenerateUniqueTranslateKey()
             };
-
+            addEntity.NameTranslateKey = translate.TranslateKey;
             _translateRepository.Add(translate);
+            _blogCategoryRepository.Add(addEntity);
             return new SuccessDataResult<BlogCategory>(addEntity);
         }
 
@@ -108,26 +110,24 @@ namespace Business.Concrete
 
             dto.TrimAllProps();
             blogCategory = _mapper.Map(dto, blogCategory);
-            _blogCategoryRepository.Update(blogCategory);
-
-            var translateEntity = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blogCategory.Name);
-            if (translateEntity != null)
-            {
-                translateEntity.KeyDe = blogCategory.NameDe;
-                translateEntity.KeyRu = blogCategory.NameRu;
-                _translateRepository.Update(translateEntity);
-            }
-            else
+            var translateEntity = _translateRepository.GetAllForOdata().FirstOrDefault(x => x.Key == blogCategory.Name
+                                                                                            && x.KeyDe == blogCategory.NameDe
+                                                                                            && x.KeyRu == blogCategory.NameRu);
+            if (translateEntity == null)
             {
                 var translate = new Translate()
                 {
                     Key = blogCategory.Name,
                     KeyDe = blogCategory.NameDe,
                     KeyRu = blogCategory.NameRu,
+                    TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 };
 
                 _translateRepository.Add(translate);
+                blogCategory.NameTranslateKey = translate.TranslateKey;
             }
+
+            _blogCategoryRepository.Update(blogCategory);
             return new SuccessResult(Messages.EntityUpdated);
         }
 

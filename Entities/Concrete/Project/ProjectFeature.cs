@@ -7,6 +7,7 @@ namespace Entities.Concrete
         public string Name { get; set; }
         public string NameDe { get; set; }
         public string NameRu { get; set; }
+        public string NameTranslateKey { get; set; } = string.Empty;
         public virtual List<Project> Projects { get; set; }
         public virtual List<Feature> Features { get; set; }
     }

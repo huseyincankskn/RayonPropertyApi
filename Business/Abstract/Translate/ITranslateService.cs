@@ -6,5 +6,9 @@ namespace Business.Abstract
     public interface ITranslateService
     {
         IDataResult<IQueryable<TranslateVm>> GetList();
+
+        string GenerateTranslateKey();
+
+        string GenerateUniqueTranslateKey();
     }
 }

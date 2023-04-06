@@ -27,6 +27,8 @@ namespace DataAccess.Concrete
             builder.Property(x => x.PostDe).IsRequired().NVarChar(4000);
             builder.Property(x => x.PostRu).IsRequired().NVarChar(4000);
 
+            builder.Property(x => x.TitleTranslateKey).NVarChar(20);
+            builder.Property(x => x.PostTranslateKey).NVarChar(20);
         }
     }
 }

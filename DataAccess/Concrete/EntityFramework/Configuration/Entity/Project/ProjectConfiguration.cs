@@ -27,6 +27,9 @@ namespace DataAccess.Concrete
                WithMany(x => x.Projects)
                .HasForeignKey(x => x.StreetId)
                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Property(x => x.TitleTranslateKey).NVarChar(20);
+            builder.Property(x => x.DescriptionTranslateKey).NVarChar(20);
         }
     }
 }

@@ -11,10 +11,12 @@ namespace Entities.Concrete
         public string AboutUsText { get; set; } = string.Empty;
 
         #region Translate
-        public string AddressDe { get; set;} = string.Empty;
-        public string AddressRu { get; set;} = string.Empty;
+        public string AddressDe { get; set; } = string.Empty;
+        public string AddressRu { get; set; } = string.Empty;
         public string AboutUsTextDe { get; set; } = string.Empty;
         public string AboutUsTextRu { get; set; } = string.Empty;
+        public string AddressTranslateKey { get; set; } = string.Empty;
+        public string AboutUsTranslateKey { get; set; } = string.Empty;
         #endregion
     }
 }
