@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework.Repository;
+using Entities.Concrete;
 using Entities.VMs;
 using System.Text;
 
@@ -57,5 +58,15 @@ namespace Business.Concrete
             var vmList = _mapper.ProjectTo<TranslateVm>(entityList);
             return new SuccessDataResult<IQueryable<TranslateVm>>(vmList);
         }
+
+        //public void UpdateSendTranslateKeys(List<Translate> translates)
+        //{
+        //    translates.ForEach(c =>
+        //    {
+        //        c.IsWritten = true;
+        //    });
+
+        //    _translateRepository.UpdateRangeWithoutLogin(translates);
+        //}
     }
 }

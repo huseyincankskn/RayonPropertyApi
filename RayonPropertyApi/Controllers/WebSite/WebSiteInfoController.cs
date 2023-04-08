@@ -97,7 +97,7 @@ namespace RayonPropertyApi.Controllers.WebSite
                 return Ok(result.Data);
             }
             return BadRequest(result.Message);
-            //string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
+            ////string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
 
             //// JSON dosyasını okuyun
             //string jsonVerileri = System.IO.File.ReadAllText(dosyaKonumu);

@@ -43,5 +43,7 @@ namespace Core.DataAccess.EntityFramework.Abstract
         public IQueryable<T> GetAllForWithoutLogin();
 
         T GetByIdWithoutLogin(Guid id);
+
+        IDataResult<List<T>> UpdateRangeWithoutLogin(List<T> entities);
     }
 }

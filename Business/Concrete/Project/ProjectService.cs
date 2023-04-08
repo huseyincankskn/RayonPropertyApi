@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Reflection.Metadata;
+using System.Security.Principal;
 
 namespace Business.Concrete
 {
@@ -90,6 +91,11 @@ namespace Business.Concrete
             addEntity.ProjectNumber = projectNumber;
 
             #region Translate
+            var jsonDescription = JsonConvert.SerializeObject(addEntity.Description);
+            var jsonDescriptionDe = JsonConvert.SerializeObject(addEntity.DescriptionDe);
+            var jsonDescriptionRu = JsonConvert.SerializeObject(addEntity.DescriptionRu);
+
+
             var addTranslateList = new List<Translate>()
             {
                 new Translate()
@@ -101,9 +107,9 @@ namespace Business.Concrete
                 },
                 new Translate()
                 {
-                    Key = addEntity.Description,
-                    KeyDe = addEntity.DescriptionDe,
-                    KeyRu = addEntity.DescriptionRu,
+                    Key = jsonDescription,
+                    KeyDe = jsonDescriptionDe,
+                    KeyRu = jsonDescriptionRu,
                     TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 }
             };
@@ -145,6 +151,7 @@ namespace Business.Concrete
                                                                                            && x.KeyRu == project.TitleRu);
             if (translateTitle == null)
             {
+
                 var TranslateEntity = new Translate()
                 {
                     Key = project.Title,
@@ -161,11 +168,14 @@ namespace Business.Concrete
                                                                                                  && x.KeyRu == project.DescriptionRu);
             if (translateDescription == null)
             {
+                var jsonDescription = JsonConvert.SerializeObject(project.Description);
+                var jsonDescriptionDe = JsonConvert.SerializeObject(project.DescriptionDe);
+                var jsonDescriptionRu = JsonConvert.SerializeObject(project.DescriptionRu);
                 var TranslateEntity = new Translate()
                 {
-                    Key = project.Description,
-                    KeyDe = project.DescriptionDe,
-                    KeyRu = project.DescriptionRu,
+                    Key = jsonDescription,
+                    KeyDe = jsonDescriptionDe,
+                    KeyRu = jsonDescriptionRu,
                     TranslateKey = _translateService.GenerateUniqueTranslateKey()
                 };
                 addTranslateList.Add(TranslateEntity);

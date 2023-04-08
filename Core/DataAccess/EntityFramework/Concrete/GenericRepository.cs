@@ -186,5 +186,18 @@ namespace Core.DataAccess.EntityFramework
         {
             return DbSet.FirstOrDefault(x => x.Id == id && !x.IsDeleted && x.IsActive);
         }
+
+        public IDataResult<List<TEntity>> UpdateRangeWithoutLogin(List<TEntity> entities)
+        {
+            entities.ForEach(x =>
+            {
+                x.UpdateDate = DateTime.Now;
+                x.UpdateUserId = Guid.Empty;
+            });
+
+            DbSet.UpdateRange(entities);
+            Context.SaveChanges();
+            return new SuccessDataResult<List<TEntity>>(entities);
+        }
     }
 }
