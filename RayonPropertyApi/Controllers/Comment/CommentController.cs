@@ -4,6 +4,7 @@ using Business.Concrete;
 using Core.Entities.Exceptions;
 using Entities.Dtos;
 using Entities.VMs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace RayonPropertyApi.Controllers.Comment
 {
-    [RayonPropertyAuthorize]
+    
     [Route("api/[controller]")]
     [ApiController]
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -26,6 +27,7 @@ namespace RayonPropertyApi.Controllers.Comment
 
 
         [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [AllowAnonymous]
         [ProducesResponseType(typeof(CommentVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
@@ -43,6 +45,7 @@ namespace RayonPropertyApi.Controllers.Comment
         [ProducesResponseType(typeof(CommentVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
+        [RayonPropertyAuthorize]
         [HttpGet("GetById/{id}")]
         public IActionResult GetById(Guid id)
         {
@@ -60,6 +63,7 @@ namespace RayonPropertyApi.Controllers.Comment
         }
 
         [HttpPost("CommentAdd")]
+        [RayonPropertyAuthorize]
         public IActionResult Post(CommentAddDto dto)
         {
             var result = _commentService.Add(dto);
@@ -67,6 +71,7 @@ namespace RayonPropertyApi.Controllers.Comment
         }
 
         [HttpPut]
+        [RayonPropertyAuthorize]
         public IActionResult Put(CommentUpdateDto dto)
         {
             var result = _commentService.Update(dto);
@@ -74,6 +79,7 @@ namespace RayonPropertyApi.Controllers.Comment
         }
 
         [HttpDelete("{id}")]
+        [RayonPropertyAuthorize]
         public IActionResult Delete(Guid id)
         {
             var result = _commentService.Delete(id);
