@@ -15,6 +15,8 @@ namespace Entities.VMs
         public short RoomCount { get; set; }
         public string SaloonCount { get; set; }
         public decimal Price { get; set; }
+        public decimal PriceEur { get; set; }
+        public decimal PriceDinar { get; set; }
         public short GrossArea { get; set; }
         public short NetArea { get; set; }
         public byte ProjectStatus { get; set; }
