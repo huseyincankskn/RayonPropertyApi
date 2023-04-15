@@ -14,7 +14,7 @@
         #region Translate
         public string CommentTextDe { get; set; } = string.Empty;
         public string CommentTextRu { get; set; } = string.Empty;
-        public string CommentTextTranslateLey { get; set; } = string.Empty;
+        public string CommentTextTranslateKey { get; set; } = string.Empty;
         #endregion
     }
 }

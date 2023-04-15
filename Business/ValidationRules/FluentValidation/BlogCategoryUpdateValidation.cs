@@ -7,7 +7,7 @@ namespace Business.ValidationRules.FluentValidation
     {
         public BlogCategoryUpdateValidation()
         {
-            RuleFor(x => x.Name).NotEmpty().WithMessage("Blog Kategori Adı boş bırakılamaz");
+            RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required.");
         }
     }
 }

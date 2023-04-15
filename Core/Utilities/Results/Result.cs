@@ -15,7 +15,7 @@ namespace Core.Utilities.Results
             StatusCode = StatusCodes.Status200OK;
             if (string.IsNullOrEmpty(Message))
             {
-                Message = Success ? "İşlem başarılı" : "İşlem sırasında bir hata oluştu";
+                Message = Success ? "The operation was successful" : "An error occurred during the operation.";
             }
         }
 

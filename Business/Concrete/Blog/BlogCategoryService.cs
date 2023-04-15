@@ -134,11 +134,13 @@ namespace Business.Concrete
         public IDataResult<List<BlogCategoryVm>> GetListForWebSite()
         {
             var query = _blogRepository.GetAllForWithoutLogin().Include(x => x.BlogCategory)
-              .GroupBy(p => new { p.BlogCategory.Name })
+              .GroupBy(p => new { p.BlogCategory.Name, p.BlogCategoryId, p.BlogCategory.NameTranslateKey })
               .Select(g => new BlogCategoryVm
               {
-                  Name = g.Key.Name,
+                  Name = g.Key.NameTranslateKey,
                   Count = g.Count(),
+                  Id = g.Key.BlogCategoryId
+
               }).ToList();
 
             if (query.Any())
@@ -146,7 +148,8 @@ namespace Business.Concrete
                 var totalVm = new BlogCategoryVm
                 {
                     Count = query.Sum(x => x.Count),
-                    Name = "Tümü",
+                    Name = "blogCategoryAllKey",
+                    Id = Guid.Empty,
                 };
 
                 query.Add(totalVm);

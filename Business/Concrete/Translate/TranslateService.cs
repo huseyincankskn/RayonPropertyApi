@@ -58,15 +58,5 @@ namespace Business.Concrete
             var vmList = _mapper.ProjectTo<TranslateVm>(entityList);
             return new SuccessDataResult<IQueryable<TranslateVm>>(vmList);
         }
-
-        //public void UpdateSendTranslateKeys(List<Translate> translates)
-        //{
-        //    translates.ForEach(c =>
-        //    {
-        //        c.IsWritten = true;
-        //    });
-
-        //    _translateRepository.UpdateRangeWithoutLogin(translates);
-        //}
     }
 }

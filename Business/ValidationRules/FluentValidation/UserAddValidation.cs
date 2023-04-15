@@ -7,10 +7,10 @@ namespace Business.ValidationRules.FluentValidation
     {
         public UserAddValidation()
         {
-            RuleFor(x => x.Email).EmailAddress().MaximumLength(50).NotEmpty().WithMessage("Email maksimum 50 karakter olmalıdır");
-            RuleFor(x => x.FirstName).MaximumLength(250).NotEmpty().WithMessage("İsim maksimum 1000 karakter olmalıdır");
-            RuleFor(x => x.LastName).MaximumLength(250).NotEmpty().WithMessage("Soyisim maksimum 1000 karakter olmalıdır");
-            RuleFor(x => x.PhoneNumber).MaximumLength(10).WithMessage("Telefon numarası 10 haneli olmalıdır");
+            RuleFor(x => x.Email).EmailAddress().MaximumLength(50).NotEmpty().WithMessage("Email maximum length is 50 characters.");
+            RuleFor(x => x.FirstName).MaximumLength(250).NotEmpty().WithMessage("First Name maximum length is 250 characters.");
+            RuleFor(x => x.LastName).MaximumLength(250).NotEmpty().WithMessage("Last Name maximum length is 250 characters.");
+            RuleFor(x => x.PhoneNumber).MaximumLength(10).WithMessage("Phone Number is 10 characters.");
         }
     }
 }

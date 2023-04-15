@@ -11,7 +11,7 @@
         public string BlogCategoryName { get; set; } = string.Empty;
         public Guid BlogFileId { get; set; } = Guid.Empty;
         public string BlogFileName { get; set; } = string.Empty;
-
+        public string BlogCategoryTranslateKey { get; set; } = string.Empty;
 
         #region Translate
         public string TitleDe { get; set; } = string.Empty;

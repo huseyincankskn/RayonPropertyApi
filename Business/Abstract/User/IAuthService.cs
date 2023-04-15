@@ -20,5 +20,6 @@ namespace Business.Abstract
         IDataResult<IQueryable<UserVm>> GetAllData();
         IDataResult<User> GetForAuthorization(Guid userId, string email);
         IDataResult<UserVm> IsUserFullPageAuth(Guid userId);
+        IResult DeleteUser(Guid userId);
     }
 }

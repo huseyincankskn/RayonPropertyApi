@@ -86,5 +86,16 @@ namespace RayonPropertyApi.Controllers
             }
             return BadRequest(result.Message);
         }
+
+        [HttpDelete]
+        public IActionResult DeleteUser(Guid id)
+        {
+            var result = _authService.DeleteUser(id);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
     }
 }

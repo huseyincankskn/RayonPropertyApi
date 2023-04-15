@@ -73,6 +73,20 @@ namespace Business.Concrete
             return new SuccessDataResult<AccessToken>(accessToken, Messages.AccessTokenCreated);
         }
 
+        public IResult DeleteUser(Guid userId)
+        {
+            var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Id == userId);
+            if (user is null)
+            {
+                return new ErrorResult(Messages.UserNotFound);
+            }
+
+            user.IsActive = false;
+            user.IsDeleted = true;
+            _userRepository.Update(user);
+            return new SuccessResult();
+        }
+
         public IResult ForgotPassword(ForgotPasswordVm forgotModel)
         {
             var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Email == forgotModel.Email.Trim());
@@ -175,7 +189,5 @@ namespace Business.Concrete
             _userRepository.UpdateWithoutLogin(user);
             return new SuccessDataResult<User>(user);
         }
-
-
     }
 }

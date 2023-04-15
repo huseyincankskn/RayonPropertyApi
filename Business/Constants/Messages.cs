@@ -2,23 +2,23 @@
 {
     public static class Messages
     {
-        public const string UserNotFound = "Bu email'e ait kullanıcı bulunamadı.";
-        public const string PasswordError = "Şifre hatalı.";
-        public const string SuccessfulLogin = "Sisteme giriş yapıldı";
-        public const string AccessTokenCreated = "Access token başarıyla oluşturuldu";
-        public const string UserRegistered = "Kullanıcı kaydedildi";
-        public const string UserExist = "Bu email'e kayıtlı kullanıcı zaten mevcut.";
-        public const string EmptyError = "Boş bırakılan alanları kontrol edin.";
-        public const string PasswordFormatError = "Şifreniz en az 8 karakter olmalı ve içerisinde en az bir küçük, bir büyük ve bir rakam içermelidir.";
+        public const string UserNotFound = "The user associated with this email could not be found.";
+        public const string PasswordError = "The password is incorrect.";
+        public const string SuccessfulLogin = "Logged in to the system.";
+        public const string AccessTokenCreated = "Access token created successfully.";
+        public const string UserRegistered = "User saved.";
+        public const string UserExist = "A user associated with this email already exists.";
+        public const string EmptyError = "Please check the empty fields.";
+        public const string PasswordFormatError = "Your password must be at least 8 characters long and contain at least one lowercase letter, one uppercase letter, and one digit.";
 
-        public const string EntityAdded = "Kayıt başarıyla eklendi";
-        public const string EntityUpdated = "Kayıt başarıyla güncellendi";
-        public const string EntityDeleted = "Kayıt başarıyla silindi";
-        public const string EntityAlreadyExist = "Bu kayıt zaten mevcut";
-        public const string EntityNotFound = "Kayıt bulunamadı";
-        public const string SameEntity = "Zaten olan bir kaydı tekrar ekleyemezsiniz";
+        public const string EntityAdded = "The registration has been successfully added.";
+        public const string EntityUpdated = "The registration has been successfully updated.";
+        public const string EntityDeleted = "The registration has been successfully deleted.";
+        public const string EntityAlreadyExist = "This record already exists.";
+        public const string EntityNotFound = "The record could not be found.";
+        public const string SameEntity = "You cannot add a record that already exists.";
 
-        public const string BlogCategoryNotFound = "Blog Kategorisi bulunamadı";
+        public const string BlogCategoryNotFound = "The Blog Category could not be found";
         public const string RoleNotFound = "Role not found.";
 
     }
