@@ -43,7 +43,7 @@ namespace Communication.EmailManager.Concrete
                     Port = 587,
                     UseSsl = true,
                     UserName = "info@rayonproperty.com",
-                    Password = "U!3h!Rrn"
+                    Password = "Tf5FyFCYA$.1"
                 }
             }
         };
@@ -65,7 +65,7 @@ namespace Communication.EmailManager.Concrete
 
             var mailMessage = new MailMessage(dealerInfo.FromMail, mailModel.Email)
             {
-                Subject = $"{dealerInfo.Name} Şifre Güncelleme",
+                Subject = $"{dealerInfo.Name} Update Password",
                 IsBodyHtml = true,
                 Body = htmlBody
             };
@@ -194,6 +194,30 @@ namespace Communication.EmailManager.Concrete
                 var output = input.Length > maxLength ? input[..maxLength] : input;
                 return output;
             }
+        }
+
+        public void SendNewPasswordEmail(ForgotPasswordVm mailModel)
+        {
+            var dealerInfo = GetDealerInfo(0);
+
+            var pathToFile = _webHostEnvironment.WebRootPath + "/new-password-email.html";
+            var builder = new BodyBuilder();
+            var logoUrl = AppSettings.BackEndUrl + "/Logo/" + dealerInfo.Logo;
+            using (StreamReader sourceReader = File.OpenText(pathToFile))
+            {
+                builder.HtmlBody = sourceReader.ReadToEnd();
+            }
+
+            var host = dealerInfo.FrontEndUrl + "/new-password/" + mailModel.PsrGuid;
+            var htmlBody = builder.HtmlBody.Replace("{{LINK}}", host).Replace("{{LOGO}}", logoUrl);
+
+            var mailMessage = new MailMessage(dealerInfo.FromMail, mailModel.Email)
+            {
+                Subject = $"{dealerInfo.Name} Register",
+                IsBodyHtml = true,
+                Body = htmlBody
+            };
+            EmailInformation(mailMessage, dealerInfo);
         }
     }
 }

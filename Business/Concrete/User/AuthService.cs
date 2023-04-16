@@ -40,11 +40,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(UserAddValidation))]
         public IDataResult<User> Add(UserForRegisterDto userForRegisterDto)
         {
-            var passwordValid = Regex.Match(userForRegisterDto.Password, @"((?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,})");
-            if (!passwordValid.Success)
-            {
-                throw new ValidationException(Messages.PasswordFormatError);
-            }
+            userForRegisterDto.Password = Guid.NewGuid().ToString("N")[..8];
             HashingHelper.CreatePasswordHash(userForRegisterDto.Password, out var passwordHash, out var passwordSalt);
             var user = new User
             {
@@ -53,9 +49,17 @@ namespace Business.Concrete
                 LastName = userForRegisterDto.LastName,
                 PsrHash = passwordHash,
                 PsrSalt = passwordSalt,
+                PsrGuid = Guid.NewGuid(),
                 PhoneNumber = userForRegisterDto.PhoneNumber,
             };
             _userRepository.Add(user);
+
+            var mailModel = new ForgotPasswordVm()
+            {
+                Email = user.Email,
+                PsrGuid = user.PsrGuid,
+            };
+            _emailManager.SendNewPasswordEmail(mailModel);
             return new SuccessDataResult<User>(user, Messages.UserRegistered);
         }
 
@@ -75,14 +79,13 @@ namespace Business.Concrete
 
         public IResult DeleteUser(Guid userId)
         {
-            var user = _userRepository.GetAllForOdata().FirstOrDefault(x => x.Id == userId);
+            var user = _userRepository.GetAllForOdataWithPassive().FirstOrDefault(x => x.Id == userId);
             if (user is null)
             {
                 return new ErrorResult(Messages.UserNotFound);
             }
 
-            user.IsActive = false;
-            user.IsDeleted = true;
+            user.IsActive = !user.IsActive;
             _userRepository.Update(user);
             return new SuccessResult();
         }

@@ -8,5 +8,6 @@ namespace Communication.EmailManager.Abstract
     {
         void SendForgotPasswordEmail(ForgotPasswordVm mailModel);
         void SendContactRequestMail(ContactRequestVm contactRequestVm);
+        void SendNewPasswordEmail(ForgotPasswordVm mailModel);
     }
 }

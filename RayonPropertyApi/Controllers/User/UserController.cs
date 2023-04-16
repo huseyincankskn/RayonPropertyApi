@@ -87,7 +87,7 @@ namespace RayonPropertyApi.Controllers
             return BadRequest(result.Message);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(Guid id)
         {
             var result = _authService.DeleteUser(id);
