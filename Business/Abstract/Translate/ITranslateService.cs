@@ -10,5 +10,7 @@ namespace Business.Abstract
         string GenerateTranslateKey();
 
         string GenerateUniqueTranslateKey();
+
+        IDataResult<Dictionary<string, string>> GetTranslateDictionary(string locale);
     }
 }

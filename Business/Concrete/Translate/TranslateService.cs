@@ -4,6 +4,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract.EntityFramework.Repository;
 using Entities.Concrete;
 using Entities.VMs;
+using Nest;
 using System.Text;
 
 namespace Business.Concrete
@@ -29,9 +30,11 @@ namespace Business.Concrete
             for (int i = 0; i < 8; i++)
             {
                 result.Append(chars[random.Next(chars.Length)]);
-            }
 
-            return result.ToString();
+            }
+            var resultString = result.ToString();
+            resultString = char.ToLower(resultString[0]) + resultString[1..];
+            return resultString;
         }
 
         public string GenerateUniqueTranslateKey()
@@ -57,6 +60,45 @@ namespace Business.Concrete
             var entityList = _translateRepository.GetAll();
             var vmList = _mapper.ProjectTo<TranslateVm>(entityList);
             return new SuccessDataResult<IQueryable<TranslateVm>>(vmList);
+        }
+
+        public IDataResult<Dictionary<string, string>> GetTranslateDictionary(string locale)
+        {
+            var entityList = _translateRepository.GetAll();
+            var vmList = _mapper.ProjectTo<TranslateVm>(entityList);
+
+            var dictionary = new Dictionary<string, string>();
+
+            if (locale == "en")
+            {
+                foreach (var item in vmList)
+                {
+                    dictionary.Add(item.TranslateKey, item.Key);
+                }
+            }
+            else if (locale == "ru")
+            {
+                foreach (var item in vmList)
+                {
+                    dictionary.Add(item.TranslateKey, item.KeyRu);
+                }
+            }
+            else if (locale == "ge")
+            {
+                foreach (var item in vmList)
+                {
+                    dictionary.Add(item.TranslateKey, item.KeyDe);
+                }
+            }
+            else
+            {
+                foreach (var item in vmList)
+                {
+                    dictionary.Add(item.TranslateKey, item.Key);
+                }
+            }
+
+            return new SuccessDataResult<Dictionary<string, string>>(dictionary);
         }
     }
 }

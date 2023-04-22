@@ -97,24 +97,17 @@ namespace RayonPropertyApi.Controllers.WebSite
                 return Ok(result.Data);
             }
             return BadRequest(result.Message);
-            ////string dosyaKonumu = @"C:\Users\husey\Desktop\CommonJs\common.json";
-
-            //// JSON dosyasını okuyun
-            //string jsonVerileri = System.IO.File.ReadAllText(dosyaKonumu);
-
-            //// JSON verilerini JObject olarak ayrıştırın
-            //JObject veriObjesi = JObject.Parse(jsonVerileri);
-
-            //// JSON verilerini güncelleyin
-            //veriObjesi["anahtar"] = "değer";
-
-            //// Güncellenmiş JSON verilerini dosyaya yazın
-            //System.IO.File.WriteAllText(dosyaKonumu, veriObjesi.ToString());
-            //var world = new TranslateExampleVm()
-            //{
-            //    NAME = "DENEME"
-            //};
-            //return Ok(world);
+        }
+        
+        [HttpGet("GetTranslateDictionary/{locale}")]
+        public IActionResult GetTranslations(string locale)
+        {
+            var result = _translateService.GetTranslateDictionary(locale);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
         }
     }
 }

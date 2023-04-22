@@ -51,7 +51,7 @@ namespace Business.Concrete
         }
         public IDataResult<IQueryable<string>> GetFeaturesWithProjectId(Guid id)
         {
-            var entityList = _featureRepository.GetAllForOdata().Include(x => x.Project).Include(x => x.ProjectFeature).Where(x => x.ProjectId == id).Select(x => x.ProjectFeature.Name);
+            var entityList = _featureRepository.GetAllForOdata().Include(x => x.Project).Include(x => x.ProjectFeature).Where(x => x.ProjectId == id).Select(x => x.ProjectFeature.NameTranslateKey);
             return new SuccessDataResult<IQueryable<string>>(entityList);
         }
         public IDataResult<ProjectFeatureDto> AddProject(ProjectFeatureDto project)
