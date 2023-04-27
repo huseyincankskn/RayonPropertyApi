@@ -185,9 +185,11 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder => builder.WithOrigins("https://www.rayonproperty.com",
-                                                            "http://www.rayonproperty.com",
-                                                            "https://rayon-management.rayonproperty.com",
-                                                            "http://rayon-management.rayonproperty.com").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
+    "http://www.rayonproperty.com",
+    "https://rayon-management.rayonproperty.com",
+    "http://rayon-management.rayonproperty.com",
+    "http://localhost:4000",
+    "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
 });
 var app = builder.Build();
 

@@ -15,18 +15,21 @@ namespace Business.Concrete
         private readonly ITownRepository _townRepository;
         private readonly IDistrictRepository _districtRepository;
         private readonly IStreetRepository _streetRepository;
+        private readonly IProjectRepository _projectRepository;
 
-        public AddressService(IMapper mapper, ICityRepository cityRepository, ITownRepository townRepository, IDistrictRepository districtRepository, IStreetRepository streetRepository)
+        public AddressService(IMapper mapper, ICityRepository cityRepository, ITownRepository townRepository, IDistrictRepository districtRepository, IStreetRepository streetRepository, IProjectRepository projectRepository)
         {
             _mapper = mapper;
             _cityRepository = cityRepository;
             _townRepository = townRepository;
             _districtRepository = districtRepository;
             _streetRepository = streetRepository;
+            _projectRepository = projectRepository;
         }
         public IDataResult<IQueryable<CityVm>> GetCityList()
         {
-            var entityList = _cityRepository.GetAllForOdata();
+            var projectCities = _projectRepository.GetAllForOdata().Select(x => x.CityId).Distinct();
+            var entityList = _cityRepository.GetAllForOdata().Where(x => projectCities.Contains(x.Id));
             var vmList = _mapper.ProjectTo<CityVm>(entityList);
             return new SuccessDataResult<IQueryable<CityVm>>(vmList);
         }

@@ -21,6 +21,7 @@ namespace Entities.VMs
         public short NetArea { get; set; }
         public byte ProjectStatus { get; set; }
         public byte ProjectType { get; set; }
+        public byte ProjectTye { get; set; }
         public string ZipCode { get; set; } = string.Empty;
         public short Floor { get; set; }
         public short Year { get; set; }
