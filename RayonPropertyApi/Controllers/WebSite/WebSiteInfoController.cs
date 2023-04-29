@@ -21,16 +21,19 @@ namespace RayonPropertyApi.Controllers.WebSite
         private readonly IBlogService _blogService;
         public readonly IBlogCategoryService _blogCategoryService;
         private readonly ITranslateService _translateService;
+        private readonly ICurrencyService _currencyService;
 
         public WebSiteInfoController(ISitePropertyService sitePropertyService,
                                      IBlogService blogService,
                                      IBlogCategoryService blogCategoryService,
-                                     ITranslateService translateService)
+                                     ITranslateService translateService,
+                                     ICurrencyService currencyService)
         {
             _sitePropertyService = sitePropertyService;
             _blogService = blogService;
             _blogCategoryService = blogCategoryService;
             _translateService = translateService;
+            _currencyService = currencyService;
         }
 
         [HttpGet]
@@ -103,6 +106,17 @@ namespace RayonPropertyApi.Controllers.WebSite
         public IActionResult GetTranslations(string locale)
         {
             var result = _translateService.GetTranslateDictionary(locale);
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("GetCurrencyRate")]
+        public IActionResult GetCurrencyRate()
+        {
+            var result = _currencyService.GetCurrencyRates();
             if (result.Success)
             {
                 return Ok(result.Data);

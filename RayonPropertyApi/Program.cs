@@ -36,6 +36,7 @@ using Core.CrossCuttingConcerns.Logging.SeriLog;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Core.CrossCuttingConcerns.Logging.ElasticSearch;
 using Core.Helpers;
+using Microsoft.Extensions.Caching.Memory;
 
 IConfiguration Configuration = new ConfigurationBuilder()
             .SetBasePath(Directory.GetCurrentDirectory())
@@ -166,6 +167,7 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddSingleton<IJwtHelper, JwtHelper>();
 builder.Services.AddSingleton<IEmailManager, EmailManager>();
 builder.Services.AddSingleton<ISeriLogService, SerilogService>();
+builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddSingleton<IElasticSearchService, ElasticSearchService>();
 builder.Services.TryAddSingleton<IHttpAccessorHelper, HttpAccessorHelper>();
 builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -185,11 +187,12 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder => builder.WithOrigins("https://www.rayonproperty.com",
-    "http://www.rayonproperty.com",
-    "https://rayon-management.rayonproperty.com",
-    "http://rayon-management.rayonproperty.com",
-    "http://localhost:4000",
-    "http://localhost:3000").AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
+                                                            "http://www.rayonproperty.com",
+                                                            "https://rayon-management.rayonproperty.com",
+                                                            "http://rayon-management.rayonproperty.com",
+                                                            "http://localhost:3000",
+                                                            "http://localhost:4000"
+                                                            ).AllowAnyHeader().AllowAnyMethod().SetIsOriginAllowedToAllowWildcardSubdomains());
 });
 var app = builder.Build();
 

@@ -11,7 +11,6 @@ namespace Entities.Concrete
         public string SaloonCount { get; set; }
         public decimal Price { get; set; }
         public decimal PriceEur { get; set; }
-        public decimal PriceDinar { get; set; }
         public short GrossArea { get; set; }
         public short NetArea { get; set; }
         public short SeeClose { get; set; }
@@ -22,7 +21,8 @@ namespace Entities.Concrete
         public short Year { get; set; }
         //public bool IsEmpty { get; set; }
         public short BathroomCount { get; set; }
-        public DateTime ProjectDate { get; set; }
+        public DateTime? ProjectDate { get; set; }
+        public DateTime? ProjectEndDate { get; set; }
         //public string PaymnetType { get; set; } = string.Empty;
         public bool IsSold { get; set; }
         public bool IsFavourite { get; set; }

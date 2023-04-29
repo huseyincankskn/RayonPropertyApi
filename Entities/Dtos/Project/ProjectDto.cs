@@ -1,11 +1,4 @@
-﻿using Entities.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Entities.Dtos
+﻿namespace Entities.Dtos
 {
     public class ProjectDto
     {
@@ -17,7 +10,6 @@ namespace Entities.Dtos
         public string SaloonCount { get; set; }
         public string Price { get; set; }
         public decimal PriceEur { get; set; }
-        public decimal PriceDinar { get; set; }
         public byte ProjectStatus { get; set; }
         public byte ProjectType { get; set; }
         public string ZipCode { get; set; } = string.Empty;
@@ -37,7 +29,8 @@ namespace Entities.Dtos
         public int TownId { get; set; }
         public int DistrictId { get; set; }
         public int StreetId { get; set; }
-        public DateTime ProjectDate { get; set; }
+        public DateTime? ProjectDate { get; set; }
+        public DateTime? ProjectEndDate { get; set; }
 
         #region Translate
         public string TitleDe { get; set; } = string.Empty;

@@ -16,7 +16,6 @@ namespace Entities.VMs
         public string SaloonCount { get; set; }
         public decimal Price { get; set; }
         public decimal PriceEur { get; set; }
-        public decimal PriceDinar { get; set; }
         public short GrossArea { get; set; }
         public short NetArea { get; set; }
         public byte ProjectStatus { get; set; }
@@ -46,7 +45,8 @@ namespace Entities.VMs
         public string TownName { get; set; }
         public string StatusValue { get; set; }
         public string ProjectTypeValue { get; set; }
-        public DateTime ProjectDate { get; set; }
+        public DateTime? ProjectDate { get; set; }
+        public DateTime? ProjectEndDate { get; set; }
         public bool IsActive { get; set; }
 
         #region Translate

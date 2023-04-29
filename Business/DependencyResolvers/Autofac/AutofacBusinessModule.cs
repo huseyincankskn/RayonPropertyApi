@@ -4,12 +4,15 @@ using Business.Abstract;
 using Business.Abstract.Project;
 using Business.Concrete;
 using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Caching;
+using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Helpers;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
 using DataAccess.Abstract.EntityFramework.Repository;
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework.Repositories;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -27,6 +30,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CommentService>().As<ICommentService>();
             builder.RegisterType<RoleService>().As<IRoleService>();
             builder.RegisterType<TranslateService>().As<ITranslateService>();
+            builder.RegisterType<CurrencyService>().As<ICurrencyService>();
 
             builder.RegisterType<CityRepository>().As<ICityRepository>();
             builder.RegisterType<StreetRepository>().As<IStreetRepository>();
@@ -48,6 +52,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<TranslateRepository>().As<ITranslateRepository>();
 
             builder.RegisterType<HttpAccessorHelper>().As<IHttpAccessorHelper>();
+            builder.RegisterType<MemoryCacheManager>().As<ICacheManager>();
 
             var assemblyBusiness = System.Reflection.Assembly.GetExecutingAssembly();
             var assemblyDataAccess = System.Reflection.Assembly.Load("DataAccess");
