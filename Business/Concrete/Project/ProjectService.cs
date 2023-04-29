@@ -224,26 +224,45 @@ namespace Business.Concrete
                 if (formFile.Length > 0)
                 {
                     var guid = Guid.NewGuid();
-
-                    // Dosyayı yükle
-                    var image = Image.FromStream(formFile.OpenReadStream());
-
-                    // Watermark fotoğrafını ekle
-                    using (var graphics = Graphics.FromImage(image))
-                    {
-                        graphics.DrawImage(watermark, new Rectangle(0, 0, image.Width, image.Height), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
-                    }
-
-                    // İşlenmiş fotoğrafı kaydet
                     var filePath = Path.Combine(_webHostEnvironment.WebRootPath + "/Content/", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
-                    image.Save(filePath);
-
-                    ProjectFiles projectFile = new ProjectFiles()
+                    if (formFile.ContentType.Contains("mp4") || formFile.ContentType.Contains("video"))
                     {
-                        FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
-                        ProjectId = Guid.Parse(productIderId)
-                    };
-                    fileList.Add(projectFile);
+                        // Videoyu kaydetmek için dosya akışını açın
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            // Dosya akışından videoyu okuyun ve dosyaya yazın
+                            formFile.CopyToAsync(stream);
+                        }
+
+                        ProjectFiles projectFile = new ProjectFiles()
+                        {
+                            FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
+                            ProjectId = Guid.Parse(productIderId)
+                        };
+                        fileList.Add(projectFile);
+                    }
+                    else
+                    {
+                        // Dosyayı yükle
+                        var image = Image.FromStream(formFile.OpenReadStream());
+
+                        // Watermark fotoğrafını ekle
+                        using (var graphics = Graphics.FromImage(image))
+                        {
+                            graphics.DrawImage(watermark, new Rectangle(0, 0, image.Width, image.Height), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
+                        }
+
+                        // İşlenmiş fotoğrafı kaydet
+                        image.Save(filePath);
+
+                        ProjectFiles projectFile = new ProjectFiles()
+                        {
+                            FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
+                            ProjectId = Guid.Parse(productIderId)
+                        };
+                        fileList.Add(projectFile);
+                    }
+                   
                 }
             }
             _projectFilesRepository.AddRange(fileList);

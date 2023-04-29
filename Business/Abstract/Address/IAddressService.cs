@@ -11,6 +11,7 @@ namespace Business.Abstract
     public interface IAddressService
     {
         IDataResult<IQueryable<CityVm>> GetCityList();
+        IDataResult<IQueryable<CityVm>> GetCityListForAdmin();
         IDataResult<IQueryable<TownVm>> GetTownList(int cityId);
         IDataResult<IQueryable<TownVm>> GetTownListFromName(string cityName);
         IDataResult<IQueryable<DistrictVm>> GetDistrictList(int townId);

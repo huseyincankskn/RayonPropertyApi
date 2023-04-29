@@ -32,6 +32,12 @@ namespace Business.Concrete
             var entityList = _cityRepository.GetAllForOdata().Where(x => projectCities.Contains(x.Id));
             var vmList = _mapper.ProjectTo<CityVm>(entityList);
             return new SuccessDataResult<IQueryable<CityVm>>(vmList);
+        }   
+        public IDataResult<IQueryable<CityVm>> GetCityListForAdmin()
+        {
+            var entityList = _cityRepository.GetAllForOdata();
+            var vmList = _mapper.ProjectTo<CityVm>(entityList);
+            return new SuccessDataResult<IQueryable<CityVm>>(vmList);
         }
         public IDataResult<IQueryable<TownVm>> GetTownList(int cityId)
         {

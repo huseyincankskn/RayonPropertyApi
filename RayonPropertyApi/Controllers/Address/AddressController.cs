@@ -37,6 +37,21 @@ namespace RayonPropertyApi.Controllers.Address
         }
 
         [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
+        [ProducesResponseType(typeof(CityVm), 200)]
+        [ProducesResponseType(typeof(object), 403)]
+        [ProducesResponseType(typeof(object), 401)]
+        [HttpGet("GetCityListForAdmin")]
+        public IActionResult GetCityListForAdmin()
+        {
+            var result = _addressService.GetCityListForAdmin();
+            if (result.Success)
+            {
+                return Ok(result.Data);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [EnableQuery(EnsureStableOrdering = false, PageSize = 100)]
         [ProducesResponseType(typeof(TownVm), 200)]
         [ProducesResponseType(typeof(object), 403)]
         [ProducesResponseType(typeof(object), 401)]
