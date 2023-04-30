@@ -34,7 +34,7 @@ namespace Entities.Concrete
         public virtual Town Town { get; set; }
         public int DistrictId { get; set; }
         public virtual District District { get; set; }
-        public int StreetId { get; set; }
+        public int? StreetId { get; set; }
         public virtual Street Street { get; set; }
         public List<ProjectFiles> ProjectFiles { get; set; }
         public List<ProjectFeature> ProjectFeatures { get; set; }

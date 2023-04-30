@@ -119,7 +119,7 @@ namespace Business.Concrete
             addEntity.TitleTranslateKey = addTranslateList.First().TranslateKey;
             addEntity.DescriptionTranslateKey = addTranslateList.Last().TranslateKey;
             #endregion
-
+            addEntity.StreetId = 1;
             var response = _projectRepository.Add(addEntity);
             project.Id = response.Data.Id;
             if (response.Success)

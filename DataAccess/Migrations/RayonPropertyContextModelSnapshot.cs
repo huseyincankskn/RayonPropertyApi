@@ -554,7 +554,7 @@ namespace DataAccess.Migrations
                     b.Property<short>("SeeClose")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("StreetId")
+                    b.Property<int?>("StreetId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -1120,9 +1120,7 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Entities.Concrete.Street", "Street")
                         .WithMany("Projects")
-                        .HasForeignKey("StreetId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("StreetId");
 
                     b.HasOne("Entities.Concrete.Town", "Town")
                         .WithMany("Projects")
