@@ -4,6 +4,7 @@ using DataAccess.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RayonPropertyContext))]
-    partial class RayonPropertyContextModelSnapshot : ModelSnapshot
+    [Migration("20230430080417_isRentAdd")]
+    partial class isRentAdd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -557,7 +559,7 @@ namespace DataAccess.Migrations
                     b.Property<short>("SeeClose")
                         .HasColumnType("smallint");
 
-                    b.Property<int?>("StreetId")
+                    b.Property<int>("StreetId")
                         .HasColumnType("int");
 
                     b.Property<string>("Title")
@@ -1123,7 +1125,9 @@ namespace DataAccess.Migrations
 
                     b.HasOne("Entities.Concrete.Street", "Street")
                         .WithMany("Projects")
-                        .HasForeignKey("StreetId");
+                        .HasForeignKey("StreetId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Entities.Concrete.Town", "Town")
                         .WithMany("Projects")

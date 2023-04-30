@@ -20,7 +20,8 @@ namespace Communication.EmailManager.Concrete
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IContactRequestRepository _contactRequestRepository;
 
-        public EmailManager(IWebHostEnvironment webHostEnvironment, IContactRequestRepository contactRequestRepository)
+        public EmailManager(IWebHostEnvironment webHostEnvironment,
+                            IContactRequestRepository contactRequestRepository)
         {
             _webHostEnvironment = webHostEnvironment;
             _contactRequestRepository = contactRequestRepository;
@@ -107,6 +108,7 @@ namespace Communication.EmailManager.Concrete
         public void SendContactRequestMail(ContactRequestVm contactRequestVm)
         {
             var dealerInfo = GetDealerInfo(0);
+            var toMail = AppSettings.ContactMail;
 
             var pathToFile = _webHostEnvironment.WebRootPath + "/contact-request-mail-template.html";
             var builder = new BodyBuilder();
@@ -163,7 +165,7 @@ namespace Communication.EmailManager.Concrete
 
             string htmlBody = builder.HtmlBody.Replace("{{TABLE}}", finishedTable).Replace("{{LOGO}}", logoUrl);
 
-            var mailMessage = new MailMessage(dealerInfo.FromMail, contactRequestVm.Email)
+            var mailMessage = new MailMessage(dealerInfo.FromMail, toMail)
             {
                 Subject = $"WebSite İletişim Talebi",
                 IsBodyHtml = true,

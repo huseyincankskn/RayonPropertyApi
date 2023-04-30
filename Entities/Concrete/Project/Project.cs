@@ -27,6 +27,7 @@ namespace Entities.Concrete
         public bool IsSold { get; set; }
         public bool IsFavourite { get; set; }
         public short CurrencyId { get; set; }
+        public bool IsRent { get; set; }
         public virtual Currency Currency { get; set; }
         public int CityId { get; set; }
         public virtual City City { get; set; }

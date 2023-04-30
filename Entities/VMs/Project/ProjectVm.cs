@@ -48,6 +48,7 @@ namespace Entities.VMs
         public DateTime? ProjectDate { get; set; }
         public DateTime? ProjectEndDate { get; set; }
         public bool IsActive { get; set; }
+        public bool IsRent { get; set; }
 
         #region Translate
         public string TitleDe { get; set; } = string.Empty;

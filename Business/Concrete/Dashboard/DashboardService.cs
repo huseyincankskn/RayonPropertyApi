@@ -25,11 +25,11 @@ namespace Business.Concrete
         {
             var totalProjectCount = _projectRepository.GetAllForOdataWithPassive().Count();
             var totalInactiveProjectCount = totalProjectCount - _projectRepository.GetAllForOdata().Count();
-            var rentProjectCount = _projectRepository.GetAllForOdataWithPassive().Where(x => x.ProjectStatus == (byte)ProjectStatus.Rent).Count();
-            var activerentProjectCount = _projectRepository.GetAllForOdata().Where(x => x.ProjectStatus == (byte)ProjectStatus.Rent).Count();
+            var rentProjectCount = _projectRepository.GetAllForOdataWithPassive().Where(x => x.IsRent).Count();
+            var activerentProjectCount = _projectRepository.GetAllForOdata().Where(x => x.IsRent).Count();
             var inActiveRentProjectCount = rentProjectCount - activerentProjectCount;
-            var sellProjectCount = _projectRepository.GetAllForOdataWithPassive().Where(x => x.ProjectStatus == (byte)ProjectStatus.Sell).Count();
-            var activeSellProjectCount = _projectRepository.GetAllForOdata().Where(x => x.ProjectStatus == (byte)ProjectStatus.Sell).Count();
+            var sellProjectCount = _projectRepository.GetAllForOdataWithPassive().Where(x => !x.IsRent).Count();
+            var activeSellProjectCount = _projectRepository.GetAllForOdata().Where(x => !x.IsRent).Count();
             var InActiveSellProjectCount = sellProjectCount - activeSellProjectCount;
             var totalBlogCount = _blogRepository.GetAllForOdataWithPassive().Count();
             var activeBlogCount = _blogRepository.GetAllForOdata().Count();
