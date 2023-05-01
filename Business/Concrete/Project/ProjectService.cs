@@ -139,6 +139,7 @@ namespace Business.Concrete
         public Core.Utilities.Results.IResult Update(ProjectDto dto)
         {
             dto.CurrencyId = 1;
+            dto.StreetId = 1;
             var project = _projectRepository.GetById(dto.Id);
             dto.TrimAllProps();
             project = _mapper.Map(dto, project);

@@ -23,6 +23,7 @@ namespace Entities.VMs
         public byte ProjectTye { get; set; }
         public string ZipCode { get; set; } = string.Empty;
         public short Floor { get; set; }
+        public short FloorCount { get; set; }
         public short Year { get; set; }
         public bool IsEmpty { get; set; }
         public short BathroomCount { get; set; }
