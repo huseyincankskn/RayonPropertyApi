@@ -87,8 +87,6 @@ namespace Business.Concrete
             var decimalPrice = Convert.ToDecimal(project.Price);
             var addEntity = _mapper.Map<Project>(project);
             var lastNumber = _projectRepository.GetAll().OrderByDescending(x => x.AddDate)?.FirstOrDefault()?.ProjectNumber;
-            var projectNumber = string.IsNullOrEmpty(lastNumber) ? "0002148512" : (Convert.ToInt32(lastNumber) + 1).ToString();
-            addEntity.ProjectNumber = projectNumber;
 
             #region Translate
             var jsonDescription = JsonConvert.SerializeObject(addEntity.Description);
