@@ -29,7 +29,7 @@ namespace Business.Concrete
         public IDataResult<BlogFile> SaveImage(IFormFile image)
         {
             var guid = Guid.NewGuid().ToString();
-            var setImage = Image.FromStream(image.OpenReadStream());
+            var setImage = System.Drawing.Image.FromStream(image.OpenReadStream());
             var name = guid.Substring(guid.Length - 8) + image.FileName;
             if (name.Length > 200)
             {

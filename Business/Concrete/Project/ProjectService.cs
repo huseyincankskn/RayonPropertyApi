@@ -10,14 +10,12 @@ using Entities.Concrete;
 using Entities.Dtos;
 using Entities.VMs;
 using Helper.AppSetting;
+using ImageMagick;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Reflection.Metadata;
-using System.Security.Principal;
+using System;
 
 namespace Business.Concrete
 {
@@ -210,60 +208,56 @@ namespace Business.Concrete
         public IDataResult<bool> SaveImages(List<IFormFile> images, string productId)
         {
             var productIderId = JsonConvert.DeserializeObject<string>(productId);
-            // Watermark fotoğrafını yükle
-            var watermark = Image.FromFile(_webHostEnvironment.WebRootPath + "/Logo/R_Logo.png");
-            //Watermark transparancy ayarları
-            var imageAttributes = new ImageAttributes();
-            var colorMatrix = new ColorMatrix { Matrix33 = 0.3f };
-            imageAttributes.SetColorMatrix(colorMatrix);
+
+            var watermarkPath = _webHostEnvironment.WebRootPath + "/Logo/R_Logo.png";
+           
             List<ProjectFiles> fileList = new List<ProjectFiles>();
-            // Her dosyayı işleyin
             foreach (var formFile in images)
             {
-                if (formFile.Length > 0)
+                var guid = Guid.NewGuid();
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath + "/Content/", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    var guid = Guid.NewGuid();
-                    var filePath = Path.Combine(_webHostEnvironment.WebRootPath + "/Content/", guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName);
-                    if (formFile.ContentType.Contains("mp4") || formFile.ContentType.Contains("video"))
-                    {
-                        // Videoyu kaydetmek için dosya akışını açın
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            // Dosya akışından videoyu okuyun ve dosyaya yazın
-                            formFile.CopyToAsync(stream);
-                        }
-
-                        ProjectFiles projectFile = new ProjectFiles()
-                        {
-                            FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
-                            ProjectId = Guid.Parse(productIderId)
-                        };
-                        fileList.Add(projectFile);
-                    }
-                    else
-                    {
-                        // Dosyayı yükle
-                        var image = Image.FromStream(formFile.OpenReadStream());
-
-                        // Watermark fotoğrafını ekle
-                        using (var graphics = Graphics.FromImage(image))
-                        {
-                            graphics.DrawImage(watermark, new Rectangle(0, 0, image.Width, image.Height), 0, 0, watermark.Width, watermark.Height, GraphicsUnit.Pixel, imageAttributes);
-                        }
-
-                        // İşlenmiş fotoğrafı kaydet
-                        image.Save(filePath);
-
-                        ProjectFiles projectFile = new ProjectFiles()
-                        {
-                            FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
-                            ProjectId = Guid.Parse(productIderId)
-                        };
-                        fileList.Add(projectFile);
-                    }
-                   
+                    formFile.CopyTo(stream);
                 }
+                using (var image = Image.Load(filePath))
+                {
+                    using (var watermark = Image.Load(watermarkPath))
+                    {
+                        // Calculate the position of the watermark
+                        var posX = (image.Width / 2) - (watermark.Width / 2);
+                        var posY = (image.Height / 2) - (watermark.Height / 2);
+
+                        // Scale the watermark to fit the image
+                        var scaleFactor = Math.Min((float)image.Width / watermark.Width, (float)image.Height / watermark.Height);
+                        var scaledWidth = (int)(watermark.Width * scaleFactor);
+                        var scaledHeight = (int)(watermark.Height * scaleFactor);
+                        watermark.Mutate(x => x.Resize(new Size(scaledWidth, scaledHeight)));
+
+                        // Recalculate the position of the watermark
+                        posX = (image.Width / 2) - (scaledWidth / 2);
+                        posY = (image.Height / 2) - (scaledHeight / 2);
+
+                        // Set the opacity of the watermark
+                        var opacity = 0.5f;
+
+                        // Draw the watermark on the image
+                        image.Mutate(x => x.DrawImage(watermark, new Point(posX, posY), opacity));
+
+                        // Save the image with the watermark
+                        image.Save(filePath);
+                    }
+                }
+
+                ProjectFiles projectFile = new ProjectFiles()
+                {
+                    FileName = guid.ToString().Substring(guid.ToString().Length - 8) + formFile.FileName,
+                    ProjectId = Guid.Parse(productIderId)
+                };
+                fileList.Add(projectFile);
             }
+
             _projectFilesRepository.AddRange(fileList);
             return new SuccessDataResult<bool>(true);
         }
