@@ -55,7 +55,7 @@ namespace Communication.EmailManager.Concrete
 
             var pathToFile = _webHostEnvironment.WebRootPath + "/email-content.html";
             var builder = new BodyBuilder();
-            var logoUrl = AppSettings.BackEndUrl + "/Logo/" + dealerInfo.Logo;
+            var logoUrl = AppSettings.AdminPanelUrl + "/Logo/" + dealerInfo.Logo;
             using (StreamReader sourceReader = File.OpenText(pathToFile))
             {
                 builder.HtmlBody = sourceReader.ReadToEnd();
@@ -204,7 +204,7 @@ namespace Communication.EmailManager.Concrete
 
             var pathToFile = _webHostEnvironment.WebRootPath + "/new-password-email.html";
             var builder = new BodyBuilder();
-            var logoUrl = AppSettings.BackEndUrl + "/Logo/" + dealerInfo.Logo;
+            var logoUrl = AppSettings.AdminPanelUrl + "/Logo/" + dealerInfo.Logo;
             using (StreamReader sourceReader = File.OpenText(pathToFile))
             {
                 builder.HtmlBody = sourceReader.ReadToEnd();
