@@ -82,8 +82,9 @@ namespace Business.Concrete
         public IDataResult<ProjectDto> AddProject(ProjectDto project)
         {
             project.CurrencyId = 1;
-            var decimalPrice = Convert.ToDecimal(project.Price);
+            var decimalPrice = Convert.ToDecimal(project.Price.Replace(".", ","));
             var addEntity = _mapper.Map<Project>(project);
+            addEntity.Price = decimalPrice;
             var lastNumber = _projectRepository.GetAll().OrderByDescending(x => x.AddDate)?.FirstOrDefault()?.ProjectNumber;
 
             #region Translate
@@ -139,7 +140,8 @@ namespace Business.Concrete
             var project = _projectRepository.GetById(dto.Id);
             dto.TrimAllProps();
             project = _mapper.Map(dto, project);
-
+            var price = Convert.ToDecimal(dto.Price.Replace(".", ","));
+            project.Price = price;
             #region Translate
             var addTranslateList = new List<Translate>();
 

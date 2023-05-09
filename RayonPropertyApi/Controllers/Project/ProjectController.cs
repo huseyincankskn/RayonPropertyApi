@@ -99,6 +99,7 @@ namespace RayonPropertyApi.Controllers.Project
         [HttpGet("DeletePhoto")]
         public IActionResult DeletePhoto(string fileName)
         {
+            fileName = fileName.Split("Content/")[1];
             var result = _productService.DeletePhoto(fileName);
             return Ok(result);
         }
