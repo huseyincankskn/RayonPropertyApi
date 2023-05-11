@@ -273,7 +273,7 @@ namespace Business.Concrete
         {
             var entityList = _projectFeaturesRepository.GetAllForOdata();
             var vmList = _mapper.ProjectTo<ProjectFeaturesVm>(entityList);
-            return new SuccessDataResult<IQueryable<ProjectFeaturesVm>>(vmList);
+            return new SuccessDataResult<IQueryable<ProjectFeaturesVm>>(vmList.OrderBy(x=> x.Name));
         }
         private IDataResult<IQueryable<FeatureVm>> GetFeatureList(Guid id)
         {
