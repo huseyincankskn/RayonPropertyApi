@@ -117,6 +117,7 @@ namespace Business.Concrete
             addEntity.DescriptionTranslateKey = addTranslateList.Last().TranslateKey;
             #endregion
             addEntity.StreetId = 1;
+            addEntity.ProjectTye = project.ProjectType;
             var response = _projectRepository.Add(addEntity);
             project.Id = response.Data.Id;
             if (response.Success)
@@ -140,6 +141,7 @@ namespace Business.Concrete
             var project = _projectRepository.GetById(dto.Id);
             dto.TrimAllProps();
             project = _mapper.Map(dto, project);
+            project.ProjectTye = dto.ProjectType;
             var price = Convert.ToDecimal(dto.Price.Replace(".", ","));
             project.Price = price;
             #region Translate
