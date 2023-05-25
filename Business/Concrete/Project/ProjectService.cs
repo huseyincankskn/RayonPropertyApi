@@ -244,7 +244,7 @@ namespace Business.Concrete
                         posY = (image.Height / 2) - (scaledHeight / 2);
 
                         // Set the opacity of the watermark
-                        var opacity = 0.5f;
+                        var opacity = 0.05f;
 
                         // Draw the watermark on the image
                         image.Mutate(x => x.DrawImage(watermark, new Point(posX, posY), opacity));
