@@ -7,6 +7,7 @@
         public string ProjectNumber { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         public short RoomCount { get; set; }
+        public List<string> SaloonCountList { get; set; }
         public string SaloonCount { get; set; }
         public string Price { get; set; }
         public decimal PriceEur { get; set; }

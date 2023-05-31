@@ -81,6 +81,21 @@ namespace Business.Concrete
         }
         public IDataResult<ProjectDto> AddProject(ProjectDto project)
         {
+            string salonCountStr = ""; // Salon sayılarının bulunduğu dizi
+            int itemCount = project.SaloonCountList.Count;
+
+            foreach (var item in project.SaloonCountList)
+            {
+                salonCountStr += item;
+
+                if (itemCount > 1)
+                {
+                    salonCountStr += ",";
+                }
+
+                itemCount--;
+            }
+            project.SaloonCount = salonCountStr;
             project.CurrencyId = 1;
             var decimalPrice = Convert.ToDecimal(project.Price.Replace(".", ","));
             var addEntity = _mapper.Map<Project>(project);
@@ -138,6 +153,21 @@ namespace Business.Concrete
         {
             dto.CurrencyId = 1;
             dto.StreetId = 1;
+            string salonCountStr = ""; // Salon sayılarının bulunduğu dizi
+            int itemCount = dto.SaloonCountList.Count;
+
+            foreach (var item in dto.SaloonCountList)
+            {
+                salonCountStr += item;
+
+                if (itemCount > 1)
+                {
+                    salonCountStr += ",";
+                }
+
+                itemCount--;
+            }
+            dto.SaloonCount = salonCountStr;
             var project = _projectRepository.GetById(dto.Id);
             dto.TrimAllProps();
             project = _mapper.Map(dto, project);
